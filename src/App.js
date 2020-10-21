@@ -1,12 +1,9 @@
 import React from "react";
-import { Grommet, Box, Button, Heading } from "grommet"; 
-import { Notification } from "grommet-icons"; 
+import { Grommet, Box, Grid, Heading, Button } from "grommet"; 
+import MatchdayCard from "./components/MatchdayCard"
 
 const theme = {
   global: {
-    colors: {
-      brand: "#228BE6"
-    },
     font: {
       family: "Roboto",
       size: "18px",
@@ -31,21 +28,24 @@ const AppBar = (props) => (
 
 const App = () => {
   return (
-    <Grommet theme={theme} themeMode="dark" full>
+    <Grommet theme={theme} full>
       <Box fill>
-        <AppBar>Hello Grommet!
-          <Heading level="3" margin="none">App Name</Heading>
-          <Button icon={<Notification/>} onClick={() => {}} />
+        <AppBar>
+          <Heading level="3" margin="none">Homepage</Heading>
         </AppBar>
-        <Box direction="row" flex overflow={{ horizontal: "hidden" }}>
-          <Box flex align="center" justify="center">
-            App body
+          <Box flex direction="column" align="center" alignContent="center" justify="center" background="url(./resources/footballbackground.jpg)">
+            <Heading level="3" textAlign="center">Wilkommen bei der Terminbuchung der [Vereinsname]</Heading>
+            <Button primary label="Unser Hygenekonzept Einsehen"></Button>
           </Box>
-          <Box width="medium" background="light-2" elevation="small" align="center" justify="center">
-            sidebar
+          <Box pad="large">
+            <Heading level="2" textAlign="center">Nächsten Spieltage</Heading>
+          <Grid gap="medium" rows="small" columns={{ count: "fit", size: "small" }}>
+            <MatchdayCard/>
+            <MatchdayCard/>
+          </Grid>
           </Box>
+          <Button secondary label="Alle Spieltage Ansehen"></Button>
         </Box>
-      </Box>
     </Grommet>
   );
 }
