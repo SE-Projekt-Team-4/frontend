@@ -1,0 +1,14 @@
+{
+    "source": {
+          "exclude": ["node_modules"], 
+          "excludePattern": "",
+          "include": ["src"]
+    },
+    "templates": {
+          "cleverLinks": false,
+          "monospaceLinks": false
+    },
+    "opts": {
+      "destination" : "jsdoc/out"
+    }
+  }
