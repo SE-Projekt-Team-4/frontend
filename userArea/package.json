@@ -10,6 +10,7 @@
     "grommet-icons": "^4.5.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "styled-components": "^5.2.0"
   },
@@ -17,7 +18,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject", 
+    "eject": "react-scripts eject",
     "generate-docs": "jsdoc -c jsdoc/config.json"
   },
   "eslintConfig": {
