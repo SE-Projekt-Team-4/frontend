@@ -1,7 +1,7 @@
 import React from "react"
 import { Box, Grid, Heading, Button } from "grommet";
-import MatchdayCard from "../../reuseComponents/matchdayCard/MatchdayCard"
-import AnchorAppBar from "../../reuseComponents/appBar/AnchorAppBar";
+import MatchdayCard from "../../reuseComponents/MatchdayCard"
+import AnchorAppBar from "../../reuseComponents/AnchorAppBar";
 
 class HomePage extends React.Component {
     render() {
