@@ -1,5 +1,6 @@
 import React from "react"
-import HomePage from "./pages/HomePage"
+import HomePage from "./userArea/pages/HomePage"
+import AdminHomePage from "./adminArea/pages/AdminHomePage"
 import { Grommet } from "grommet"
 import { Route, Switch } from 'react-router-dom'
 
@@ -21,6 +22,7 @@ export default function App() {
     <Grommet theme={theme}>
     <Switch>
       <Route exact path="/" component={HomePage} />
+      <Route exact path="/admin" component={AdminHomePage} />
     </Switch>
     </Grommet> 
   )

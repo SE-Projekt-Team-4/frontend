@@ -1,18 +1,17 @@
 import React from "react"
-import { Box, Grid, Heading, Button } from "grommet";
-import MatchdayCard from "../components/MatchdayCard"
-import AnchorAppBar from "../components/AnchorAppBar";
+import { Box, Grid, Heading, Button } from "grommet"
+import MatchdayCard from "../../reuseComponents/matchdayCard/MatchdayCard"
+import AppBar from "../../reuseComponents/appBar/AnchorAppBar"
 
-class HomePage extends React.Component {
+class AdminHomePage extends React.Component {
     render() {
         return(
             <Box fill>
-                <AnchorAppBar>
-                    <Heading level="3" margin="none">Homepage</Heading>
-                </AnchorAppBar>
+                <AppBar>
+                    <Heading level="3" margin="none">Mitarbeiterbereich</Heading>
+                </AppBar>
                 <Box flex direction="column" align="center" alignContent="center" justify="center" background="url(../resources/footballbackground.jpg)">
-                    <Heading level="3" textAlign="center">Wilkommen bei der Terminbuchung der [Vereinsname]</Heading>
-                    <Button primary label="Unser Hygenekonzept Einsehen"></Button>
+                    Main content
                 </Box>
                 <Box pad="large">
                     <Heading level="2" textAlign="center">Nächsten Spieltage</Heading>
@@ -27,4 +26,4 @@ class HomePage extends React.Component {
     }
 }
 
-export default HomePage; 
+export default AdminHomePage; 

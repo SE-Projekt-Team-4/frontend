@@ -24,3 +24,5 @@ yarn-error.log*
 
 #jsdoc
 /jsdoc/out
+
+/.bit
