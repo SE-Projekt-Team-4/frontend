@@ -1,17 +1,25 @@
 import React from "react";
-import { Box, Grid, Heading, Button, Image } from "grommet";
+import { Box, Heading, Button } from "grommet";
+import AnchorAppBar from "../../reuseComponents/AnchorAppBar";
+import BookingTabs from "../components/BookingTabs";
 
 class BookingPage extends React.Component {
 
     constructor(props) {
-        super(props); 
-        this.state = {}; 
+        super(props);
+        this.state = {};
     }
 
     render() {
         return (
-            <Heading>Booking</Heading>
-        )
+            <>
+                <AnchorAppBar title="Terminbuchung" />
+                <BookingTabs />
+                <Box pad="medium" direction="row">
+                    <Heading>Spieltag:</Heading>
+                </Box>
+            </>
+        );
     }
 }
 

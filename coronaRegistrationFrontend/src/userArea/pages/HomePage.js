@@ -9,9 +9,7 @@ class HomePage extends React.Component {
     render() {
         return(
             <Box fill>
-                <AnchorAppBar>
-                    <Heading level="3" margin="none">Homepage</Heading>
-                </AnchorAppBar>
+                <AnchorAppBar title="Homepage" />
                 <Box flex direction="column" align="center" alignContent="center" justify="center" background="url(./footballbackground.jpg)">
                     <Heading level="3" textAlign="center" color="light-1">Wilkommen bei der Terminbuchung der FG 08 Mutterstadt</Heading>
                     {// Make image Responsive 

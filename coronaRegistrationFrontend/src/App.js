@@ -21,11 +21,11 @@ const theme = {
 export default function App() {
   return (
     <Grommet theme={theme}>
-    <Switch>
-      <Route exact path="/" component={HomePage} />
-      <Route exact path="/admin" component={AdminHomePage} />
-      <Route exact path="/booking" component={BookingPage} />
-    </Switch>
-    </Grommet> 
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route exact path="/admin" component={AdminHomePage} />
+        <Route exact path="/booking" component={BookingPage} />
+      </Switch>
+    </Grommet>
   )
 }

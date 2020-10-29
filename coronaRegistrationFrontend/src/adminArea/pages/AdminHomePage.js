@@ -1,15 +1,13 @@
 import React from "react"
 import { Box, Grid, Heading, Button } from "grommet"
 import MatchdayCard from "../../reuseComponents/MatchdayCard"
-import AppBar from "../../reuseComponents/AnchorAppBar"
+import AnchorAppBar from "../../reuseComponents/AnchorAppBar"
 
 class AdminHomePage extends React.Component {
     render() {
         return(
             <Box fill>
-                <AppBar>
-                    <Heading level="3" margin="none">Mitarbeiterbereich</Heading>
-                </AppBar>
+                <AnchorAppBar title="Mitarbeiterbereich"/>
                 <Box flex direction="column" align="center" alignContent="center" justify="center" background="url(../resources/footballbackground.jpg)">
                     Main content
                 </Box>
