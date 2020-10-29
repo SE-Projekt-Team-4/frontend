@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Heading, Button } from "grommet";
 import AnchorAppBar from "../../reuseComponents/AnchorAppBar";
 import BookingTabs from "../components/BookingTabs";
+import ContactForm from "../components/ContactForm";
 
 class BookingPage extends React.Component {
 
@@ -15,8 +16,9 @@ class BookingPage extends React.Component {
             <>
                 <AnchorAppBar title="Terminbuchung" />
                 <BookingTabs />
-                <Box pad="medium" direction="row">
+                <Box pad="medium" direction="column">
                     <Heading>Spieltag:</Heading>
+                    <ContactForm/>
                 </Box>
             </>
         );

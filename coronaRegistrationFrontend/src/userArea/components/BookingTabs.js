@@ -23,12 +23,12 @@ class BookingTabs extends React.Component {
                         title={<RichTabTitle
                             icon={<List />}
                             label="Buchungsübersicht" />}
-                        disabled="true"
+                        disabled={true}
                     />
                     <Tab title={<RichTabTitle
                         icon={<Checkmark />}
                         label="Fertig!" />}
-                        disabled="true"
+                        disabled={true}
                     />
               </Tabs>
           </Box>   
