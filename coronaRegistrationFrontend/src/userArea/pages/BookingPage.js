@@ -16,7 +16,7 @@ class BookingPage extends React.Component {
             <>
                 <AnchorAppBar title="Terminbuchung" />
                 <BookingTabs />
-                <Box pad="medium" direction="column">
+                <Box pad="medium" direction="column" width="75%">
                     <Heading>Spieltag:</Heading>
                     <ContactForm/>
                 </Box>
