@@ -10,6 +10,9 @@ import BookingPage from "./userArea/pages/BookingPage"
  */
 const theme = {
   global: {
+    colors: {
+      brand: "#000000"
+    },
     font: {
       family: "Roboto",
       size: "18px",
