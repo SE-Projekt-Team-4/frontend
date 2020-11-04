@@ -15,7 +15,7 @@ class MatchdayCard extends React.Component {
                 <CardHeader pad="medium">Spieltag 1</CardHeader>
                 <CardBody pad="medium"></CardBody>
                 <CardFooter>
-                    <Button primary label="Platz Buchen" href="/booking"></Button>
+                    <Button label="Platz Buchen" href="/booking"></Button>
                 </CardFooter>
             </Card>
             </Grommet>

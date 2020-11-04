@@ -1,6 +1,6 @@
 import React from "react";
-import { Form, FormField, MaskedInput, TextInput, Heading, Box } from "grommet";
-import { MailOption, Phone } from "grommet-icons";
+import { Form, FormField, MaskedInput, TextInput, Heading, Box, Button } from "grommet";
+import { FormNext, MailOption, Phone } from "grommet-icons";
 
 const emailMask = [
   {
@@ -33,6 +33,11 @@ const telNrMask = [
   },
 ];
 
+const formValidationMessages = {
+  invalid: "Ungültig", 
+  required: "Erforderlich"
+}
+
 class ContactForm extends React.Component {
   constructor(props) {
     super(props);
@@ -49,9 +54,13 @@ class ContactForm extends React.Component {
 
     this.resetValues = this.resetValues.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.baseState = this.state;
   }
 
   resetValues() {
+    this.setState({
+      ...this.baseState
+    })
   }
 
   handleInputChange(event) {
@@ -63,41 +72,45 @@ class ContactForm extends React.Component {
 
   render() {
     return (
-      <Form onReset={() => this.resetValues}>
+      <Form onReset={this.resetValues} messages={formValidationMessages}>
         <Heading level="3">Adressinformation</Heading>
         <FormField required={true} label="Vorname" name="firstName">
           <TextInput name="firstName" value={this.state.firstName} onChange={this.handleInputChange} placeholder="Max" />
         </FormField>
-        <FormField label="Nachname" name="surname">
+        <FormField required={true} label="Nachname" name="surname">
           <TextInput name="surname" value={this.state.surname} onChange={this.handleInputChange} placeholder="Mustermann" />
         </FormField>
         <Box direction="row" gap="large">
           <Box width="40%">
-            <FormField label="Straße" name="street">
+            <FormField required={true} label="Straße" name="street">
               <TextInput name="street" value={this.state.street} onChange={this.handleInputChange} placeholder="Musterstraße" />
             </FormField>
           </Box>
-          <FormField label="Hausnummer" name="houseNr">
+          <FormField required={true} label="Hausnummer" name="houseNr">
             <TextInput name="houseNr" value={this.state.houseNr} onChange={this.handleInputChange} placeholder="1" />
           </FormField>
         </Box>
         <Box direction="row" gap="large">
           <Box width="40%">
-            <FormField label="Stadt" name="city">
+            <FormField required={true} label="Stadt" name="city">
               <TextInput name="city" value={this.state.city} onChange={this.handleInputChange} placeholder="Musterstadt" />
             </FormField>
           </Box>
-          <FormField label="PLZ" name="postcode">
+          <FormField required={true} label="PLZ" name="postcode">
             <TextInput name="postcode" value={this.state.postcode} onChange={this.handleInputChange} placeholder="xxxxx" />
           </FormField>
         </Box>
         <Heading level="3">Kontaktdaten</Heading>
-        <FormField label="E-Mail Adresse" name="email">
+        <FormField required={true} label="E-Mail Adresse" name="email">
           <MaskedInput name="email" icon={<MailOption />} mask={emailMask} value={this.state.email} onChange={this.handleInputChange} />
         </FormField>
-        <FormField label="Telefonnummer (für Rückfragen)" name="telNr">
+        <FormField required={true} label="Telefonnummer (für Rückfragen)" name="telNr">
           <MaskedInput name="telNr" icon={<Phone />} mask={telNrMask} value={this.state.telNr} onChange={this.handleInputChange} />
         </FormField>
+        <Box direction="row" gap="small" margin={{ top: "medium" }}>
+          <Button type="reset" label="Zurücksetzen" />
+          <Button primary type="submit" label="Weiter" icon={<FormNext />} reverse={true} />
+        </Box>
       </Form>
     );
   }
