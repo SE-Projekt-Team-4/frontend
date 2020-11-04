@@ -3,6 +3,7 @@ import { Box, Heading, Button } from "grommet";
 import AnchorAppBar from "../../reuseComponents/AnchorAppBar";
 import BookingTabs from "../components/BookingTabs";
 import ContactForm from "../components/ContactForm";
+import MatchdayOverview from "../../reuseComponents/MatchdayOverview";
 
 class BookingPage extends React.Component {
 
@@ -18,6 +19,7 @@ class BookingPage extends React.Component {
                 <BookingTabs />
                 <Box pad="medium" direction="column" width="75%">
                     <Heading>Spieltag:</Heading>
+                    <MatchdayOverview isAdmin={true}/>
                     <ContactForm/>
                 </Box>
             </>
