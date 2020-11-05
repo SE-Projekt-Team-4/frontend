@@ -2,7 +2,7 @@ import React from "react";
 import { Form, FormField, MaskedInput, TextInput, Heading, Box, Button } from "grommet";
 import { FormNext, MailOption, Phone } from "grommet-icons";
 
-const emailMask = [
+const o_emailMask = [
   {
     regexp: /^[\w\-_.]+$/,
     placeholder: "example",
@@ -19,7 +19,7 @@ const emailMask = [
   },
 ];
 
-const telNrMask = [
+const o_telNrMask = [
   { fixed: "+" },
   {
     regexp: /^[0-9]{1,3}$/,
@@ -33,7 +33,7 @@ const telNrMask = [
   },
 ];
 
-const formValidationMessages = {
+const o_formValidationMessages = {
   invalid: "Ungültig", 
   required: "Erforderlich"
 }
@@ -72,7 +72,7 @@ class ContactForm extends React.Component {
 
   render() {
     return (
-      <Form onReset={this.resetValues} messages={formValidationMessages}>
+      <Form onReset={this.resetValues} messages={o_formValidationMessages}>
         <Heading level="3">Adressinformation</Heading>
         <FormField required={true} label="Vorname" name="firstName">
           <TextInput name="firstName" value={this.state.firstName} onChange={this.handleInputChange} placeholder="Max" />
@@ -102,10 +102,10 @@ class ContactForm extends React.Component {
         </Box>
         <Heading level="3">Kontaktdaten</Heading>
         <FormField required={true} label="E-Mail Adresse" name="email">
-          <MaskedInput name="email" icon={<MailOption />} mask={emailMask} value={this.state.email} onChange={this.handleInputChange} />
+          <MaskedInput name="email" icon={<MailOption />} mask={o_emailMask} value={this.state.email} onChange={this.handleInputChange} />
         </FormField>
         <FormField required={true} label="Telefonnummer (für Rückfragen)" name="telNr">
-          <MaskedInput name="telNr" icon={<Phone />} mask={telNrMask} value={this.state.telNr} onChange={this.handleInputChange} />
+          <MaskedInput name="telNr" icon={<Phone />} mask={o_telNrMask} value={this.state.telNr} onChange={this.handleInputChange} />
         </FormField>
         <Box direction="row" gap="small" margin={{ top: "medium" }}>
           <Button type="reset" label="Zurücksetzen" />
