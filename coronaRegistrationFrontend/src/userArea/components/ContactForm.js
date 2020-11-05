@@ -42,14 +42,15 @@ class ContactForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: "",
-      surname: "",
-      street: "",
-      houseNr: "",
-      city: "",
-      postcode: "",
-      email: "",
-      telNr: ""
+      s_firstName: "",
+      s_surname: "",
+      s_street: "",
+      s_houseNr: "",
+      s_city: "",
+      s_postcode: "",
+      s_email: "",
+      s_telNr: "", 
+      b_submittedForm: false
     };
 
     this.resetValues = this.resetValues.bind(this);
@@ -72,40 +73,40 @@ class ContactForm extends React.Component {
 
   render() {
     return (
-      <Form onReset={this.resetValues} messages={o_formValidationMessages}>
+      <Form onReset={this.resetValues} onSubmit={this.props.onSubmit} messages={o_formValidationMessages}>
         <Heading level="3">Adressinformation</Heading>
-        <FormField required={true} label="Vorname" name="firstName">
-          <TextInput name="firstName" value={this.state.firstName} onChange={this.handleInputChange} placeholder="Max" />
+        <FormField  label="Vorname" name="firstName">
+          <TextInput name="s_firstName" value={this.state.s_firstName} onChange={this.handleInputChange} placeholder="Max" />
         </FormField>
-        <FormField required={true} label="Nachname" name="surname">
-          <TextInput name="surname" value={this.state.surname} onChange={this.handleInputChange} placeholder="Mustermann" />
+        <FormField  label="Nachname" name="surname">
+          <TextInput name="s_surname" value={this.state.s_surname} onChange={this.handleInputChange} placeholder="Mustermann" />
         </FormField>
         <Box direction="row" gap="large">
           <Box width="40%">
-            <FormField required={true} label="Straße" name="street">
-              <TextInput name="street" value={this.state.street} onChange={this.handleInputChange} placeholder="Musterstraße" />
+            <FormField  label="Straße" name="street">
+              <TextInput name="s_street" value={this.state.s_street} onChange={this.handleInputChange} placeholder="Musterstraße" />
             </FormField>
           </Box>
-          <FormField required={true} label="Hausnummer" name="houseNr">
-            <TextInput name="houseNr" value={this.state.houseNr} onChange={this.handleInputChange} placeholder="1" />
+          <FormField  label="Hausnummer" name="houseNr">
+            <TextInput name="s_houseNr" value={this.state.s_houseNr} onChange={this.handleInputChange} placeholder="1" />
           </FormField>
         </Box>
         <Box direction="row" gap="large">
           <Box width="40%">
-            <FormField required={true} label="Stadt" name="city">
-              <TextInput name="city" value={this.state.city} onChange={this.handleInputChange} placeholder="Musterstadt" />
+            <FormField  label="Stadt" name="city">
+              <TextInput name="s_city" value={this.state.s_city} onChange={this.handleInputChange} placeholder="Musterstadt" />
             </FormField>
           </Box>
-          <FormField required={true} label="PLZ" name="postcode">
-            <TextInput name="postcode" value={this.state.postcode} onChange={this.handleInputChange} placeholder="xxxxx" />
+          <FormField  label="PLZ" name="postcode">
+            <TextInput name="s_postcode" value={this.state.s_postcode} onChange={this.handleInputChange} placeholder="xxxxx" />
           </FormField>
         </Box>
         <Heading level="3">Kontaktdaten</Heading>
-        <FormField required={true} label="E-Mail Adresse" name="email">
-          <MaskedInput name="email" icon={<MailOption />} mask={o_emailMask} value={this.state.email} onChange={this.handleInputChange} />
+        <FormField  label="E-Mail Adresse" name="email">
+          <MaskedInput name="s_email" icon={<MailOption />} mask={o_emailMask} value={this.state.s_email} onChange={this.handleInputChange} />
         </FormField>
-        <FormField required={true} label="Telefonnummer (für Rückfragen)" name="telNr">
-          <MaskedInput name="telNr" icon={<Phone />} mask={o_telNrMask} value={this.state.telNr} onChange={this.handleInputChange} />
+        <FormField  label="Telefonnummer (für Rückfragen)" name="telNr">
+          <MaskedInput name="s_telNr" icon={<Phone />} mask={o_telNrMask} value={this.state.s_telNr} onChange={this.handleInputChange} />
         </FormField>
         <Box direction="row" gap="small" margin={{ top: "medium" }}>
           <Button type="reset" label="Zurücksetzen" />
