@@ -10,7 +10,7 @@ class RichTabTitle extends React.Component {
 
     render() {
         return (
-            <Box direction="row" align="center" gap="xsmall" margin="xsmall">
+            <Box direction="row-responsive" align="center" gap="xsmall" margin="xsmall">
             {this.props.icon}
             <Text size="small">
               <strong>{this.props.label}</strong>

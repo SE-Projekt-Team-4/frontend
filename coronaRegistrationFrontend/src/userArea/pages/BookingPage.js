@@ -1,10 +1,11 @@
 import React from "react";
-import { Box, Heading, Button } from "grommet";
+import { Box, Heading } from "grommet";
 import AnchorAppBar from "../../reuseComponents/AnchorAppBar";
 import BookingTabs from "../components/BookingTabs";
 import ContactForm from "../components/ContactForm";
 import MatchdayOverview from "../../reuseComponents/MatchdayOverview";
 import BookingConfirmationPage from "./BookingConfirmationPage";
+import BookingCompletedPage from "./BookingCompletedPage";
 
 class BookingPage extends React.Component {
 
@@ -22,11 +23,27 @@ class BookingPage extends React.Component {
         this.setState({
             ...this.state,
             b_hasStartedBooking: false,
-            b_hasSubmittedForm: true, 
+            b_hasSubmittedForm: true,
             o_formData: event.value
         });
     }
 
+    confirmBooking() {
+        this.setState({
+            ...this.state,
+            b_hasSubmittedForm: true,
+            b_hasConfirmedBooking: true
+        })
+    }
+
+    editVisitorInformation() {
+        this.setState({
+            ...this.state,
+            b_hasStartedBooking: true, 
+            b_hasSubmittedForm: false, 
+            b_hasConfirmedBooking: false, 
+        });
+    }
 
     render() {
         return (
@@ -37,10 +54,19 @@ class BookingPage extends React.Component {
                     <Box pad="medium" direction="column" width="75%">
                         <Heading level="2">Spieltag:</Heading>
                         <MatchdayOverview />
-                        <ContactForm onSubmit={this.submitForm.bind(this)} />
+                        <ContactForm onSubmit={this.submitForm.bind(this)} o_formData={this.state.o_formData}/>
                     </Box>
                 }
-                {this.state.b_hasSubmittedForm && <BookingConfirmationPage o_visitorData={this.state.o_formData} />}
+                {(this.state.b_hasSubmittedForm && !this.state.b_hasConfirmedBooking) &&
+                    <BookingConfirmationPage
+                        o_visitorData={this.state.o_formData}
+                        onConfirmBooking={this.confirmBooking.bind(this)}
+                        onEditVisitorInformation={this.editVisitorInformation.bind(this)}
+                    />
+                }
+                {(this.state.b_hasConfirmedBooking && this.state.b_hasSubmittedForm) &&
+                    <BookingCompletedPage />
+                }
             </>
         );
     }

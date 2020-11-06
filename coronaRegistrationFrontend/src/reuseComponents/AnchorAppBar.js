@@ -13,7 +13,7 @@ class AnchorAppBar extends React.Component {
     return (
       <Box
         tag="header"
-        direction="row"
+        direction="row-responsive"
         align="center"
         justify="between"
         background="brand"

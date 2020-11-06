@@ -1,4 +1,5 @@
-import { Heading, Box, Text } from "grommet";
+import { Heading, Box, Text, Button } from "grommet";
+import { Edit } from "grommet-icons";
 import React from "react";
 
 class VisitorInformationSummary extends React.Component {
@@ -10,7 +11,8 @@ class VisitorInformationSummary extends React.Component {
 
     render() {
         return (
-            <Box align="start" justify="between" pad="small" border={{ "color": "brand", "size": "small", "style": "solid" }}>
+            <Box direction="row-responsive" align="start" pad="small" justify="between" border={{ "color": "brand", "size": "small", "style": "solid" }}>
+                <Box direction="column" justify="start">
                 <Heading margin="none" level="4">Adressinformation</Heading>
                     <Text size="medium">{this.props.o_visitorData.s_firstName + " " + this.props.o_visitorData.s_surname}</Text>
                     <Text size="medium">{this.props.o_visitorData.s_street + " " + this.props.o_visitorData.s_houseNr}</Text>
@@ -19,7 +21,8 @@ class VisitorInformationSummary extends React.Component {
                     <Text size="medium">{"E-Mail: " + this.props.o_visitorData.s_email}</Text>
                     <Text size="medium">{"Telefonnummer: " + this.props.o_visitorData.s_telNr}</Text>
             </Box>
-
+                <Button icon={<Edit />} onClick={this.props.onEditVisitorInformation}/>
+            </Box>
         );
     }
 }

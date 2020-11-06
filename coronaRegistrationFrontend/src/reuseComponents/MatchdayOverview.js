@@ -17,7 +17,7 @@ class MatchdayOverview extends React.Component {
     }
     render() {
         return (
-            <Box align="center" justify="between" pad="small" direction="row" border={{ "color": "brand", "size": "small", "style": "solid" }}>
+            <Box align="center" justify="between" pad="small" direction="row-responsive" border={{ "color": "brand", "size": "small", "style": "solid" }}>
                 <Box direction="column" gap="xsmall">
                     <Heading level="4" margin="none">Heim gg. Gast</Heading>
                     <Text size="medium">00.00.0000 00:00</Text>

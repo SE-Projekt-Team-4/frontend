@@ -1,5 +1,5 @@
 import React from "react";
-import { Grommet, Card, CardBody, CardHeader, CardFooter, Button } from "grommet";
+import { Card, CardBody, CardHeader, CardFooter, Button } from "grommet";
 
 class MatchdayCard extends React.Component {
 

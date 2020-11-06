@@ -26,7 +26,7 @@ class BookingTabs extends React.Component {
                         disabled={!this.props.b_isFormSubmitted}
                     />
                     <Tab title={<RichTabTitle
-                         icon={<Checkmark />}
+                         icon={<Checkmark color="neutral-1"/>}
                          label="Fertig!" />}
                          disabled={!this.props.b_isBookingConfirmed}
                     />
