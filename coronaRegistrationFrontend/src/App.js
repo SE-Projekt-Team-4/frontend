@@ -17,13 +17,13 @@ const theme = {
       family: "Roboto",
       size: "18px",
       height: "20px",
-    },
+    }
   },
 };
 
 export default function App() {
   return (
-    <Grommet theme={theme}>
+    <Grommet theme={theme} full>
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route exact path="/admin" component={AdminHomePage} />

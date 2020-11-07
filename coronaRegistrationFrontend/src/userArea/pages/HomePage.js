@@ -7,27 +7,27 @@ import { Link } from "react-router-dom";
 
 class HomePage extends React.Component {
     render() {
-        return(
-            <Box fill>
+        return (
+            <>
                 <AnchorAppBar title="Homepage" />
-                <Box flex direction="column" align="center" alignContent="center" justify="center" background="url(./footballbackground.jpg)">
-                    <Heading level="3" textAlign="center" color="light-1">Wilkommen bei der Terminbuchung der FG 08 Mutterstadt</Heading>
-                    {// Make image Responsive 
-                    }
-                    <Image src="./teamlogo.png" fit="contain"/>
+                <Box direction="column" align="center" justify="center" pad="small" background="url(./footballbackground.jpg)">
+                    <Heading level="2" textAlign="center" color="light-1">Wilkommen bei der Terminbuchung der FG 08 Mutterstadt</Heading>
+                    <Image src="./teamlogo.png" fill={false} />
                     <Link to="./Hygienekonzept.pdf" target="_blank" download>
-                        <Button primary label="Unser Hygenekonzept Herunterladen" icon={<Download />}/>
+                        <Button primary label="Unser Hygenekonzept Herunterladen" icon={<Download />} />
                     </Link>
                 </Box>
-                <Box pad="large">
-                    <Heading level="2" textAlign="center">Nächsten Spieltage</Heading>
-                    <Grid gap="medium" rows="small" columns={{ count: "fit", size: "small" }}>
-                        <MatchdayCard />
-                        <MatchdayCard />
-                    </Grid>
+                <Box direction="column" align="center">
+                    <Heading level="2" textAlign="center" margin={{ "bottom": "xsmall" }}>Nächsten Spieltage</Heading>
                 </Box>
-                <Button secondary label="Alle Spieltage Ansehen"></Button>
-            </Box>
+                <Grid gap="small" justify="center" align="center" columns="medium" rows="medium" pad="medium">
+                    <MatchdayCard />
+                    <MatchdayCard />
+                </Grid>
+                <Box pad="medium" direction="column" align="center">
+                    <Button secondary active label="Alle Spieltage Ansehen"></Button>
+                </Box>
+            </>
         )
     }
 }

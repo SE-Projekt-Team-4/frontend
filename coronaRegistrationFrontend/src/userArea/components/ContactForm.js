@@ -59,21 +59,6 @@ class ContactForm extends React.Component {
     this.baseState = this.state;
   }
 
-  componentDidMount() {
-    /* this.props.o_formData &&
-    this.setState({
-      ...this.state,
-      s_firstName: this.props.o_formData.s_firstName,
-      s_surname: this.props.o_formData.s_surname,
-      s_street: this.props.o_formData.s_street,
-      s_houseNr: this.props.o_formData.s_houseNr,
-      s_city: this.props.o_formData.s_city,
-      s_postcode: this.props.o_formData.s_postcode,
-      s_email: this.props.o_formData.s_email,
-      s_telNr: this.props.o_formData.s_telNr, 
-    }); */
-
-  }
   resetValues() {
     this.setState({
       ...this.baseState
@@ -126,7 +111,7 @@ class ContactForm extends React.Component {
         </FormField>
         <Box direction="row-responsive" gap="small" margin={{ top: "medium" }}>
           <Button type="reset" label="Zurücksetzen" />
-          <Button primary type="submit" label="Weiter" icon={<FormNext />} reverse={true} />
+          <Button primary type="submit" label="Weiter" icon={<FormNext />} reverse={true} gap="xxsmall"/>
         </Box>
       </Form>
     );
