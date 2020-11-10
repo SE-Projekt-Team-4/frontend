@@ -16,6 +16,7 @@
     "react-scripts": "3.4.3",
     "styled-components": "^5.2.0"
   },
+  "proxy": "https://coronaprojekt.cfapps.eu10.hana.ondemand.com",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

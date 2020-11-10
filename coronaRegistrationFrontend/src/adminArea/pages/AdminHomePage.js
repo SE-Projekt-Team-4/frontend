@@ -3,6 +3,7 @@ import { Box, Grid, Heading, Button, Clock, Markdown, } from "grommet"
 import MatchdayCard from "../../reuseComponents/MatchdayCard"
 import AnchorAppBar from "../../reuseComponents/AnchorAppBar"
 import UserDataTable from "../components/UserDataTable"
+import NextMatchdaysGrid from "../../reuseComponents/NextMatchdaysGrid"
 
 class AdminHomePage extends React.Component {
     render() {
@@ -18,15 +19,7 @@ class AdminHomePage extends React.Component {
                 <Markdown> x Besucher Registriert </Markdown>
                     <Button secondary label="Besucher einchecken"></Button>
                 </Box>
-                <Box pad="large">
-                    <Heading level="2" textAlign="center">Nächsten Spieltage</Heading>
-                    <Grid gap="medium" rows="small" columns={{ count: "fit", size: "small" }}>
-                        <MatchdayCard />
-                        <MatchdayCard />
-                    </Grid>
-                </Box>
-                <Button secondary label="Alle Spieltage Ansehen"></Button>
-
+                <NextMatchdaysGrid b_isAdmin={true} />
                 <UserDataTable />
             </>
         )

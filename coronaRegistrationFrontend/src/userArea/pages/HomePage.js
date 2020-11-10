@@ -1,12 +1,21 @@
 import React from "react";
 import { Box, Grid, Heading, Button, Image } from "grommet";
 import MatchdayCard from "../../reuseComponents/MatchdayCard";
+import NextMatchdaysGrid from "../../reuseComponents/NextMatchdaysGrid";
 import AnchorAppBar from "../../reuseComponents/AnchorAppBar";
 import { Download } from "grommet-icons";
 import { Link } from "react-router-dom";
 
 class HomePage extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {}; 
+    }
+
+    
     render() {
+        
         return (
             <>
                 <AnchorAppBar title="Homepage" />
@@ -17,16 +26,7 @@ class HomePage extends React.Component {
                         <Button primary label="Unser Hygenekonzept Herunterladen" icon={<Download />} />
                     </Link>
                 </Box>
-                <Box direction="column" align="center">
-                    <Heading level="2" textAlign="center" margin={{ "bottom": "xsmall" }}>Nächsten Spieltage</Heading>
-                </Box>
-                <Grid gap="small" justify="center" align="center" columns="medium" rows="medium" pad="medium">
-                    <MatchdayCard />
-                    <MatchdayCard />
-                </Grid>
-                <Box pad="medium" direction="column" align="center">
-                    <Button secondary active label="Alle Spieltage Ansehen"></Button>
-                </Box>
+                <NextMatchdaysGrid b_isAdmin={false} />
             </>
         )
     }
