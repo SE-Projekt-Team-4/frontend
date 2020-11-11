@@ -57,7 +57,7 @@ class NextMatchdaysGrid extends React.Component {
                 <Box direction="column" align="center">
                     <Heading level="2" textAlign="center" margin={{ "bottom": "xsmall" }}>Nächsten Spieltage</Heading>
                 </Box>
-                <Grid gap="small" justify="center" align="center" columns="medium" rows="medium" pad="medium">
+                <Grid gap="medium" justify="center" align="center" columns="medium" rows="small" pad="medium">
                     {b_isAdmin &&
                         <AddMatchdayCard />
                     }

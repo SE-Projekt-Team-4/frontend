@@ -82,23 +82,19 @@ class ContactForm extends React.Component {
         <FormField label="Nachname" name="surname">
           <TextInput name="s_surname" value={this.state.s_surname} onChange={this.handleInputChange} placeholder="Mustermann" />
         </FormField>
-        <Box direction="row-responsive" gap="large">
-          <Box width="40%">
-            <FormField label="Straße" name="street">
+        <Box direction="row-responsive" gap="medium">
+            <FormField width="60%" label="Straße" name="street">
               <TextInput name="s_street" value={this.state.s_street} onChange={this.handleInputChange} placeholder="Musterstraße" />
             </FormField>
-          </Box>
-          <FormField label="Hausnummer" name="houseNr">
+          <FormField width="40%"label="Hausnummer" name="houseNr">
             <TextInput name="s_houseNr" value={this.state.s_houseNr} onChange={this.handleInputChange} placeholder="1" />
           </FormField>
         </Box>
-        <Box direction="row-responsive" gap="large">
-          <Box width="40%">
-            <FormField label="Stadt" name="city">
+        <Box direction="row-responsive" gap="medium">
+            <FormField width="60%" label="Stadt" name="city">
               <TextInput name="s_city" value={this.state.s_city} onChange={this.handleInputChange} placeholder="Musterstadt" />
             </FormField>
-          </Box>
-          <FormField label="PLZ" name="postcode">
+          <FormField width="40%" label="PLZ" name="postcode">
             <TextInput name="s_postcode" value={this.state.s_postcode} onChange={this.handleInputChange} placeholder="xxxxx" />
           </FormField>
         </Box>

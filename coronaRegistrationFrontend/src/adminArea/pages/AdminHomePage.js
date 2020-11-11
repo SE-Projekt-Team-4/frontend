@@ -1,6 +1,5 @@
 import React from "react"
-import { Box, Grid, Heading, Button, Clock, Markdown, } from "grommet"
-import MatchdayCard from "../../reuseComponents/MatchdayCard"
+import { Box, Heading, Button, Clock, Markdown, } from "grommet"
 import AnchorAppBar from "../../reuseComponents/AnchorAppBar"
 import UserDataTable from "../components/UserDataTable"
 import NextMatchdaysGrid from "../../reuseComponents/NextMatchdaysGrid"

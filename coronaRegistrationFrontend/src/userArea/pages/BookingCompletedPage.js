@@ -15,7 +15,7 @@ class BookingCompletedPage extends React.Component {
         return (
             <Box direction="column" align="center" pad="small">
                 <Heading level="2">Buchung Bestätigt!</Heading>
-                <Checkmark size="large" color="neutral-1" />
+                <Checkmark size="large" color="status-ok" />
                 <Heading level="3">Wir Freuen uns Sie bald begrüßen zu dürfen</Heading>
                 <Paragraph textAlign="center">Wir haben ihnen alle buchungsdetails an ihre angegebene E-Mail adresse geschickt. 
                 Bitte halten sie diese bis zum Spieltag bereit und zeigen sie den QR-Code im Mailinhalt an der Ticketkasse vor. Bis dann!</Paragraph>

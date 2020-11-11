@@ -51,8 +51,7 @@ class BookingPage extends React.Component {
                 <AnchorAppBar title="Terminbuchung" />
                 <BookingTabs b_isFormSubmitted={this.state.b_hasSubmittedForm} b_isBookingConfirmed={this.state.b_hasConfirmedBooking} />
                 {this.state.b_hasStartedBooking &&
-                    <Box pad="medium" direction="column" width="75%">
-                        <Heading level="2">Spieltag:</Heading>
+                    <Box pad="small" direction="column" align="center">
                         <MatchdayOverview />
                         <ContactForm onSubmit={this.submitForm.bind(this)} o_formData={this.state.o_formData}/>
                     </Box>
