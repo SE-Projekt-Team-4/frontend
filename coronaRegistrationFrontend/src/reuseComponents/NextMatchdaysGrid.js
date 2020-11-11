@@ -63,7 +63,7 @@ class NextMatchdaysGrid extends React.Component {
                     }
                     {a_slicedMatchData.map((match) => {
                         return (
-                            <MatchdayCard b_isAdmin={b_isAdmin} key={match.id} s_opponent={match.opponent} s_dateTime={match.dateTime} i_maxSpaces={match.maxSpaces} b_isCancelled={match.isCancelled} />
+                            <MatchdayCard b_isAdmin={b_isAdmin} key={match.id} i_matchId={match.id} s_opponent={match.opponent} s_dateTime={match.dateTime} i_maxSpaces={match.maxSpaces} b_isCancelled={match.isCancelled} />
                         )
                     })}
                 </Grid>

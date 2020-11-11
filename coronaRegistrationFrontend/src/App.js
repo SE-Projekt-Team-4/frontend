@@ -27,7 +27,7 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route exact path="/admin" component={AdminHomePage} />
-        <Route exact path="/booking" component={BookingPage} />
+        <Route exact path="/booking/:id" component={BookingPage} />
       </Switch>
     </Grommet>
   )

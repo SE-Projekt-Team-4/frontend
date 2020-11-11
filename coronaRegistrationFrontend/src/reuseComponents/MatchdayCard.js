@@ -24,7 +24,7 @@ class MatchdayCard extends React.Component {
     }
 
     render() {
-        const { b_isAdmin, s_opponent, s_dateTime, i_maxSpaces, b_isCancelled } = this.props;
+        const { b_isAdmin, s_opponent, s_dateTime, i_maxSpaces, b_isCancelled, i_matchId } = this.props;
         const s_formattedDate = new Date(s_dateTime);
         const s_time = "um " + s_formattedDate.toTimeString().substring(0, 5); 
         const s_date = s_formattedDate.getDate() + "." + (s_formattedDate.getMonth()+1) + "." + s_formattedDate.getFullYear(); 
@@ -46,7 +46,7 @@ class MatchdayCard extends React.Component {
                     {b_isAdmin ?
                         <Button label="Spieltag Verwalten" />
                         :
-                        <Button disabled={i_maxSpaces === 0} label="Platz Buchen" href="/booking" />
+                        <Button disabled={i_maxSpaces === 0} label="Platz Buchen" href={"/booking/" + i_matchId} />
                     }
                 </CardFooter>
             </Card>
