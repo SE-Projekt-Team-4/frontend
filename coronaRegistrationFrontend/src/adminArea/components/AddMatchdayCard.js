@@ -14,7 +14,7 @@ class AddMatchdayCard extends React.Component {
 
     render() {
         return (
-            <Card height="medium" width="medium" pad="medium" justify="center" align="center">
+            <Card height="small" width="medium" pad="medium" justify="center" align="center">
                 <CardHeader>
                     <Heading level="4" margin="none" textAlign="center">Spieltag Hinzufügen</Heading>
                 </CardHeader>

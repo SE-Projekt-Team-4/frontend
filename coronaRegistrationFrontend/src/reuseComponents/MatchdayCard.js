@@ -39,14 +39,14 @@ class MatchdayCard extends React.Component {
                     <Text textAlign="center">{i_maxSpaces} Plätze Frei</Text>
                     {b_isCancelled ?
                         <Text textAlign="center" color="status-error">Status: Fällt aus</Text>
-                        : <Text textAlign="center" color="status-ok">Status: Geht vor!</Text>
+                        : <Text textAlign="center" color="status-ok">Status: Findet Statt!</Text>
                     }
                 </CardBody>
                 <CardFooter justify="end" pad="medium">
                     {b_isAdmin ?
                         <Button label="Spieltag Verwalten" />
                         :
-                        <Button disabled={i_maxSpaces === 0} label="Platz Buchen" href={"/booking/" + i_matchId} />
+                        <Button disabled={i_maxSpaces === 0 || b_isCancelled} label="Platz Buchen" href={"/booking/" + i_matchId} />
                     }
                 </CardFooter>
             </Card>

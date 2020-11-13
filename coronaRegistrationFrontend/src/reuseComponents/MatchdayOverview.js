@@ -7,10 +7,12 @@ class MatchdayOverview extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = { 
+        };
 
         this.editMatchday = this.editMatchday.bind(this);
     }
+
 
     editMatchday() {
         // TODO: Implement editing of a matchday

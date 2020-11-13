@@ -15,8 +15,34 @@ class BookingPage extends React.Component {
             b_hasStartedBooking: true,
             b_hasSubmittedForm: false,
             b_hasConfirmedBooking: false,
-            o_formData: {}
+            o_formData: {},
+            o_matchData: {}
         };
+    }
+
+    componentDidMount() {
+        const s_apiURL = "https://coronaprojekt.cfapps.eu10.hana.ondemand.com/api/matches/" + this.props.match.params.id
+        fetch(s_apiURL,
+        {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then((result) => {
+            this.setState({
+                o_matchData: result.data
+            });
+        },
+            (error) => {
+                this.setState({
+                    ...this.state,
+                    error
+                })
+            }
+        )
     }
 
     submitForm(event) {
@@ -46,24 +72,26 @@ class BookingPage extends React.Component {
     }
 
     render() {
+        const { o_matchData, o_formData, b_hasConfirmedBooking, b_hasStartedBooking, b_hasSubmittedForm } = this.state; 
         return (
             <>
                 <AnchorAppBar title="Terminbuchung" />
-                <BookingTabs b_isFormSubmitted={this.state.b_hasSubmittedForm} b_isBookingConfirmed={this.state.b_hasConfirmedBooking} />
+                <BookingTabs b_isFormSubmitted={b_hasSubmittedForm} b_isBookingConfirmed={b_hasConfirmedBooking} />
                 {this.state.b_hasStartedBooking &&
                     <Box pad="small" direction="column" align="center">
-                        <MatchdayOverview />
-                        <ContactForm onSubmit={this.submitForm.bind(this)} o_formData={this.state.o_formData}/>
+                        <MatchdayOverview s_opponent={o_matchData.opponent} s_dateTime={o_matchData.dateTime}/>
+                        <ContactForm onSubmit={this.submitForm.bind(this)} o_formData={o_formData}/>
                     </Box>
                 }
-                {(this.state.b_hasSubmittedForm && !this.state.b_hasConfirmedBooking) &&
+                {(b_hasSubmittedForm && !b_hasConfirmedBooking) &&
                     <BookingConfirmationPage
-                        o_visitorData={this.state.o_formData}
+                        o_matchData={o_matchData}
+                        o_visitorData={o_formData}
                         onConfirmBooking={this.confirmBooking.bind(this)}
                         onEditVisitorInformation={this.editVisitorInformation.bind(this)}
                     />
                 }
-                {(this.state.b_hasConfirmedBooking && this.state.b_hasSubmittedForm) &&
+                {(b_hasConfirmedBooking && b_hasSubmittedForm) &&
                     <BookingCompletedPage />
                 }
             </>

@@ -8,7 +8,7 @@ class NextMatchdaysGrid extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            matchData: [],
+            a_matchData: [],
             error: null,
             isShowingAllMatches: false,
         };
@@ -17,7 +17,7 @@ class NextMatchdaysGrid extends React.Component {
     }
 
     componentDidMount() {
-        fetch("/api/matches",
+        fetch("https://coronaprojekt.cfapps.eu10.hana.ondemand.com/api/matches",
             {
                 method: "GET",
                 headers: {
@@ -28,7 +28,7 @@ class NextMatchdaysGrid extends React.Component {
             .then(res => res.json())
             .then((result) => {
                 this.setState({
-                    matchData: result.data
+                    a_matchData: result.data
                 });
             },
                 (error) => {
@@ -48,10 +48,10 @@ class NextMatchdaysGrid extends React.Component {
     }
 
     render() {
-        const { matchData, error, isShowingAllMatches } = this.state;
+        const { matchData: a_matchData, error, isShowingAllMatches } = this.state;
         const { b_isAdmin } = this.props;
-        const numberOfMatchCards = isShowingAllMatches ? matchData.length : 4
-        const a_slicedMatchData = matchData.slice(0, numberOfMatchCards);
+        const numberOfMatchCards = isShowingAllMatches ? a_matchData.length : 4
+        const a_slicedMatchData = a_matchData.slice(0, numberOfMatchCards);
         return (
             <>
                 <Box direction="column" align="center">
@@ -61,9 +61,9 @@ class NextMatchdaysGrid extends React.Component {
                     {b_isAdmin &&
                         <AddMatchdayCard />
                     }
-                    {a_slicedMatchData.map((match) => {
+                    {a_slicedMatchData.map((o_match) => {
                         return (
-                            <MatchdayCard b_isAdmin={b_isAdmin} key={match.id} i_matchId={match.id} s_opponent={match.opponent} s_dateTime={match.dateTime} i_maxSpaces={match.maxSpaces} b_isCancelled={match.isCancelled} />
+                            <MatchdayCard b_isAdmin={b_isAdmin} key={o_match.id} i_matchId={o_match.id} s_opponent={o_match.opponent} s_dateTime={o_match.dateTime} i_maxSpaces={o_match.maxSpaces} b_isCancelled={o_match.isCancelled} />
                         )
                     })}
                 </Grid>
