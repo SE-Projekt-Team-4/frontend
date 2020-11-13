@@ -44,7 +44,7 @@ class MatchdayCard extends React.Component {
                 </CardBody>
                 <CardFooter justify="end" pad="medium">
                     {b_isAdmin ?
-                        <Button label="Spieltag Verwalten" />
+                        <Button label="Spieltag Verwalten" href={"/editMatch/" + i_matchId} />
                         :
                         <Button disabled={i_maxSpaces === 0 || b_isCancelled} label="Platz Buchen" href={"/booking/" + i_matchId} />
                     }

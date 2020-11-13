@@ -29,7 +29,7 @@ class MatchdayOverview extends React.Component {
                     <Text size="medium">Waldstraße 49</Text>
                     <Text size="medium">67112 Mutterstadt</Text>
                     <Box width="small">
-                        {this.props.isAdmin && <Button label="Bearbeiten" onClick={this.editMatchday} icon={<Edit />} />}
+                        {this.props.b_isAdmin && <Button label="Bearbeiten" onClick={this.editMatchday} icon={<Edit />} />}
                     </Box>
                 </Box>
                 <StadiumMap />

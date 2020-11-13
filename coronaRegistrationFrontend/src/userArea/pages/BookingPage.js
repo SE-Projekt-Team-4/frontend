@@ -21,7 +21,7 @@ class BookingPage extends React.Component {
     }
 
     componentDidMount() {
-        const s_apiURL = "https://coronaprojekt.cfapps.eu10.hana.ondemand.com/api/matches/" + this.props.match.params.id
+        const s_apiURL = "https://coronaprojekt.cfapps.eu10.hana.ondemand.com/api/matches/" + this.props.match.params.id;
         fetch(s_apiURL,
         {
             method: "GET",

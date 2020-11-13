@@ -5,12 +5,21 @@ import MatchdayOverview from "../../reuseComponents/MatchdayOverview"
 import UserDataTable from "../components/UserDataTable"
 
 class MatchdayManager extends React.Component {
+
+    constructor(props) {
+        super(props); 
+        this.state = {
+            b_isAdmin: true
+        }
+    }
+    //this.props.match.params.id; 
     render() {
+        const { b_isAdmin } = this.state;
         return(
             <>
                 <AnchorAppBar title="Spieltag Verwalten"/>
                 <Box pad="medium" direction="column" width="75%">
-                        <MatchdayOverview />
+                        <MatchdayOverview b_isAdmin={b_isAdmin} />
                     </Box>
     
                     <Heading level="3" textAlign="start" color="black" margin= "medium" > Besucherliste</Heading>
