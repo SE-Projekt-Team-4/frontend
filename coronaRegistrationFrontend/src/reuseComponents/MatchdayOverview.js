@@ -7,29 +7,26 @@ class MatchdayOverview extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { 
-        };
-
-        this.editMatchday = this.editMatchday.bind(this);
+        this.state = {};
     }
 
-
-    editMatchday() {
-        // TODO: Implement editing of a matchday
-    }
     render() {
+        const { s_opponent, s_dateTime, i_maxSpaces, b_isAdmin } = this.props; 
+        const s_formattedDate = new Date(s_dateTime);
+        const s_time = "um " + s_formattedDate.toTimeString().substring(0, 5); 
+        const s_date = s_formattedDate.getDate() + "." + (s_formattedDate.getMonth()+1) + "." + s_formattedDate.getFullYear(); 
         return (
             <Box align="center" justify="between" pad="small" direction="row-responsive" border={{ "color": "brand", "size": "small", "style": "solid" }}>
                 <Box direction="column" gap="xsmall">
-                    <Heading level="4" margin="none">Heim gg. Gast</Heading>
-                    <Text size="medium">00.00.0000 00:00</Text>
-                    <Text size="medium">x Plätze Frei</Text>
+                    <Heading level="4" margin="none">Heim gg. {s_opponent}</Heading>
+                    <Text size="medium">{s_date + " " + s_time}</Text>
+                    <Text size="medium">{i_maxSpaces} Plätze Frei</Text>
                     <Heading level="4" margin="none">Stadionadresse</Heading>
                     <Text size="medium">Sportpark Mutterstadt</Text>
                     <Text size="medium">Waldstraße 49</Text>
                     <Text size="medium">67112 Mutterstadt</Text>
                     <Box width="small">
-                        {this.props.b_isAdmin && <Button label="Bearbeiten" onClick={this.editMatchday} icon={<Edit />} />}
+                        {b_isAdmin && <Button icon={<Edit />} />}
                     </Box>
                 </Box>
                 <StadiumMap />
