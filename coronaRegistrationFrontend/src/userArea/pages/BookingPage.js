@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Heading } from "grommet";
+import { Box } from "grommet";
 import AnchorAppBar from "../../reuseComponents/AnchorAppBar";
 import BookingTabs from "../components/BookingTabs";
 import ContactForm from "../components/ContactForm";
@@ -60,6 +60,8 @@ class BookingPage extends React.Component {
             b_hasSubmittedForm: true,
             b_hasConfirmedBooking: true
         })
+
+
     }
 
     editVisitorInformation() {
@@ -72,7 +74,7 @@ class BookingPage extends React.Component {
     }
 
     render() {
-        const { o_matchData, o_formData, b_hasConfirmedBooking, b_hasStartedBooking, b_hasSubmittedForm } = this.state; 
+        const { o_matchData, o_formData, b_hasConfirmedBooking, b_hasSubmittedForm } = this.state; 
         return (
             <>
                 <AnchorAppBar title="Terminbuchung" />

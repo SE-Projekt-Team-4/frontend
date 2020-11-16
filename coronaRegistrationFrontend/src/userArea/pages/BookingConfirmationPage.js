@@ -14,14 +14,15 @@ class BookingConfirmationPage extends React.Component {
     }
 
     render() {
+        const {o_matchData, onEditVisitorInformation, onConfirmBooking} = this.props; 
         return (
             <Box pad="medium" direction="column" width="75%">
                 <Heading level="2">Buchungsübersicht</Heading>
-                <MatchdayOverview />
+                <MatchdayOverview s_opponent={o_matchData.opponent} s_dateTime={o_matchData.dateTime} i_maxSpaces={o_matchData.maxSpaces}/>
                 <Heading level="3">Deine Eingabedaten</Heading>
-                <VisitorInformationSummary o_visitorData={this.state.o_visitorData} onEditVisitorInformation={this.props.onEditVisitorInformation} />
+                <VisitorInformationSummary o_visitorData={this.state.o_visitorData} onEditVisitorInformation={onEditVisitorInformation} />
                 <Box direction="row-responsive" justify="end" pad={{"top": "medium"}}>
-                    <Button primary type="submit" label="Buchung Bestätigen" icon={<FormNext />} reverse={true} onClick={this.props.onConfirmBooking} gap="xxsmall"/>
+                    <Button primary type="submit" label="Buchung Bestätigen" icon={<FormNext />} reverse={true} onClick={onConfirmBooking} gap="xxsmall"/>
                 </Box>
             </Box>
         );

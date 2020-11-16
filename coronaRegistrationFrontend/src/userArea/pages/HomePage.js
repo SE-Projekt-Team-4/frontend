@@ -1,6 +1,5 @@
 import React from "react";
-import { Box, Grid, Heading, Button, Image } from "grommet";
-import MatchdayCard from "../../reuseComponents/MatchdayCard";
+import { Box, Heading, Button, Image } from "grommet";
 import NextMatchdaysGrid from "../../reuseComponents/NextMatchdaysGrid";
 import AnchorAppBar from "../../reuseComponents/AnchorAppBar";
 import { Download } from "grommet-icons";
