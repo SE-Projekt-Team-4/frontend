@@ -2,21 +2,21 @@ import React from "react";
 import { Form, FormField, MaskedInput, TextInput, Heading, Box, Button } from "grommet";
 import { FormNext, MailOption, Phone } from "grommet-icons";
 import countryList from "react-select-country-list";
+import { postcodeValidator, postcodeValidatorExistsForCountry } from "postcode-validator";
 
 const o_emailMask = [
   {
-    regexp: /^[\w\-_.]+$/,
+    regexp: /^[^\s@]+$/,
     placeholder: "example",
   },
-  { fixed: "@" },
   {
-    regexp: /^[\w]+$/,
-    placeholder: "my",
+    regexp: /^@[^\s@]+$/,
+    placeholder: "@my",
   },
-  { fixed: "." },
   {
-    regexp: /^[\w]+$/,
-    placeholder: "com",
+    regexp: /^\.[^\s@]+$/,
+    placeholder: ".com",
+    length: 24
   },
 ];
 
@@ -37,6 +37,12 @@ const o_telNrMask = [
 const o_formValidationMessages = {
   invalid: "Ungültig",
   required: "Erforderlich"
+}
+
+const o_validationRegExps = {
+  name: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð'-]+$", 
+  city: "^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"
+
 }
 
 class ContactForm extends React.Component {
@@ -60,6 +66,11 @@ class ContactForm extends React.Component {
     this.resetValues = this.resetValues.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.selectCountry = this.selectCountry.bind(this);
+    this.validatePostcode = this.validatePostcode.bind(this);
+    this.validateCity = this.validateCity.bind(this);
+    this.trimWhitespaces = this.trimWhitespaces.bind(this);
+    this.checkRegexValidity = this.checkRegexValidity.bind(this);
+    this.validateNames = this.validateNames.bind(this);
     this.baseState = this.state;
   }
 
@@ -76,6 +87,43 @@ class ContactForm extends React.Component {
     });
   }
 
+  trimWhitespaces(value) {
+    return value.trim();
+  }
+
+  checkRegexValidity(regexp, value) {
+    if (!regexp.test(value)) {
+      return o_formValidationMessages.invalid;
+    }
+  }
+
+  validateNames(name) {
+    if (name) {
+      name = this.trimWhitespaces(name);
+      const nameRegExp = new RegExp(o_validationRegExps.name);
+      this.checkRegexValidity(nameRegExp, name);
+    }
+  }
+
+  validatePostcode(postcode) {
+    if (postcode) {
+      const { s_country } = this.state;
+      const s_countryCode = countryList().getValue(s_country)
+      if (s_country && postcodeValidatorExistsForCountry(s_countryCode)) {
+        if (!postcodeValidator(postcode, s_countryCode)) {
+          return o_formValidationMessages.invalid;
+        }
+      }
+    }
+  }
+
+  validateCity(cityName) {
+    if (cityName) {
+      const cityRegExp = new RegExp(o_validationRegExps.city)
+      return this.checkRegexValidity(cityRegExp, cityName)
+    }
+  }
+
   handleInputChange(event) {
     if (event.target.name !== "s_country") {
       this.setState({
@@ -84,12 +132,12 @@ class ContactForm extends React.Component {
       });
     } else {
       const s_escapedText = event.target.value.replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&');
-      const o_regex = new RegExp(s_escapedText, "i"); 
-      const a_countryList = countryList().getData(); 
-      const a_newSuggestions = a_countryList.filter(o_suggestion => o_regex.test(o_suggestion.label)); 
+      const o_regex = new RegExp(s_escapedText, "i");
+      const a_countryList = countryList().getData();
+      const a_newSuggestions = a_countryList.filter(o_suggestion => o_regex.test(o_suggestion.label));
       this.setState({
-        ...this.state, 
-        a_suggestions: a_newSuggestions, 
+        ...this.state,
+        a_suggestions: a_newSuggestions,
         s_country: event.target.value
       })
     }
@@ -100,36 +148,36 @@ class ContactForm extends React.Component {
     return (
       <Form onReset={this.resetValues} onSubmit={this.props.onSubmit} messages={o_formValidationMessages}>
         <Heading level="3">Adressinformation</Heading>
-        <FormField label="Vorname" name="firstName">
+        <FormField required label="Vorname" name="s_firstName" validate={this.validateNames}>
           <TextInput name="s_firstName" value={s_firstName} onChange={this.handleInputChange} placeholder="Max" />
         </FormField>
-        <FormField label="Nachname" name="surname">
+        <FormField label="Nachname" name="s_surname" validate={this.validateNames}>
           <TextInput name="s_surname" value={s_surname} onChange={this.handleInputChange} placeholder="Mustermann" />
         </FormField>
         <Box direction="row-responsive" gap="medium">
-          <FormField width="60%" label="Straße" name="street">
+          <FormField width="60%" label="Straße" name="s_street">
             <TextInput name="s_street" value={s_street} onChange={this.handleInputChange} placeholder="Musterstraße" />
           </FormField>
-          <FormField width="40%" label="Hausnummer" name="houseNr">
+          <FormField width="40%" label="Hausnummer" name="s_houseNr">
             <TextInput name="s_houseNr" value={s_houseNr} onChange={this.handleInputChange} placeholder="1" />
           </FormField>
         </Box>
         <Box direction="row-responsive" gap="medium">
-          <FormField width="60%" label="Stadt" name="city">
+          <FormField required width="60%" label="Stadt" name="s_city" validate={this.validateCity}>
             <TextInput name="s_city" value={s_city} onChange={this.handleInputChange} placeholder="Musterstadt" />
           </FormField>
-          <FormField width="40%" label="PLZ" name="postcode">
-            <TextInput name="s_postcode" value={s_postcode} onChange={this.handleInputChange} placeholder="xxxxx" />
+          <FormField required width="40%" label="PLZ" name="s_postcode" validate={this.validatePostcode}>
+            <TextInput name="s_postcode" value={s_postcode} onChange={this.handleInputChange} placeholder="12345" />
           </FormField>
         </Box>
-        <FormField label="Land" name="country">
+        <FormField required label="Land" name="s_country">
           <TextInput name="s_country" value={s_country} onChange={this.handleInputChange} onSelect={this.selectCountry} suggestions={a_suggestions} placeholder="Germany" />
         </FormField>
         <Heading level="3">Kontaktdaten</Heading>
-        <FormField label="E-Mail Adresse" name="email">
+        <FormField label="E-Mail Adresse" name="s_email">
           <MaskedInput name="s_email" icon={<MailOption />} mask={o_emailMask} value={s_email} onChange={this.handleInputChange} />
         </FormField>
-        <FormField label="Telefonnummer (für Rückfragen)" name="telNr">
+        <FormField label="Telefonnummer" name="s_telNr">
           <MaskedInput name="s_telNr" icon={<Phone />} mask={o_telNrMask} value={s_telNr} onChange={this.handleInputChange} />
         </FormField>
         <Box direction="row-responsive" gap="small" margin={{ top: "medium" }}>

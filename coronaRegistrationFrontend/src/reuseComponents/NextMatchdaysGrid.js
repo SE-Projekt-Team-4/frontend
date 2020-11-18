@@ -16,8 +16,9 @@ class NextMatchdaysGrid extends React.Component {
         this.showAllMatches = this.showAllMatches.bind(this); 
     }
 
+    //https://coronaprojekt.cfapps.eu10.hana.ondemand.com/api/matches
     componentDidMount() {
-        fetch("https://coronaprojekt.cfapps.eu10.hana.ondemand.com/api/matches",
+        fetch("api/matches",
             {
                 method: "GET",
                 headers: {
