@@ -1,36 +1,18 @@
 import React from "react";
-import { Form, FormField, MaskedInput, TextInput, Heading, Box, Button } from "grommet";
+import { Form, FormField, MaskedInput, TextInput, Heading, Box, Button, Select } from "grommet";
 import { FormNext, MailOption, Phone } from "grommet-icons";
 import countryList from "react-select-country-list";
 import { postcodeValidator, postcodeValidatorExistsForCountry } from "postcode-validator";
-
-const o_emailMask = [
-  {
-    regexp: /^[^\s@]+$/,
-    placeholder: "example",
-  },
-  {
-    regexp: /^@[^\s@]+$/,
-    placeholder: "@my",
-  },
-  {
-    regexp: /^\.[^\s@]+$/,
-    placeholder: ".com",
-    length: 24
-  },
-];
 
 const o_telNrMask = [
   { fixed: "+" },
   {
     regexp: /^[0-9]{1,3}$/,
-    placeholder: "xxx"
+    placeholder: "49"
   },
-  { fixed: " " },
   {
-    length: 12,
     regexp: /^[0-9]{1,12}$/,
-    placeholder: "xxxxxxxxxxxx",
+    placeholder: "123456789123",
   },
 ];
 
@@ -40,9 +22,12 @@ const o_formValidationMessages = {
 }
 
 const o_validationRegExps = {
-  name: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð'-]+$", 
-  city: "^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"
-
+  s_name: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð'-]+$",
+  s_city: "^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$",
+  s_houseNr: "^(?!0)\d[0-9a-zA-Z-/ ]*$",
+  s_notEmptyString: "^(?!\s*$).+",
+  s_email: "^[^\s@]+@[^\s@]+\.[^\s@]+$", 
+  s_telNr: "^[+0-9]{8,15}$"
 }
 
 class ContactForm extends React.Component {
@@ -66,11 +51,9 @@ class ContactForm extends React.Component {
     this.resetValues = this.resetValues.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.selectCountry = this.selectCountry.bind(this);
+    this.selectCountryCode = this.selectCountryCode.bind(this);
     this.validatePostcode = this.validatePostcode.bind(this);
-    this.validateCity = this.validateCity.bind(this);
-    this.trimWhitespaces = this.trimWhitespaces.bind(this);
     this.checkRegexValidity = this.checkRegexValidity.bind(this);
-    this.validateNames = this.validateNames.bind(this);
     this.baseState = this.state;
   }
 
@@ -87,21 +70,20 @@ class ContactForm extends React.Component {
     });
   }
 
-  trimWhitespaces(value) {
-    return value.trim();
+  selectCountryCode(event) {
+    this.setState({
+      ...this.state,
+      s_telNr: event.suggestion.label
+    })
   }
 
   checkRegexValidity(regexp, value) {
-    if (!regexp.test(value)) {
-      return o_formValidationMessages.invalid;
-    }
-  }
-
-  validateNames(name) {
-    if (name) {
-      name = this.trimWhitespaces(name);
-      const nameRegExp = new RegExp(o_validationRegExps.name);
-      this.checkRegexValidity(nameRegExp, name);
+    if (value) {
+      value = value.trim();
+      const o_Regex = new RegExp(regexp)
+      if (!o_Regex.test(value)) {
+        return o_formValidationMessages.invalid;
+      }
     }
   }
 
@@ -117,53 +99,46 @@ class ContactForm extends React.Component {
     }
   }
 
-  validateCity(cityName) {
-    if (cityName) {
-      const cityRegExp = new RegExp(o_validationRegExps.city)
-      return this.checkRegexValidity(cityRegExp, cityName)
-    }
-  }
-
   handleInputChange(event) {
-    if (event.target.name !== "s_country") {
-      this.setState({
-        ...this.state,
-        [event.target.name]: event.target.value
-      });
-    } else {
+    if (event.target.name === "s_country") {
       const s_escapedText = event.target.value.replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&');
       const o_regex = new RegExp(s_escapedText, "i");
-      const a_countryList = countryList().getData();
-      const a_newSuggestions = a_countryList.filter(o_suggestion => o_regex.test(o_suggestion.label));
+      const a_newSuggestions = this.state.a_suggestions.filter(o_suggestion => o_regex.test(o_suggestion.label));
       this.setState({
         ...this.state,
         a_suggestions: a_newSuggestions,
         s_country: event.target.value
       })
     }
+    else {
+      this.setState({
+        ...this.state,
+        [event.target.name]: event.target.value
+      });
+    }
   }
 
   render() {
-    const { s_firstName, s_surname, s_street, s_houseNr, s_city, s_postcode, s_email, s_telNr, s_country, a_suggestions } = this.state;
+    const { s_firstName, s_surname, s_street, s_houseNr, s_city, s_postcode, s_email, s_telNr, s_country, a_suggestions: a_suggestions } = this.state;
     return (
       <Form onReset={this.resetValues} onSubmit={this.props.onSubmit} messages={o_formValidationMessages}>
         <Heading level="3">Adressinformation</Heading>
-        <FormField required label="Vorname" name="s_firstName" validate={this.validateNames}>
+        <FormField required label="Vorname" name="s_firstName" validate={(event) => this.checkRegexValidity(o_validationRegExps.s_name, event)}>
           <TextInput name="s_firstName" value={s_firstName} onChange={this.handleInputChange} placeholder="Max" />
         </FormField>
-        <FormField label="Nachname" name="s_surname" validate={this.validateNames}>
+        <FormField required label="Nachname" name="s_surname" validate={(event) => this.checkRegexValidity(o_validationRegExps.s_name, event)}>
           <TextInput name="s_surname" value={s_surname} onChange={this.handleInputChange} placeholder="Mustermann" />
         </FormField>
         <Box direction="row-responsive" gap="medium">
-          <FormField width="60%" label="Straße" name="s_street">
+          <FormField required width="60%" label="Straße" name="s_street" validate={(event) => this.checkRegexValidity(o_validationRegExps.s_notEmptyString, event)}>
             <TextInput name="s_street" value={s_street} onChange={this.handleInputChange} placeholder="Musterstraße" />
           </FormField>
-          <FormField width="40%" label="Hausnummer" name="s_houseNr">
+          <FormField required width="40%" label="Hausnummer" name="s_houseNr" validate={(event) => this.checkRegexValidity(o_validationRegExps.s_houseNr, event)}>
             <TextInput name="s_houseNr" value={s_houseNr} onChange={this.handleInputChange} placeholder="1" />
           </FormField>
         </Box>
         <Box direction="row-responsive" gap="medium">
-          <FormField required width="60%" label="Stadt" name="s_city" validate={this.validateCity}>
+          <FormField required width="60%" label="Stadt" name="s_city" validate={(event) => this.checkRegexValidity(o_validationRegExps.s_city, event)}>
             <TextInput name="s_city" value={s_city} onChange={this.handleInputChange} placeholder="Musterstadt" />
           </FormField>
           <FormField required width="40%" label="PLZ" name="s_postcode" validate={this.validatePostcode}>
@@ -171,14 +146,14 @@ class ContactForm extends React.Component {
           </FormField>
         </Box>
         <FormField required label="Land" name="s_country">
-          <TextInput name="s_country" value={s_country} onChange={this.handleInputChange} onSelect={this.selectCountry} suggestions={a_suggestions} placeholder="Germany" />
+          <TextInput name="s_country" value={s_country} onChange={this.handleInputChange} onSuggestionSelect={this.selectCountry} suggestions={a_suggestions} placeholder="Germany" />
         </FormField>
         <Heading level="3">Kontaktdaten</Heading>
-        <FormField label="E-Mail Adresse" name="s_email">
-          <MaskedInput name="s_email" icon={<MailOption />} mask={o_emailMask} value={s_email} onChange={this.handleInputChange} />
+        <FormField required label="E-Mail Adresse" name="s_email" validate={(event) => this.checkRegexValidity(o_validationRegExps.s_email, event)}>
+          <TextInput name="s_email" icon={<MailOption />} value={s_email} onChange={this.handleInputChange} placeholder="example@my.com" />
         </FormField>
-        <FormField label="Telefonnummer" name="s_telNr">
-          <MaskedInput name="s_telNr" icon={<Phone />} mask={o_telNrMask} value={s_telNr} onChange={this.handleInputChange} />
+        <FormField required label="Telefonnummer (inkl. Vorwahl)" name="s_telNr" validate={(event) => this.checkRegexValidity(o_validationRegExps.s_telNr, event)}>
+            <MaskedInput name="s_telNr" value={s_telNr} mask={o_telNrMask} onChange={this.handleInputChange} />
         </FormField>
         <Box direction="row-responsive" gap="small" margin={{ top: "medium" }}>
           <Button type="reset" label="Zurücksetzen" />
