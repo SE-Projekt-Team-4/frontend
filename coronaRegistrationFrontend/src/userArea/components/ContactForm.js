@@ -22,12 +22,12 @@ const o_formValidationMessages = {
 }
 
 const o_validationRegExps = {
-  s_name: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð'-]+$",
-  s_city: "^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$",
-  s_houseNr: "^(?!0)\d[0-9a-zA-Z-/ ]*$",
-  s_notEmptyString: "^(?!\s*$).+",
-  s_email: "^[^\s@]+@[^\s@]+\.[^\s@]+$", 
-  s_telNr: "^[+0-9]{8,15}$"
+  s_name: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð'-]+$/,
+  s_city: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/,
+  s_houseNr: /^(?!0)\d[0-9a-zA-Z-/ ]*$/,
+  s_notEmptyString: /^(?!\s*$).+/,
+  s_email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, 
+  s_telNr: /^[+0-9]{8,15}$/
 }
 
 class ContactForm extends React.Component {
@@ -51,7 +51,6 @@ class ContactForm extends React.Component {
     this.resetValues = this.resetValues.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.selectCountry = this.selectCountry.bind(this);
-    this.selectCountryCode = this.selectCountryCode.bind(this);
     this.validatePostcode = this.validatePostcode.bind(this);
     this.checkRegexValidity = this.checkRegexValidity.bind(this);
     this.baseState = this.state;
@@ -70,16 +69,9 @@ class ContactForm extends React.Component {
     });
   }
 
-  selectCountryCode(event) {
-    this.setState({
-      ...this.state,
-      s_telNr: event.suggestion.label
-    })
-  }
-
   checkRegexValidity(regexp, value) {
     if (value) {
-      value = value.trim();
+      value = value.trim(); 
       const o_Regex = new RegExp(regexp)
       if (!o_Regex.test(value)) {
         return o_formValidationMessages.invalid;
@@ -88,8 +80,8 @@ class ContactForm extends React.Component {
   }
 
   validatePostcode(postcode) {
-    if (postcode) {
-      const { s_country } = this.state;
+    const { s_country } = this.state;
+    if (postcode && s_country) {
       const s_countryCode = countryList().getValue(s_country)
       if (s_country && postcodeValidatorExistsForCountry(s_countryCode)) {
         if (!postcodeValidator(postcode, s_countryCode)) {
@@ -100,15 +92,17 @@ class ContactForm extends React.Component {
   }
 
   handleInputChange(event) {
+    const { a_suggestions, s_postcode } = this.state; 
     if (event.target.name === "s_country") {
       const s_escapedText = event.target.value.replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&');
       const o_regex = new RegExp(s_escapedText, "i");
-      const a_newSuggestions = this.state.a_suggestions.filter(o_suggestion => o_regex.test(o_suggestion.label));
+      const a_newSuggestions = a_suggestions.filter(o_suggestion => o_regex.test(o_suggestion.label));
+      this.validatePostcode(s_postcode); 
       this.setState({
         ...this.state,
         a_suggestions: a_newSuggestions,
         s_country: event.target.value
-      })
+      });
     }
     else {
       this.setState({
@@ -121,7 +115,7 @@ class ContactForm extends React.Component {
   render() {
     const { s_firstName, s_surname, s_street, s_houseNr, s_city, s_postcode, s_email, s_telNr, s_country, a_suggestions: a_suggestions } = this.state;
     return (
-      <Form onReset={this.resetValues} onSubmit={this.props.onSubmit} messages={o_formValidationMessages}>
+      <Form onReset={this.resetValues} onSubmit={this.props.onSubmit} messages={o_formValidationMessages} validate="blur">
         <Heading level="3">Adressinformation</Heading>
         <FormField required label="Vorname" name="s_firstName" validate={(event) => this.checkRegexValidity(o_validationRegExps.s_name, event)}>
           <TextInput name="s_firstName" value={s_firstName} onChange={this.handleInputChange} placeholder="Max" />
