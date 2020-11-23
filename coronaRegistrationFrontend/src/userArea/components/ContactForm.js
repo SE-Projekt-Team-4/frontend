@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, FormField, MaskedInput, TextInput, Heading, Box, Button, Select } from "grommet";
-import { FormNext, MailOption, Phone } from "grommet-icons";
+import { Flag, FormNext, MailOption, Phone } from "grommet-icons";
 import countryList from "react-select-country-list";
 import { postcodeValidator, postcodeValidatorExistsForCountry } from "postcode-validator";
 
@@ -26,7 +26,7 @@ const o_validationRegExps = {
   s_city: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/,
   s_houseNr: /^(?!0)\d[0-9a-zA-Z-/ ]*$/,
   s_notEmptyString: /^(?!\s*$).+/,
-  s_email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, 
+  s_email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   s_telNr: /^[+0-9]{8,15}$/
 }
 
@@ -50,7 +50,6 @@ class ContactForm extends React.Component {
 
     this.resetValues = this.resetValues.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.selectCountry = this.selectCountry.bind(this);
     this.validatePostcode = this.validatePostcode.bind(this);
     this.checkRegexValidity = this.checkRegexValidity.bind(this);
     this.baseState = this.state;
@@ -62,16 +61,9 @@ class ContactForm extends React.Component {
     })
   }
 
-  selectCountry(event) {
-    this.setState({
-      ...this.state,
-      s_country: event.suggestion.label
-    });
-  }
-
   checkRegexValidity(regexp, value) {
     if (value) {
-      value = value.trim(); 
+      value = value.trim();
       const o_Regex = new RegExp(regexp)
       if (!o_Regex.test(value)) {
         return o_formValidationMessages.invalid;
@@ -82,7 +74,7 @@ class ContactForm extends React.Component {
   validatePostcode(postcode) {
     const { s_country } = this.state;
     if (postcode && s_country) {
-      const s_countryCode = countryList().getValue(s_country)
+      const s_countryCode = s_country.value; 
       if (s_country && postcodeValidatorExistsForCountry(s_countryCode)) {
         if (!postcodeValidator(postcode, s_countryCode)) {
           return o_formValidationMessages.invalid;
@@ -92,19 +84,13 @@ class ContactForm extends React.Component {
   }
 
   handleInputChange(event) {
-    const { a_suggestions, s_postcode } = this.state; 
     if (event.target.name === "s_country") {
-      const s_escapedText = event.target.value.replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&');
-      const o_regex = new RegExp(s_escapedText, "i");
-      const a_newSuggestions = a_suggestions.filter(o_suggestion => o_regex.test(o_suggestion.label));
-      this.validatePostcode(s_postcode); 
       this.setState({
         ...this.state,
-        a_suggestions: a_newSuggestions,
-        s_country: event.target.value
-      });
-    }
-    else {
+        s_country: event.option
+      }); 
+      this.validatePostcode(this.state.s_postcode)
+    } else {
       this.setState({
         ...this.state,
         [event.target.name]: event.target.value
@@ -113,7 +99,7 @@ class ContactForm extends React.Component {
   }
 
   render() {
-    const { s_firstName, s_surname, s_street, s_houseNr, s_city, s_postcode, s_email, s_telNr, s_country, a_suggestions: a_suggestions } = this.state;
+    const { s_firstName, s_surname, s_street, s_houseNr, s_city, s_postcode, s_email, s_telNr, s_country, a_suggestions } = this.state;
     return (
       <Form onReset={this.resetValues} onSubmit={this.props.onSubmit} messages={o_formValidationMessages} validate="blur">
         <Heading level="3">Adressinformation</Heading>
@@ -140,14 +126,14 @@ class ContactForm extends React.Component {
           </FormField>
         </Box>
         <FormField required label="Land" name="s_country">
-          <TextInput name="s_country" value={s_country} onChange={this.handleInputChange} onSuggestionSelect={this.selectCountry} suggestions={a_suggestions} placeholder="Germany" />
+          <Select name="s_country" value={s_country} onChange={this.handleInputChange} options={a_suggestions} replace={false} valueKey="value" labelKey="label" dropHeight="medium" placeholder="Germany" />
         </FormField>
         <Heading level="3">Kontaktdaten</Heading>
         <FormField required label="E-Mail Adresse" name="s_email" validate={(event) => this.checkRegexValidity(o_validationRegExps.s_email, event)}>
           <TextInput name="s_email" icon={<MailOption />} value={s_email} onChange={this.handleInputChange} placeholder="example@my.com" />
         </FormField>
         <FormField required label="Telefonnummer (inkl. Vorwahl)" name="s_telNr" validate={(event) => this.checkRegexValidity(o_validationRegExps.s_telNr, event)}>
-            <MaskedInput name="s_telNr" value={s_telNr} mask={o_telNrMask} onChange={this.handleInputChange} />
+          <MaskedInput name="s_telNr" value={s_telNr} mask={o_telNrMask} onChange={this.handleInputChange} />
         </FormField>
         <Box direction="row-responsive" gap="small" margin={{ top: "medium" }}>
           <Button type="reset" label="Zurücksetzen" />

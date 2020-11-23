@@ -1,16 +1,10 @@
 import React from "react";
 import { Box, Heading, Paragraph } from "grommet";
 import { Checkmark } from "grommet-icons";
+import QRCode from "qrcode.react";
 
 
 class BookingCompletedPage extends React.Component {
-
-    constructor(props) {
-        super(props);
-
-        this.state = {}
-    }
-
     render() {
         return (
             <Box direction="column" align="center" pad="small">
@@ -19,7 +13,9 @@ class BookingCompletedPage extends React.Component {
                 <Heading level="3">Wir Freuen uns Sie bald begrüßen zu dürfen</Heading>
                 <Paragraph textAlign="center">Wir haben Ihnen alle Buchungsdetails an ihre angegebene E-Mail-Adresse geschickt. 
                 Bitte halten Sie diese bis zum Spieltag bereit und zeigen Sie den QR-Code an der Ticketkasse vor. Bis dann!</Paragraph>
+                <QRCode value={this.props.s_bookingCode} />
             </Box>
+
         );
     }
 }

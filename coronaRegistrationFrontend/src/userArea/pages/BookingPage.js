@@ -16,7 +16,8 @@ class BookingPage extends React.Component {
             b_hasSubmittedForm: false,
             b_hasConfirmedBooking: false,
             o_formData: {},
-            o_matchData: {}
+            o_matchData: {},
+            s_bookingCode: ""
         };
     }
 
@@ -50,21 +51,24 @@ class BookingPage extends React.Component {
             ...this.state,
             b_hasStartedBooking: false,
             b_hasSubmittedForm: true,
-            o_formData: event.value
+            o_formData: {
+                ...event.value,
+                s_country: event.value.s_country.label
+            }
         });
     }
 
     trimFormData(formData) {
-        const trimmedFormData = Object.keys(formData).map(key => formData[key] = formData[key].trim()); 
+        const trimmedFormData = Object.keys(formData).map(key => formData[key] = formData[key].trim());
         this.setState({
-            ...this.state, 
+            ...this.state,
             o_formData: trimmedFormData
         })
     }
 
     confirmBooking() {
         const { o_formData, o_matchData } = this.state;
-        this.trimFormData(o_formData); 
+        this.trimFormData(o_formData);
         fetch("/api/bookings",
             {
                 method: "POST",
@@ -83,13 +87,19 @@ class BookingPage extends React.Component {
                     /* "phoneNumber" : o_formData.s_telNr,
                     "eMail": o_formData.s_email */
                 })
-            }); 
+            })
+            .then(result => result.json())
+            .then((result) => {
+                this.setState({
+                    s_bookingCode: result.data._verificationCode
+                });
+            });
+
         this.setState({
             ...this.state,
             b_hasSubmittedForm: true,
             b_hasConfirmedBooking: true
         })
-
 
     }
 
@@ -103,10 +113,10 @@ class BookingPage extends React.Component {
     }
 
     render() {
-        const { o_matchData, o_formData, b_hasConfirmedBooking, b_hasSubmittedForm } = this.state;
+        const { o_matchData, o_formData, b_hasConfirmedBooking, b_hasSubmittedForm, s_bookingCode } = this.state;
         return (
             <>
-                <AnchorAppBar s_title="Terminbuchung" b_isNotHome/>
+                <AnchorAppBar s_title="Terminbuchung" b_isNotHome />
                 <BookingTabs b_isFormSubmitted={b_hasSubmittedForm} b_isBookingConfirmed={b_hasConfirmedBooking} />
                 {this.state.b_hasStartedBooking &&
                     <Box pad="small" direction="column" align="center" width="auto">
@@ -123,7 +133,7 @@ class BookingPage extends React.Component {
                     />
                 }
                 {(b_hasConfirmedBooking && b_hasSubmittedForm) &&
-                    <BookingCompletedPage />
+                    <BookingCompletedPage s_bookingCode={s_bookingCode} />
                 }
             </>
         );
