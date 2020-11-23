@@ -106,7 +106,7 @@ class BookingPage extends React.Component {
         const { o_matchData, o_formData, b_hasConfirmedBooking, b_hasSubmittedForm } = this.state;
         return (
             <>
-                <AnchorAppBar title="Terminbuchung" />
+                <AnchorAppBar s_title="Terminbuchung" b_isNotHome/>
                 <BookingTabs b_isFormSubmitted={b_hasSubmittedForm} b_isBookingConfirmed={b_hasConfirmedBooking} />
                 {this.state.b_hasStartedBooking &&
                     <Box pad="small" direction="column" align="center" width="auto">

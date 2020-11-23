@@ -8,7 +8,7 @@ class AdminHomePage extends React.Component {
     render() {
         return(
             <>
-                <AnchorAppBar title="Mitarbeiterbereich"/>
+                <AnchorAppBar s_title="Mitarbeiterbereich"/>
                 <Box flex direction="column" align="center" alignContent="center" justify="center" background="url(./footballbackground.jpg)">
                 <Heading level="2" textAlign="center" color="light-1">Nächstes Spiel :</Heading>
                 <Heading level="3" textAlign="center" color="light-1">Spvgg Lorbach gg. TSG Poppenhusen</Heading>
@@ -18,7 +18,7 @@ class AdminHomePage extends React.Component {
                 <Markdown> x Besucher Registriert </Markdown>
                     <Button secondary label="Besucher einchecken"></Button>
                 </Box>
-                <NextMatchdaysGrid b_isAdmin={true} />
+                <NextMatchdaysGrid b_isAdmin />
                 <UserDataTable />
             </>
         )

@@ -17,7 +17,7 @@ class HomePage extends React.Component {
         
         return (
             <>
-                <AnchorAppBar title="Homepage" />
+                <AnchorAppBar s_title="Homepage" />
                 <Box direction="column" align="center" justify="center" pad="small" background="url(./footballbackground.jpg)">
                     <Heading level="2" textAlign="center" color="light-1">Wilkommen bei der Terminbuchung der FG 08 Mutterstadt</Heading>
                     <Image src="./teamlogo.png" fill={false} />

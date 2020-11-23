@@ -22,7 +22,7 @@ class BookingConfirmationPage extends React.Component {
                 <Heading level="3">Deine Eingabedaten</Heading>
                 <VisitorInformationSummary o_visitorData={this.state.o_visitorData} onEditVisitorInformation={onEditVisitorInformation} />
                 <Box direction="row-responsive" justify="end" pad={{"top": "medium"}}>
-                    <Button primary type="submit" label="Buchung Bestätigen" icon={<FormNext />} reverse={true} onClick={onConfirmBooking} gap="xxsmall"/>
+                    <Button primary reverse type="submit" label="Buchung Bestätigen" icon={<FormNext />} onClick={onConfirmBooking} gap="xxsmall"/>
                 </Box>
             </Box>
         );

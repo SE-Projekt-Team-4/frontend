@@ -151,7 +151,7 @@ class ContactForm extends React.Component {
         </FormField>
         <Box direction="row-responsive" gap="small" margin={{ top: "medium" }}>
           <Button type="reset" label="Zurücksetzen" />
-          <Button primary type="submit" label="Weiter" icon={<FormNext />} reverse={true} gap="xxsmall" />
+          <Button primary reverse type="submit" label="Weiter" icon={<FormNext />} gap="xxsmall" />
         </Box>
       </Form>
     );

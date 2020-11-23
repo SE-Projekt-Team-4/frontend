@@ -17,7 +17,7 @@ class MatchdayManager extends React.Component {
         const { b_isAdmin } = this.state;
         return(
             <>
-                <AnchorAppBar title="Spieltag Verwalten"/>
+                <AnchorAppBar s_title="Spieltag Verwalten" b_isNotHome b_isAdmin/>
                 <Box pad="medium" direction="column" width="75%">
                         <MatchdayOverview b_isAdmin={b_isAdmin} />
                     </Box>

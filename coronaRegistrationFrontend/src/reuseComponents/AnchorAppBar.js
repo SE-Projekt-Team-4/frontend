@@ -1,5 +1,6 @@
 import React from "react"
-import { Box, Heading } from "grommet";
+import { Box, Heading, Button } from "grommet";
+import { Home } from "grommet-icons";
 
 
 class AnchorAppBar extends React.Component {
@@ -10,6 +11,11 @@ class AnchorAppBar extends React.Component {
   }
 
   render() {
+    const { s_title, b_isNotHome, b_isAdmin } = this.props
+    let hrefLink = "/"
+    if (b_isAdmin) {
+      hrefLink = "/admin"
+    }
     return (
       <Box
         tag="header"
@@ -22,7 +28,8 @@ class AnchorAppBar extends React.Component {
         style={{ zIndex: "1" }}
         {...this.props}
       >
-        <Heading level="3" margin="none">{this.props.title}</Heading>
+        <Heading level="3" margin="none">{s_title}</Heading>
+        {b_isNotHome && <Button icon={<Home />} tip="Zurück zur Homepage" href={hrefLink}/>}
       </Box>
     );
   }
