@@ -4,7 +4,6 @@ import AnchorAppBar from "../../reuseComponents/AnchorAppBar"
 import UserDataTable from "../components/UserDataTable"
 import NextMatchdaysGrid from "../../reuseComponents/NextMatchdaysGrid"
 import UserCheckIn from "../components/UserCheckIn"
-import { CenterLayer } from "../components/CenterLayer"
 
 class AdminHomePage extends React.Component {
     constructor(props) {
@@ -21,6 +20,12 @@ class AdminHomePage extends React.Component {
         });
     }
 
+    closeCheckIn() {
+        this.setState({
+            isCheckInVisible: false
+        })
+    }
+
     render() {
         const {isCheckInVisible} = this.state; 
         return(
@@ -35,7 +40,7 @@ class AdminHomePage extends React.Component {
                 <Markdown> x Besucher Registriert </Markdown>
                     <Button label="Besucher einchecken" onClick={this.setCheckinVisible}></Button>
                 </Box>
-                {isCheckInVisible && <UserCheckIn/>}
+                {isCheckInVisible && <UserCheckIn closeLayer={this.closeCheckIn.bind(this)}/>}
                 <NextMatchdaysGrid b_isAdmin />
                 <UserDataTable />
                 

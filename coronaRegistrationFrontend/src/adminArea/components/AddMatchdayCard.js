@@ -21,7 +21,6 @@ class AddMatchdayCard extends React.Component {
                 <CardBody justify="center" >
                     <Button icon={<AddCircle size="xlarge" color="status-ok"/>}/>
                 </CardBody>
-
             </Card>
         )
     }
