@@ -7,10 +7,24 @@ import UserCheckIn from "../components/UserCheckIn"
 import { CenterLayer } from "../components/CenterLayer"
 
 class AdminHomePage extends React.Component {
+    constructor(props) {
+        super(props); 
+        this.state = {
+            isCheckInVisible: false
+        }
+        this.setCheckinVisible = this.setCheckinVisible.bind(this)
+    }
+
+    setCheckinVisible() {
+        this.setState({
+            isCheckInVisible: true
+        });
+    }
+
     render() {
+        const {isCheckInVisible} = this.state; 
         return(
             <>
-                
                 <AnchorAppBar s_title="Mitarbeiterbereich"/>
                 <Box flex direction="column" align="center" alignContent="center" justify="center" background="url(./footballbackground.jpg)">
                 <Heading level="2" textAlign="center" color="light-1">Nächstes Spiel :</Heading>
@@ -19,8 +33,9 @@ class AdminHomePage extends React.Component {
                 <Clock type="digital"
                 run="backward" />
                 <Markdown> x Besucher Registriert </Markdown>
-                    <Button secondary label="Besucher einchecken"></Button>
+                    <Button label="Besucher einchecken" onClick={this.setCheckinVisible}></Button>
                 </Box>
+                {isCheckInVisible && <UserCheckIn/>}
                 <NextMatchdaysGrid b_isAdmin />
                 <UserDataTable />
                 

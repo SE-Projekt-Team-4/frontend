@@ -19,7 +19,7 @@ class AddMatchdayCard extends React.Component {
                     <Heading level="4" margin="none" textAlign="center">Spieltag Hinzufügen</Heading>
                 </CardHeader>
                 <CardBody justify="center" >
-                    <Button icon={<AddCircle size="xlarge" color="status-ok" />}/>
+                    <Button icon={<AddCircle size="xlarge" color="status-ok"/>}/>
                 </CardBody>
 
             </Card>

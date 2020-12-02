@@ -13,8 +13,7 @@ class HomePage extends React.Component {
     }
 
     
-    render() {
-        
+    render() {  
         return (
             <>
                 <AnchorAppBar s_title="Homepage" />
