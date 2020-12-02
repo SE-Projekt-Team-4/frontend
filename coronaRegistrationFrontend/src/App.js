@@ -5,6 +5,7 @@ import { Grommet } from "grommet"
 import { Route, Switch } from 'react-router-dom'
 import BookingPage from "./userArea/pages/BookingPage"
 import MatchdayManager from "./adminArea/pages/MatchdayManager"
+import AdminLogIn from "./adminArea/pages/AdminLogIn"
 
 /**
  * Define the global theme for the app
@@ -30,6 +31,7 @@ export default function App() {
         <Route exact path="/admin" component={AdminHomePage} />
         <Route exact path="/booking/:id" component={BookingPage} />
         <Route exact path="/editMatch/:id" component={MatchdayManager}/>
+        <Route exact path="/logIn" component={AdminLogIn}/>
       </Switch>
     </Grommet>
   )
