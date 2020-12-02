@@ -37,8 +37,9 @@ class AdminHomePage extends React.Component {
                 </Box>
                 {isCheckInVisible && <UserCheckIn/>}
                 <NextMatchdaysGrid b_isAdmin />
+                <Box pad="small" fill>
                 <UserDataTable />
-                
+                </Box>
             </>
         )
     }
