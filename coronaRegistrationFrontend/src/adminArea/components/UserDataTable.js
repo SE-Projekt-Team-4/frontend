@@ -49,47 +49,43 @@ class UserDataTable extends React.Component {
                 {
                     property: 'id',
                     header: 'ID',
-                    search:"true"
+                    search: true
                 },
                 {
                     property: 'fName',
                     header: 'Vorname',
-                    search:"true"
+                    search: true
                 },
                 {
                     property: 'lName',
                     header: 'Nachname',
-                    search:"true"
+                    search: true
                 },
                 {
                     property: 'city',
                     header: 'Stadt',
-                    search:"true"
                 },
                 {
                     property: 'postcode',
                     header: 'Postleitzahl',
-                    search:"true"
                 },
                 {
                     property: 'street',
                     header: 'Straße',
-                    search:"true"
                 },
                 {
                     property: 'houseNumber',
                     header: 'Haunummer',
-                    search:"true"
                 },
                 {
                     property: 'eMail',
                     header: 'Email Adresse',
-                    search:"true"
+                    search: true
                 },
                 {
                     property: 'phoneNumber',
                     header: 'Telefonnummer',
-                    search:"true"
+                    search: true
                 },
 
             ]}
