@@ -4,13 +4,13 @@ import AnchorAppBar from "../../reuseComponents/AnchorAppBar"
 import UserDataTable from "../components/UserDataTable"
 import NextMatchdaysGrid from "../../reuseComponents/NextMatchdaysGrid"
 import UserCheckIn from "../components/UserCheckIn"
+import { CenterLayer } from "../components/CenterLayer"
 
 class AdminHomePage extends React.Component {
     render() {
         return(
             <>
-
-                <UserCheckIn />
+                
                 <AnchorAppBar s_title="Mitarbeiterbereich"/>
                 <Box flex direction="column" align="center" alignContent="center" justify="center" background="url(./footballbackground.jpg)">
                 <Heading level="2" textAlign="center" color="light-1">Nächstes Spiel :</Heading>
@@ -23,6 +23,7 @@ class AdminHomePage extends React.Component {
                 </Box>
                 <NextMatchdaysGrid b_isAdmin />
                 <UserDataTable />
+                
             </>
         )
     }
