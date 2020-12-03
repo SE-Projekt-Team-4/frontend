@@ -4,13 +4,8 @@ import React from "react";
 
 class VisitorInformationSummary extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
-
     render() {
-        const {o_visitorData, onEditVisitorInformation} = this.props;
+        const { o_visitorData, onEditVisitorInformation} = this.props;
         return (
             <Box direction="row-responsive" align="start" pad="small" justify="between" border={{ "color": "brand", "size": "small", "style": "solid" }}>
                 <Box direction="column" justify="start">

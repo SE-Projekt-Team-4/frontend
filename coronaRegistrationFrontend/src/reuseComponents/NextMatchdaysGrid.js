@@ -49,7 +49,7 @@ class NextMatchdaysGrid extends React.Component {
     }
 
     render() {
-        const { a_matchData: a_matchData, error, isShowingAllMatches } = this.state;
+        const { a_matchData, error, isShowingAllMatches } = this.state;
         const { b_isAdmin } = this.props;
         const numberOfMatchCards = isShowingAllMatches ? a_matchData.length : 4
         const a_slicedMatchData = a_matchData.slice(0, numberOfMatchCards);

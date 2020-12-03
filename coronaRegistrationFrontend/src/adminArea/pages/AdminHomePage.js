@@ -9,9 +9,34 @@ class AdminHomePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isCheckInVisible: false
+            isCheckInVisible: false,
+            a_visitorData: []
         }
         this.setCheckinVisible = this.setCheckinVisible.bind(this)
+    }
+
+    componentDidMount() {
+        fetch("api/visitors",
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                }
+            })
+            .then(res => res.json())
+            .then((result) => {
+                this.setState({
+                    a_visitorData: result.data
+                });
+            },
+                (error) => {
+                    this.setState({
+                        ...this.state,
+                        error
+                    })
+                }
+            )
     }
 
     setCheckinVisible() {
@@ -27,7 +52,7 @@ class AdminHomePage extends React.Component {
     }
 
     render() {
-        const { isCheckInVisible } = this.state;
+        const { isCheckInVisible, a_visitorData } = this.state;
         return (
             <>
                 <AnchorAppBar s_title="Mitarbeiterbereich" />
@@ -42,7 +67,7 @@ class AdminHomePage extends React.Component {
                 {isCheckInVisible && <UserCheckIn f_closeLayer={this.closeCheckIn.bind(this)} />}
                 <NextMatchdaysGrid b_isAdmin />
                 <Box pad="medium">
-                    <UserDataTable />
+                    <UserDataTable a_visitorData={a_visitorData}/>
                 </Box>
             </>
         )

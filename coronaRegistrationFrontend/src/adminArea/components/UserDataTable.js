@@ -3,43 +3,8 @@ import { Text, DataTable } from "grommet";
 
 class UserDataTable extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            a_visitorData: [],
-            error: null,
-        };
-
-    }
-
-    //https://coronaprojekt.cfapps.eu10.hana.ondemand.com/api/matches
-    componentDidMount() {
-        fetch("api/visitors",
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"
-                }
-            })
-            .then(res => res.json())
-            .then((result) => {
-                this.setState({
-                    a_visitorData: result.data
-                });
-            },
-                (error) => {
-                    this.setState({
-                        ...this.state,
-                        error
-                    })
-                }
-            )
-    }
-
-    //http://localhost:8000/api/visitors
     render() {
-        const { a_visitorData } = this.state;
+        const { a_visitorData } = this.props;
         return (
             <DataTable size="large" 
                 columns={[

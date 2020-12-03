@@ -10,13 +10,33 @@ class MatchdayManager extends React.Component {
         super(props);
         this.state = {
             b_isAdmin: true,
-            o_matchData: {}
+            o_matchData: {},
+            a_visitorData: []
         }
     }
 
     componentDidMount() {
-        const s_apiURL = "/api/matches/" + this.props.match.params.id;
-        fetch(s_apiURL,
+        const s_apiUrl = "/api/matches/" + this.props.match.params.id;
+        fetch(s_apiUrl,
+            {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            }).then(res => res.json())
+            .then((result) => {
+                this.setState({
+                    ...this.state,
+                    o_matchData: result.data,
+                });
+            }).catch((error) => {
+                this.setState({
+                    ...this.state,
+                    error
+                });
+            });
+        fetch(s_apiUrl + "/visitors",
             {
                 method: "GET",
                 headers: {
@@ -27,7 +47,7 @@ class MatchdayManager extends React.Component {
             .then(res => res.json())
             .then((result) => {
                 this.setState({
-                    o_matchData: result.data
+                    a_visitorData: result.data
                 });
             },
                 (error) => {
@@ -35,12 +55,11 @@ class MatchdayManager extends React.Component {
                         ...this.state,
                         error
                     })
-                }
-            )
+                });
     }
 
     render() {
-        const { b_isAdmin, o_matchData } = this.state;
+        const { b_isAdmin, o_matchData, a_visitorData } = this.state;
         return (
             <>
                 <AnchorAppBar s_title="Spieltag Verwalten" b_isNotHome b_isAdmin />
@@ -51,7 +70,7 @@ class MatchdayManager extends React.Component {
                 <Heading level="3" textAlign="start" color="black" margin="medium" > Besucherliste</Heading>
 
                 <Box pad="medium" direction="column" width="100%">
-                    <UserDataTable />
+                    <UserDataTable a_visitorData={a_visitorData} />
                 </Box>
 
 

@@ -3,12 +3,6 @@ import { Box, TextInput, FormField, Button, Heading } from "grommet"
 import AnchorAppBar from "../../reuseComponents/AnchorAppBar"
 
 class AdminLogIn extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-        }
-    }
     render() {
         return (
             <>

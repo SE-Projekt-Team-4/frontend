@@ -1,8 +1,9 @@
 import React from "react";
 import { Form, FormField, MaskedInput, TextInput, Heading, Box, Button, Select } from "grommet";
-import { Flag, FormNext, MailOption, Phone } from "grommet-icons";
+import { FormNext, MailOption } from "grommet-icons";
 import countryList from "react-select-country-list";
 import { postcodeValidator, postcodeValidatorExistsForCountry } from "postcode-validator";
+import FormButtons from "../../reuseComponents/FormButtons"; 
 
 const o_telNrMask = [
   { fixed: "+" },
@@ -135,10 +136,7 @@ class ContactForm extends React.Component {
         <FormField required label="Telefonnummer (inkl. Vorwahl)" name="s_telNr" validate={(event) => this.checkRegexValidity(o_validationRegExps.s_telNr, event)}>
           <MaskedInput name="s_telNr" value={s_telNr} mask={o_telNrMask} onChange={this.handleInputChange} />
         </FormField>
-        <Box direction="row-responsive" gap="small" margin={{ top: "medium" }}>
-          <Button type="reset" label="Zurücksetzen" />
-          <Button primary reverse type="submit" label="Weiter" icon={<FormNext />} gap="xxsmall" />
-        </Box>
+        <FormButtons/>
       </Form>
     );
   }

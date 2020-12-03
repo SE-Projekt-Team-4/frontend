@@ -6,7 +6,7 @@ import VisitorInformationSummary from "../components/VisitorInformationSummary";
 
 class BookingConfirmationPage extends React.Component {
     render() {
-        const {o_matchData, o_visitorData, onEditVisitorInformation, onConfirmBooking} = this.props; 
+        const { o_matchData, o_visitorData, onEditVisitorInformation, onConfirmBooking } = this.props; 
         return (
             <Box pad="medium" direction="column" width="75%">
                 <Heading level="2">Buchungsübersicht</Heading>
