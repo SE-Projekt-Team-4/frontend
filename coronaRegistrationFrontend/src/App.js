@@ -30,7 +30,7 @@ export default function App() {
         <Route exact path="/" component={HomePage} />
         <Route exact path="/admin" component={AdminHomePage} />
         <Route exact path="/booking/:id" component={BookingPage} />
-        <Route exact path="/editMatch/:id" component={MatchdayManager}/>
+        <Route exact path="/admin/editMatch/:id" component={MatchdayManager}/>
         <Route exact path="/logIn" component={AdminLogIn}/>
       </Switch>
     </Grommet>
