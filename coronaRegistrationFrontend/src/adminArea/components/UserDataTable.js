@@ -1,5 +1,5 @@
-import React from "react"; 
-import {  Text, DataTable } from "grommet"; 
+import React from "react";
+import { Text, DataTable } from "grommet";
 
 class UserDataTable extends React.Component {
 
@@ -18,8 +18,8 @@ class UserDataTable extends React.Component {
             {
                 method: "GET",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
                 }
             })
             .then(res => res.json())
@@ -39,60 +39,62 @@ class UserDataTable extends React.Component {
 
     //http://localhost:8000/api/visitors
     render() {
-        const { a_visitorData: a_visitorData, error } = this.state;
-        
+        const { a_visitorData } = this.state;
         return (
-            
-            <DataTable
-            columns={[
-                
-                {
-                    property: 'id',
-                    header: 'ID',
-                    search: true
-                },
-                {
-                    property: 'fName',
-                    header: 'Vorname',
-                    search: true
-                },
-                {
-                    property: 'lName',
-                    header: 'Nachname',
-                    search: true
-                },
-                {
-                    property: 'city',
-                    header: 'Stadt',
-                },
-                {
-                    property: 'postcode',
-                    header: 'Postleitzahl',
-                },
-                {
-                    property: 'street',
-                    header: 'Straße',
-                },
-                {
-                    property: 'houseNumber',
-                    header: 'Haunummer',
-                },
-                {
-                    property: 'eMail',
-                    header: 'Email Adresse',
-                    search: true
-                },
-                {
-                    property: 'phoneNumber',
-                    header: 'Telefonnummer',
-                    search: true
-                },
-
-            ]}
-            data={a_visitorData}
-            
-        />
-        ); 
+            <DataTable size="large" 
+                columns={[
+                    {
+                        property: "id",
+                        header: "ID",
+                        search: true,
+                        size: "xsmall",
+                        primary: true
+                    },
+                    {
+                        property: "fName",
+                        header: "Vorname",
+                        search: true,
+                        size: "small"
+                    },
+                    {
+                        property: "lName",
+                        header: "Nachname",
+                        search: true,
+                        size: "small"
+                    },
+                    {
+                        property: "city",
+                        header: "Stadt",
+                        size: "small"
+                    },
+                    {
+                        property: "postcode",
+                        header: "PLZ",
+                        size: "xsmall"
+                    },
+                    {
+                        property: "street",
+                        header: "Straße"
+                    },
+                    {
+                        property: "houseNumber",
+                        header: "Hausnr.",
+                        size: "xsmall"
+                    },
+                    {
+                        property: "eMail",
+                        header: "E-Mail Adresse",
+                        search: true
+                    },
+                    {
+                        property: "phoneNumber",
+                        header: "Telefonnummer",
+                        search: true
+                    },
+                ]}
+                data={a_visitorData}
+            />
+        );
     }
 }
 

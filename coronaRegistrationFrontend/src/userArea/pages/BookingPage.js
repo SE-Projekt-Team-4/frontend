@@ -84,8 +84,8 @@ class BookingPage extends React.Component {
                     "postcode": o_formData.s_postcode,
                     "street": o_formData.s_street,
                     "houseNumber": o_formData.s_houseNr,
-                    /* "phoneNumber" : o_formData.s_telNr,
-                    "eMail": o_formData.s_email */
+                    "phoneNumber" : o_formData.s_telNr,
+                    "eMail": o_formData.s_email 
                 })
             })
             .then(result => result.json())

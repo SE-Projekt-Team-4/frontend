@@ -1,36 +1,27 @@
 import React from "react"
-import {  Box, TextInput, FormField, Button } from "grommet"
+import { Box, TextInput, FormField, Button, Heading } from "grommet"
 import AnchorAppBar from "../../reuseComponents/AnchorAppBar"
 
 class AdminLogIn extends React.Component {
 
     constructor(props) {
-        super(props); 
+        super(props);
         this.state = {
         }
     }
     render() {
-        const { b_isAdmin } = this.state;
-        return(
+        return (
             <>
-                <AnchorAppBar s_title="Mitarbeiterbereich" />
-                <Box >
-
-                    <Box align="center" pad="small">
-                        <FormField label="Nutzername">
-                            <TextInput placeholder="type here" />
-                        </FormField>
-                    </Box>
-
-                    <Box align="center" pad="small">
-                        <FormField label="Passwort">
-                            <TextInput placeholder="type here" />
-                        </FormField>
-                    </Box>
-
-                    <Box align="center" pad="small">
-                        <Button primary label="Einloggen" />
-                    </Box>
+                <AnchorAppBar s_title="Mitarbeiterbereich"/>
+                <Box align="center" pad="small">
+                    <Heading level="3">Login</Heading>
+                    <FormField label="Benutzername">
+                        <TextInput/>
+                    </FormField>
+                    <FormField label="Passwort">
+                        <TextInput type="password" />
+                    </FormField>
+                    <Button primary label="Einloggen" />
                 </Box>
             </>
         )
