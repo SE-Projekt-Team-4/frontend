@@ -39,9 +39,9 @@ class AdminHomePage extends React.Component {
                     <Text> x Besucher Registriert </Text>
                     <Button primary label="Besucher einchecken" onClick={this.setCheckinVisible}></Button>
                 </Box>
-                {isCheckInVisible && <UserCheckIn closeLayer={this.closeCheckIn.bind(this)} />}
+                {isCheckInVisible && <UserCheckIn f_closeLayer={this.closeCheckIn.bind(this)} />}
                 <NextMatchdaysGrid b_isAdmin />
-                <Box pad="small">
+                <Box pad="medium">
                     <UserDataTable />
                 </Box>
             </>

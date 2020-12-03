@@ -85,13 +85,13 @@ class BookingPage extends React.Component {
                     "street": o_formData.s_street,
                     "houseNumber": o_formData.s_houseNr,
                     "phoneNumber" : o_formData.s_telNr,
-                    "eMail": o_formData.s_email 
+                    "eMail": o_formData.s_email
                 })
             })
             .then(result => result.json())
             .then((result) => {
                 this.setState({
-                    s_bookingCode: result.data._verificationCode
+                    s_bookingCode: result.data.verificationCode
                 });
             });
 

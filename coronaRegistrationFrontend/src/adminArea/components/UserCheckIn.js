@@ -21,9 +21,9 @@ class UserCheckIn extends React.Component {
 
 
     render() {
-        const { closeLayer } = this.props; 
+        const { f_closeLayer } = this.props; 
         return (
-            <Layer onEsc={closeLayer} onClickOutside={closeLayer}>
+            <Layer onEsc={f_closeLayer} onClickOutside={f_closeLayer}>
                 <Box pad="small">
 
                     <Box direction="row-responsive">
@@ -31,7 +31,7 @@ class UserCheckIn extends React.Component {
                             <Heading level="2" margin="none">Scan</Heading>
                         </Box>
                         <Box justify="end">
-                            <Button icon={<Close />} onClick={closeLayer} />
+                            <Button icon={<Close />} onClick={f_closeLayer} />
                         </Box>
                     </Box>
                     <Box align="center">

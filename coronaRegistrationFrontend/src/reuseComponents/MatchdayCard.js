@@ -11,20 +11,21 @@ class MatchdayCard extends React.Component {
     }
 
     componentDidMount() {
-        const { i_maxSpaces } = this.props; 
-        if(i_maxSpaces <= 20) {
-            this.setState({
-                s_placesLeftColour: "status-warning"
-            })
-        } else if(i_maxSpaces === 0) {
+        const { i_freeSpaces } = this.props; 
+        if(i_freeSpaces === 0) {
             this.setState({
                 s_placesLeftColour: "status-critical"
+            })
+        } else if(i_freeSpaces <= 20) {
+            this.setState({
+                s_placesLeftColour: "status-warning"
             })
         }
     }
 
     render() {
-        const { b_isAdmin, s_opponent, s_dateTime, i_maxSpaces, b_isCancelled, i_matchId } = this.props;
+        const { b_isAdmin, s_opponent, s_dateTime, i_freeSpaces, b_isCancelled, i_matchId } = this.props;
+        const { s_placesLeftColour } = this.state; 
         const s_formattedDate = new Date(s_dateTime);
         const s_time = "um " + s_formattedDate.toTimeString().substring(0, 5); 
         const s_date = s_formattedDate.getDate() + "." + (s_formattedDate.getMonth()+1) + "." + s_formattedDate.getFullYear(); 
@@ -36,7 +37,7 @@ class MatchdayCard extends React.Component {
                 </CardHeader>
                 <CardBody pad="medium" justify="center" align="center">
                     <Text textAlign="center">{s_date + " " + s_time}</Text>
-                    <Text textAlign="center">{i_maxSpaces} Plätze Frei</Text>
+                    <Text textAlign="center" color={s_placesLeftColour}>{i_freeSpaces} Plätze Frei</Text>
                     {b_isCancelled ?
                         <Text textAlign="center" color="status-error">Status: Fällt aus</Text>
                         : <Text textAlign="center" color="status-ok">Status: Findet Statt!</Text>
@@ -46,7 +47,7 @@ class MatchdayCard extends React.Component {
                     {b_isAdmin ?
                         <Button label="Spieltag Verwalten" href={"/admin/editMatch/" + i_matchId} />
                         :
-                        <Button disabled={i_maxSpaces === 0 || b_isCancelled} label="Platz Buchen" href={"/booking/" + i_matchId} />
+                        <Button disabled={i_freeSpaces === 0 || b_isCancelled} label="Platz Buchen" href={"/booking/" + i_matchId} />
                     }
                 </CardFooter>
             </Card>
