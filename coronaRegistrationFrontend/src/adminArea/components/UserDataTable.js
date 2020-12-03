@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, DataTable } from "grommet";
+import { DataTable } from "grommet";
 
 class UserDataTable extends React.Component {
 

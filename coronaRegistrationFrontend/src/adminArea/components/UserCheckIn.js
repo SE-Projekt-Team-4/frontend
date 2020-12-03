@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, FormField, Heading, TextInput, Layer, Grid } from "grommet";
+import { Box, Button, FormField, Heading, TextInput, Layer } from "grommet";
 import { Scan, Close } from "grommet-icons";
 
 class UserCheckIn extends React.Component {

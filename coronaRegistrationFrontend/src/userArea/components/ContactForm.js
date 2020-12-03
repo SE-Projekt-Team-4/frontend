@@ -1,6 +1,6 @@
 import React from "react";
-import { Form, FormField, MaskedInput, TextInput, Heading, Box, Button, Select } from "grommet";
-import { FormNext, MailOption } from "grommet-icons";
+import { Form, FormField, MaskedInput, TextInput, Heading, Box, Select } from "grommet";
+import { MailOption } from "grommet-icons";
 import countryList from "react-select-country-list";
 import { postcodeValidator, postcodeValidatorExistsForCountry } from "postcode-validator";
 import FormButtons from "../../reuseComponents/FormButtons"; 
