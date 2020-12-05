@@ -3,6 +3,7 @@ import { Heading, Box } from "grommet"
 import AnchorAppBar from "../../reuseComponents/AnchorAppBar"
 import MatchdayOverview from "../../reuseComponents/MatchdayOverview"
 import UserDataTable from "../components/UserDataTable"
+import MatchdayManagementForm from "../../reuseComponents/MatchdayManagementForm"
 
 class MatchdayManager extends React.Component {
 
@@ -10,6 +11,7 @@ class MatchdayManager extends React.Component {
         super(props);
         this.state = {
             b_isAdmin: true,
+            b_hasOpenedEditMatchday: false,
             o_matchData: {},
             a_visitorData: []
         }
@@ -58,15 +60,35 @@ class MatchdayManager extends React.Component {
                 });
     }
 
+    toggleEditMatchday() {
+        const { b_hasOpenedEditMatchday } = this.state;
+        if(b_hasOpenedEditMatchday) {
+            this.setState({
+                ...this.state,
+                b_hasOpenedEditMatchday: false
+            });
+        } else if(!b_hasOpenedEditMatchday) {
+            this.setState({
+                ...this.state,
+                b_hasOpenedEditMatchday: true
+            });
+        }
+       
+    }
+
     render() {
-        const { b_isAdmin, o_matchData, a_visitorData } = this.state;
+        const { b_isAdmin, o_matchData, a_visitorData, b_hasOpenedEditMatchday } = this.state;
+        const s_formattedDate = new Date(o_matchData.dateTime);
+        const s_time = s_formattedDate.toTimeString().substring(0, 5); 
+        const s_date = s_formattedDate.getDate() + "." + (s_formattedDate.getMonth()+1) + "." + s_formattedDate.getFullYear(); 
         return (
             <>
                 <AnchorAppBar s_title="Spieltag Verwalten" b_isNotHome b_isAdmin />
                 <Box pad="medium" direction="column" width="75%">
-                    <MatchdayOverview b_isAdmin={b_isAdmin} s_opponent={o_matchData.opponent} s_dateTime={o_matchData.dateTime} i_maxSpaces={o_matchData.maxSpaces} />
+                    <MatchdayOverview b_isAdmin={b_isAdmin} s_opponent={o_matchData.opponent} s_dateTime={o_matchData.dateTime} i_maxSpaces={o_matchData.maxSpaces} f_openEditMatchday={this.toggleEditMatchday.bind(this)}/>
                 </Box>
-
+                {b_hasOpenedEditMatchday && 
+                <MatchdayManagementForm s_title="Spieltag Editieren" s_opponent={o_matchData.opponent} s_dateTime={o_matchData.dateTime} s_date={s_date} s_time={s_time} i_maxSpaces={o_matchData.maxSpaces} b_isCancelled={o_matchData.isCancelled} f_closeLayer={this.toggleEditMatchday.bind(this)}/>}
                 <Heading level="3" textAlign="start" color="black" margin="medium" > Besucherliste</Heading>
 
                 <Box pad="medium" direction="column" width="100%">

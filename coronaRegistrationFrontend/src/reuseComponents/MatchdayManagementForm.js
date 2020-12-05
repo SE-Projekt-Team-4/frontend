@@ -30,6 +30,13 @@ const o_formValidationMessages = {
     invalid: "Ungültig",
     required: "Erforderlich"
 }
+const o_today = new Date();
+const o_currentDate = new Date(o_today.toISOString());
+const s_currentDateISO = o_currentDate.toISOString();
+const s_futureDateISO = new Date(o_today.setFullYear(o_today.getFullYear() + 1)).toISOString();
+const s_formattedCurrentDate = o_currentDate.getDate() + "." + (o_currentDate.getMonth() + 1) + "." + o_currentDate.getFullYear();
+const s_formattedCurrentTime = o_currentDate.toTimeString().substring(0, 5);
+
 
 class MatchdayManagementForm extends React.Component {
     constructor(props) {
@@ -37,18 +44,20 @@ class MatchdayManagementForm extends React.Component {
         this.state = {
             s_opponent: this.props.s_opponent,
             s_dateTime: this.props.s_dateTime,
-            s_maxSpaces: this.props.s_maxSpaces,
+            s_formattedDateTime: "",
+            s_date : this.props.s_date,
+            s_time : this.props.s_time,
+            i_maxSpaces: this.props.i_maxSpaces,
             b_isCancelled: this.props.b_isCancelled,
-            s_date: "",
-            s_time: "",
             b_isDateTimePickerOpen: false
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.resetValues = this.resetValues.bind(this);
         this.formatDateTime = this.formatDateTime.bind(this);
-        this.openDateTimePicker = this.openDateTimePicker.bind(this);
         this.handleDatePick = this.handleDatePick.bind(this);
         this.submitNewMatchday = this.submitNewMatchday.bind(this);
+        this.submitDateTime = this.submitDateTime.bind(this); 
+        this.toggleDateTimePicker = this.toggleDateTimePicker.bind(this);
         this.baseState = this.state;
     }
 
@@ -56,6 +65,16 @@ class MatchdayManagementForm extends React.Component {
         this.setState({
             ...this.baseState
         })
+    }
+
+    componentDidMount() {
+        if (this.state.s_dateTime) {
+            this.formatDateTime(this.state.s_dateTime);
+        } else {
+            this.setState({
+                s_formattedDateTime: s_formattedCurrentDate + " um " + s_formattedCurrentTime
+            })
+        }
     }
 
     handleInputChange(event) {
@@ -72,8 +91,20 @@ class MatchdayManagementForm extends React.Component {
         }
     }
 
+    submitDateTime() {
+        const { s_date, s_time } = this.state;
+        const o_date = new Date(s_date)
+        const s_formattedDate = o_date.getDate() + "." + (o_date.getMonth() + 1) + "." + o_date.getFullYear();
+        this.setState({
+            ...this.state,
+            s_formattedDateTime: s_formattedDate + " um " + s_time, 
+            b_isDateTimePickerOpen: false
+        })
+    }
+
     submitNewMatchday() {
-        //TODO Fix 403 error
+        //TODO Fix 403 error and trim entries
+        //TODO Convert date and time to dateTime
         fetch("/api/matches",
             {
                 method: "POST",
@@ -84,7 +115,7 @@ class MatchdayManagementForm extends React.Component {
                 body: JSON.stringify({
                     "opponent": this.state.s_opponent,
                     "dateTime": this.state.s_dateTime,
-                    "maxSpaces": this.state.s_maxSpaces,
+                    "maxSpaces": this.state.i_maxSpaces,
                     "isCancelled": this.state.b_isCancelled
                 })
             })
@@ -98,33 +129,38 @@ class MatchdayManagementForm extends React.Component {
         });
     }
 
-    openDateTimePicker() {
-        this.setState({
-            ...this.state,
-            b_isDateTimePickerOpen: true
-        })
+    toggleDateTimePicker() {
+        const { b_isDateTimePickerOpen } = this.state;
+        if(b_isDateTimePickerOpen) {
+            this.setState({
+                ...this.state,
+                b_isDateTimePickerOpen: false
+            });
+        } else if(!b_isDateTimePickerOpen){
+            this.setState({
+                ...this.state,
+                b_isDateTimePickerOpen: true
+            });
+        }
     }
 
-    formatDateTime(date, time) {
+    formatDateTime(date) {
         const o_date = new Date(date);
         const s_formattedDate = o_date.getDate() + "." + (o_date.getMonth() + 1) + "." + o_date.getFullYear();
+        const s_time = o_date.toTimeString().substring(0, 5);
 
         this.setState({
             ...this.state,
-            s_dateTime: s_formattedDate + " um " + time,
+            s_formattedDateTime: s_formattedDate + " um " + s_time,
             b_isDateTimePickerOpen: false
         })
     }
 
     render() {
         const { s_title, f_closeLayer } = this.props;
-        const { s_opponent, s_dateTime, s_maxSpaces, b_isCancelled, s_date, s_time, b_isDateTimePickerOpen } = this.state;
-        const s_currentDate = new Date().toISOString();
-        const s_currentTime = new Date().getHours() + ":" + new Date().getMinutes();
-        const s_futureDate = new Date();
-        s_futureDate.setFullYear(s_futureDate.getFullYear() + 1);
+        const { s_opponent, s_dateTime, i_maxSpaces, b_isCancelled, b_isDateTimePickerOpen, s_formattedDateTime, s_time, s_date } = this.state;
         return (
-            <Layer position="center">
+            <Layer position="center" onClickOutside={f_closeLayer}>
                 <Box direction="row-responsive" align="center" justify="between" pad={{ "right": "medium", "top": "small", "left": "medium" }}>
                     <Heading level="3" margin={{ "right": "xlarge" }}>{s_title}</Heading>
                     <Button icon={<Close />} onClick={f_closeLayer} />
@@ -135,24 +171,26 @@ class MatchdayManagementForm extends React.Component {
                             <TextInput name="s_opponent" value={s_opponent} onChange={this.handleInputChange} placeholder="TSG Hoffenheim" />
                         </FormField>
                         <FormField name="s_dateTime" label="Datum und Uhrzeit">
-                            <DropButton open={b_isDateTimePickerOpen} onOpen={this.openDateTimePicker} dropContent={
-                                <Box pad="medium" >
-                                    <Calendar name="s_date" date={s_date ? s_date : s_currentDate} bounds={[s_currentDate, s_futureDate]} onSelect={this.handleDatePick} firstDayOfWeek={1} showAdjacentDays={false} />
-                                    <MaskedInput name="s_time" dropHeight="small" mask={o_timeMask} value={s_time} onChange={this.handleInputChange} />
-                                    <Box direction="row-responsive" justify="end" margin={{ top: "small" }}>
-                                        <Button primary reverse label="Bestätigen" icon={<FormNext />} gap="xxsmall" disabled={s_time.length < 3} onClick={(date, time) => this.formatDateTime((s_date || s_currentDate), s_time)} />
+                            <DropButton open={b_isDateTimePickerOpen} onClose={this.toggleDateTimePicker} onOpen={this.toggleDateTimePicker} overflow="scroll" dropContent={
+                                <Box pad="small">
+                                    {s_dateTime ?
+                                        <Calendar name="s_date" date={s_date} onSelect={this.handleDatePick} firstDayOfWeek={1} showAdjacentDays={false} />
+                                        : <Calendar name="s_date" date={s_currentDateISO} bounds={[s_currentDateISO, s_futureDateISO]} onSelect={this.handleDatePick} firstDayOfWeek={1} showAdjacentDays={false} />
+                                    }
+                                    <MaskedInput name="s_time" dropHeight="small" value={s_time} mask={o_timeMask} onChange={this.handleInputChange} />
+                                    <Box direction="row-responsive" justify="end" pad="xsmall">
+                                        <Button primary reverse label="Bestätigen" icon={<FormNext />} fill="vertical" gap="xxsmall" disabled={s_formattedCurrentTime.length < 3} onClick={this.submitDateTime}/>
                                     </Box>
                                 </Box>
                             }>
                                 <Box pad="small" gap="medium" direction="row-responsive" justify="between">
-                                    <Text color={s_dateTime ? undefined : "#AAAAAA"} weight="bold">{s_dateTime ? s_dateTime : this.formatDateTime(s_currentDate, s_currentTime)}</Text>
+                                    <Text weight="bold">{s_formattedDateTime}</Text>
                                     <Schedule />
                                 </Box>
                             </DropButton>
                         </FormField>
-
-                        <FormField required label="Verfügbare Plätze" name="s_maxSpaces">
-                            <MaskedInput name="s_maxSpaces" mask={o_maxSpacesMask} value={s_maxSpaces} onChange={this.handleInputChange} />
+                        <FormField required label="Verfügbare Plätze" name="i_maxSpaces">
+                            <MaskedInput name="i_maxSpaces" mask={o_maxSpacesMask} value={i_maxSpaces} onChange={this.handleInputChange} />
                         </FormField>
                         <FormField label="Status" name="b_isCancelled">
                             <RadioButtonGroup name="b_isCancelled" value={b_isCancelled ? b_isCancelled : false} onChange={this.handleInputChange} options={[
