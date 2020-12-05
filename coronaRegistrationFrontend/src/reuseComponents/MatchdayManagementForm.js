@@ -114,7 +114,7 @@ class MatchdayManagementForm extends React.Component {
                 },
                 body: JSON.stringify({
                     "opponent": this.state.s_opponent,
-                    "dateTime": this.state.s_dateTime,
+                    "date": this.state.s_dateTime,
                     "maxSpaces": this.state.i_maxSpaces,
                     "isCancelled": this.state.b_isCancelled
                 })
