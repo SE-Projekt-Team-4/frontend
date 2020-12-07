@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, DataTable, Box } from "grommet";
 import { ExportToCsv } from 'export-to-csv';
-import { Down, Download } from 'grommet-icons';
+import { Download } from 'grommet-icons';
 
 class UserDataTable extends React.Component {
 
@@ -23,7 +23,6 @@ class UserDataTable extends React.Component {
             useTextFile: false,
             useBom: true,
             useKeysAsHeaders: true,
-            //headers: ['id', 'fName', 'lName', 'city','postcode','street', 'houseNumber', 'eMail', 'phoneNumber' ]
           };
           
         const csvExporter = new ExportToCsv(options);
@@ -31,10 +30,7 @@ class UserDataTable extends React.Component {
     }
 
     render() {
-
         const { a_visitorData } = this.props;
-
-        var data = [a_visitorData];
         return (
             <Box>
                  <Box align = "end">
@@ -95,10 +91,6 @@ class UserDataTable extends React.Component {
                     ]}
                     data={a_visitorData}
                 />
-            
-
-            
-
             </Box>
         );
         
