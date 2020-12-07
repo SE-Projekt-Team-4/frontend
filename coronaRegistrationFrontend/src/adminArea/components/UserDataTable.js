@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, DataTable, Box } from "grommet";
 import { ExportToCsv } from 'export-to-csv';
+import { Down, Download } from 'grommet-icons';
 
 class UserDataTable extends React.Component {
 
@@ -36,6 +37,9 @@ class UserDataTable extends React.Component {
         var data = [a_visitorData];
         return (
             <Box>
+                 <Box align = "end">
+                <Button icon={<Download />} label="Download CSV" onClick={this.exportToCsv} />
+                </Box>
 
 
                 <DataTable size="large" 
@@ -93,9 +97,7 @@ class UserDataTable extends React.Component {
                 />
             
 
-            <Box>
-            <Button onClick={this.exportToCsv} />
-            </Box>
+            
 
             </Box>
         );
