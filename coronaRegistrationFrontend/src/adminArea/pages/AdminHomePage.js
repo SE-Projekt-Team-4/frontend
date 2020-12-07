@@ -55,7 +55,7 @@ class AdminHomePage extends React.Component {
         const { isCheckInVisible, a_visitorData } = this.state;
         return (
             <>
-                <AnchorAppBar s_title="Mitarbeiterbereich" />
+                <AnchorAppBar b_isAdmin s_title="Mitarbeiterbereich" />
                 <Box direction="column" align="center" justify="center" pad="small" background="url(./footballbackground.jpg)">
                     <Heading level="2" textAlign="center" color="light-1">Nächstes Spiel :</Heading>
                     <Heading level="3" textAlign="center" color="light-1">Spvgg Lorbach gg. TSG Poppenhusen</Heading>

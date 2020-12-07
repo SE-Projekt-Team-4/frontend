@@ -1,6 +1,6 @@
 import React from "react"
 import { Box, Heading, Button } from "grommet";
-import { Home } from "grommet-icons";
+import { Home, Logout } from "grommet-icons";
 
 
 class AnchorAppBar extends React.Component {
@@ -22,14 +22,18 @@ class AnchorAppBar extends React.Component {
         direction="row-responsive"
         align="center"
         justify="between"
+        fill="horizontal"
         background="brand"
-        pad={{ left: "medium", right: "small", vertical: "small" }}
+        pad={{ left: "medium", vertical: "small" }}
         elevation="medium"
         style={{ zIndex: "1" }}
         {...this.props}
       >
         <Heading level="3" margin="none">{s_title}</Heading>
-        {b_isNotHome && <Button icon={<Home />} tip="Zurück zur Homepage" href={hrefLink}/>}
+        <Box direction="row-responsive">
+        {b_isAdmin && <Button icon={<Logout />} href="/login" onClick={this.props.f_clearAuthToken}/>}
+        {b_isNotHome && <Button icon={<Home />} tip="Zurück zur Homepage" href={hrefLink} />}
+        </Box>
       </Box>
     );
   }

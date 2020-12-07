@@ -14,7 +14,7 @@ class VisitorInformationSummary extends React.Component {
                     <Text size="medium">{o_visitorData.s_street + " " + o_visitorData.s_houseNr}</Text>
                     <Text size="medium">{o_visitorData.s_postcode + " " + o_visitorData.s_city}</Text>
                     <Text size="medium">{o_visitorData.s_country}</Text>
-                <Heading margin="none" level="4">Kontaktdaten</Heading>
+                    <Heading margin="none" level="4">Kontaktdaten</Heading>
                     <Text size="medium">{"E-Mail: " + o_visitorData.s_email}</Text>
                     <Text size="medium">{"Telefonnummer: " + o_visitorData.s_telNr}</Text>
                 </Box>

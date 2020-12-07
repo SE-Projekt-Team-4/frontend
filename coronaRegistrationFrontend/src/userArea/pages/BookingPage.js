@@ -74,7 +74,7 @@ class BookingPage extends React.Component {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json', 
                 },
                 body: JSON.stringify({
                     "matchId": o_matchData.id.toString(),
@@ -120,7 +120,7 @@ class BookingPage extends React.Component {
                 <BookingTabs b_isFormSubmitted={b_hasSubmittedForm} b_isBookingConfirmed={b_hasConfirmedBooking} />
                 {this.state.b_hasStartedBooking &&
                     <Box pad="small" direction="column" align="center" width="auto">
-                        <MatchdayOverview s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} i_maxSpaces={o_matchData.maxSpaces} />
+                        <MatchdayOverview s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} i_freeSpaces={o_matchData.freeSpaces}/>
                         <ContactForm onSubmit={this.submitForm.bind(this)} o_formData={o_formData} />
                     </Box>
                 }

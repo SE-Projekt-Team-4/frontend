@@ -23,8 +23,8 @@ class MatchdayManager extends React.Component {
             {
                 method: "GET",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
                 }
             }).then(res => res.json())
             .then((result) => {
@@ -42,8 +42,9 @@ class MatchdayManager extends React.Component {
             {
                 method: "GET",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "Authorization": "Basic " //user:password base64 encode 
                 }
             })
             .then(res => res.json())
@@ -85,7 +86,7 @@ class MatchdayManager extends React.Component {
             <>
                 <AnchorAppBar s_title="Spieltag Verwalten" b_isNotHome b_isAdmin />
                 <Box pad="medium" direction="column" width="75%">
-                    <MatchdayOverview b_isAdmin={b_isAdmin} s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} i_maxSpaces={o_matchData.maxSpaces} f_openEditMatchday={this.toggleEditMatchday.bind(this)}/>
+                    <MatchdayOverview b_isAdmin={b_isAdmin} s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} i_maxSpaces={o_matchData.maxSpaces} i_freeSpaces={o_matchData.freeSpaces} f_openEditMatchday={this.toggleEditMatchday.bind(this)}/>
                 </Box>
                 {b_hasOpenedEditMatchday && 
                 <MatchdayManagementForm s_title="Spieltag Editieren" s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} s_date={s_date} s_time={s_time} i_maxSpaces={o_matchData.maxSpaces} b_isCancelled={o_matchData.isCancelled} f_closeLayer={this.toggleEditMatchday.bind(this)}/>}

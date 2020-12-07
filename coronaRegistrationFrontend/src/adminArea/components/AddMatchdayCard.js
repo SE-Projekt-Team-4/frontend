@@ -28,7 +28,6 @@ class AddMatchdayCard extends React.Component {
                 b_hasOpenedAddMatchday: true
             });
         }
-       
     }
 
     render() {

@@ -2,7 +2,7 @@ import { Heading, Box, Button } from "grommet";
 import { FormNext } from "grommet-icons";
 import React from "react";
 import MatchdayOverview from "../../reuseComponents/MatchdayOverview";
-import VisitorInformationSummary from "../components/VisitorInformationSummary";
+import VisitorInformationSummary from "../../reuseComponents/VisitorInformationSummary";
 
 class BookingConfirmationPage extends React.Component {
     render() {

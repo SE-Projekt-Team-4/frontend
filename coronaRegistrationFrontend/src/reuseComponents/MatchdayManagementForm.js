@@ -6,7 +6,7 @@ import FormButtons from "./FormButtons";
 const o_timeMask = [
     {
         length: [1, 2],
-        options: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
+        options: ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
         regexp: /^1[1-2]$|^[0-9]$/,
         placeholder: "ss",
     },
@@ -72,7 +72,9 @@ class MatchdayManagementForm extends React.Component {
             this.formatDateTime(this.state.s_dateTime);
         } else {
             this.setState({
-                s_formattedDateTime: s_formattedCurrentDate + " um " + s_formattedCurrentTime
+                ...this.state,
+                s_formattedDateTime: s_formattedCurrentDate + " um " + s_formattedCurrentTime, 
+                s_date: s_currentDateISO
             })
         }
     }
@@ -93,11 +95,16 @@ class MatchdayManagementForm extends React.Component {
 
     submitDateTime() {
         const { s_date, s_time } = this.state;
-        const o_date = new Date(s_date)
+        const o_date = new Date(s_date);
+        const s_hours = s_time.substring(0, 2);
+        const s_minutes = s_time.substring(s_time.length-2); 
+
+        o_date.setHours(parseInt(s_hours), parseInt(s_minutes)); 
         const s_formattedDate = o_date.getDate() + "." + (o_date.getMonth() + 1) + "." + o_date.getFullYear();
         this.setState({
             ...this.state,
             s_formattedDateTime: s_formattedDate + " um " + s_time, 
+            s_dateTime: o_date.toISOString(),
             b_isDateTimePickerOpen: false
         })
     }
