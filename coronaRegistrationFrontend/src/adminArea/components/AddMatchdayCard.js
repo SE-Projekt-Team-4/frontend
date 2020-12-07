@@ -12,24 +12,23 @@ class AddMatchdayCard extends React.Component {
         this.state = {
             b_hasOpenedAddMatchday : false
         };
-        this.submitNewMatchday = this.submitNewMatchday.bind(this); 
-        this.openAddMatchdayForm = this.openAddMatchdayForm.bind(this); 
+        this.toggleAddMatchday = this.toggleAddMatchday.bind(this); 
     }
 
-    submitNewMatchday() {
-        //POST REQUEST FOR NEW MATCHDAY
-    }
-
-    openAddMatchdayForm() {
-        this.setState({
-            b_hasOpenedAddMatchday: true
-        })
-    }
-    
-    closeAddMatchdayForm() {
-        this.setState({
-            b_hasOpenedAddMatchday: false
-        })
+    toggleAddMatchday() {
+        const { b_hasOpenedAddMatchday } = this.state;
+        if(b_hasOpenedAddMatchday) {
+            this.setState({
+                ...this.state,
+                b_hasOpenedAddMatchday: false
+            });
+        } else if(!b_hasOpenedAddMatchday) {
+            this.setState({
+                ...this.state,
+                b_hasOpenedAddMatchday: true
+            });
+        }
+       
     }
 
     render() {
@@ -39,9 +38,9 @@ class AddMatchdayCard extends React.Component {
                     <Heading level="4" margin="none" textAlign="center">Spieltag Hinzufügen</Heading>
                 </CardHeader>
                 <CardBody justify="center" >
-                    <Button icon={<AddCircle size="xlarge" color="status-ok"/>} onClick={this.openAddMatchdayForm}/>
+                    <Button icon={<AddCircle size="xlarge" color="status-ok"/>} onClick={this.toggleAddMatchday}/>
                     {this.state.b_hasOpenedAddMatchday &&
-                    <MatchdayManagementForm s_title="Spieltag Anlegen" f_closeLayer={this.closeAddMatchdayForm.bind(this)} f_submitNewMatchday={this.submitNewMatchday.bind(this)}/>}
+                    <MatchdayManagementForm s_title="Spieltag Anlegen" f_closeLayer={this.toggleAddMatchday.bind(this)}/>}
                 </CardBody>
             </Card>
         )

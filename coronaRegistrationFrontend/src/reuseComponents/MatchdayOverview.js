@@ -11,7 +11,7 @@ class MatchdayOverview extends React.Component {
     }
 
     render() {
-        const { s_opponent, s_dateTime, i_maxSpaces, b_isAdmin } = this.props; 
+        const { s_opponent, s_dateTime, i_maxSpaces, b_isAdmin, f_openEditMatchday } = this.props; 
         const s_formattedDate = new Date(s_dateTime);
         const s_time = "um " + s_formattedDate.toTimeString().substring(0, 5); 
         const s_date = s_formattedDate.getDate() + "." + (s_formattedDate.getMonth()+1) + "." + s_formattedDate.getFullYear(); 
@@ -25,8 +25,8 @@ class MatchdayOverview extends React.Component {
                     <Text size="medium">Sportpark Mutterstadt</Text>
                     <Text size="medium">Waldstraße 49</Text>
                     <Text size="medium">67112 Mutterstadt</Text>
-                    <Box width="small">
-                        {b_isAdmin && <Button icon={<Edit />} />}
+                    <Box align="start">
+                        {b_isAdmin && <Button icon={<Edit />} onClick={f_openEditMatchday}/>}
                     </Box>
                 </Box>
                 <StadiumMap />
