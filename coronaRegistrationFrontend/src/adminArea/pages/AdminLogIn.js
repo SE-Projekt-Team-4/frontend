@@ -1,4 +1,5 @@
 import React from "react"
+import ReactDOM from "react-dom"
 import { Box, TextInput, FormField, Button, Heading, Text } from "grommet"
 import AnchorAppBar from "../../reuseComponents/AnchorAppBar"
 import { Redirect } from "react-router-dom";
@@ -9,8 +10,7 @@ class AdminLogIn extends React.Component {
         super(props);
         this.state = {
             s_username: "",
-            s_password: "",
-            b_isAuthenticated: false
+            s_password: ""
         }
         this.loginAdminUser = this.loginAdminUser.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -36,18 +36,20 @@ class AdminLogIn extends React.Component {
             })
             .then(result => result.json())
             .then((result) => {
-                this.setState({
-                    ...this.state,
-                    b_isAuthenticated: result.data === "Credentials are correct!"
-                });
-                sessionStorage.setItem("s_authToken", s_authToken);
+                //TODO add error handling
+                //set state must be called in a seperate function due to its asynchronous nature i.e. state will only be updated once the surrounding function has finished executing. 
+                //as we don't want to set the token before setting state which would cause unwanted auth bugs
+                if (result.data === "Credentials are correct!") {
+                    sessionStorage.setItem("s_authToken", s_authToken);
+                    window.location.replace("/admin");
+                }
             });
     }
 
     render() {
         return (
             <>
-                <AnchorAppBar s_title="Mitarbeiterbereich"/>
+                <AnchorAppBar s_title="Mitarbeiterbereich" />
                 <Box align="center" pad="small">
                     <Heading level="3">Login</Heading>
                     <FormField required label="Benutzername" >
@@ -57,8 +59,7 @@ class AdminLogIn extends React.Component {
                         <TextInput name="s_password" type="password" onChange={this.handleInputChange} />
                     </FormField>
                     <Button primary label="Einloggen" onClick={this.loginAdminUser} />
-                    {this.state.b_isAuthenticated &&
-                        <Redirect to="/admin" /> }
+                    {/* {sessionStorage.getItem("s_authToken") && <Redirect from="/login" to="/admin"/>} */}
                 </Box>
             </>
         )
