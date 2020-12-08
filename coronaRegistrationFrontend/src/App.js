@@ -25,13 +25,14 @@ const theme = {
 };
 
 export default function App() {
+  const s_authToken = sessionStorage.getItem("s_authToken")
   return (
     <Grommet theme={theme} full>
       <Switch>
         <Route exact path="/" component={HomePage} />
-        <PrivateRoute exact path="/admin" isLoggedIn component={AdminHomePage} />
+        <PrivateRoute exact path="/admin" isLoggedIn={s_authToken} component={AdminHomePage} />
         <Route exact path="/booking/:id" component={BookingPage} />
-        <PrivateRoute exact path="/admin/editMatch/:id" isLoggedIn component={MatchdayManager}/>
+        <PrivateRoute exact path="/admin/editMatch/:id" isLoggedIn={s_authToken} component={MatchdayManager}/>
         <Route exact path="/login" component={AdminLogIn}/>
       </Switch>
     </Grommet>

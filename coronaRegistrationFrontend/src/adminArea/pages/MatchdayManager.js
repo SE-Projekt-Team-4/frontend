@@ -74,7 +74,10 @@ class MatchdayManager extends React.Component {
                 b_hasOpenedEditMatchday: true
             });
         }
-       
+    }
+
+    clearAuthToken() {
+        sessionStorage.clear();
     }
 
     render() {
@@ -84,7 +87,7 @@ class MatchdayManager extends React.Component {
         const s_date = s_formattedDate.getDate() + "." + (s_formattedDate.getMonth()+1) + "." + s_formattedDate.getFullYear(); 
         return (
             <>
-                <AnchorAppBar s_title="Spieltag Verwalten" b_isNotHome b_isAdmin />
+                <AnchorAppBar s_title="Spieltag Verwalten" b_isNotHome b_isAdmin f_clearAuthToken={this.clearAuthToken.bind(this)}/>
                 <Box pad="medium" direction="column" width="75%">
                     <MatchdayOverview b_isAdmin={b_isAdmin} s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} i_maxSpaces={o_matchData.maxSpaces} i_freeSpaces={o_matchData.freeSpaces} f_openEditMatchday={this.toggleEditMatchday.bind(this)}/>
                 </Box>
