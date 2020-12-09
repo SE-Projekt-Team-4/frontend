@@ -6,6 +6,7 @@ import ContactForm from "../components/ContactForm";
 import MatchdayOverview from "../../reuseComponents/MatchdayOverview";
 import BookingConfirmationPage from "./BookingConfirmationPage";
 import BookingCompletedPage from "./BookingCompletedPage";
+import { getMatchById, postBooking } from "../../util/ApiRequests";
 
 class BookingPage extends React.Component {
 
@@ -22,28 +23,15 @@ class BookingPage extends React.Component {
     }
 
     componentDidMount() {
-        const s_apiURL = "/api/matches/" + this.props.match.params.id;
-        fetch(s_apiURL,
-            {
-                method: "GET",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            })
-            .then(res => res.json())
-            .then((result) => {
-                this.setState({
-                    o_matchData: result.data
-                });
-            },
-                (error) => {
-                    this.setState({
-                        ...this.state,
-                        error
-                    })
-                }
-            )
+        getMatchById(this.props.match.params.id).then(o_match => {
+            this.setState({
+                ...this.state,
+                o_matchData: o_match.data
+            });
+            if(o_match.data.freeSpaces === 0 || o_match.data.isCancelled) {
+                window.location.replace("/");
+            }
+        })
     }
 
     submitForm(event) {
@@ -69,12 +57,20 @@ class BookingPage extends React.Component {
     confirmBooking() {
         const { o_formData, o_matchData } = this.state;
         this.trimFormData(o_formData);
-        fetch("/api/bookings",
+        postBooking(o_matchData.id, o_formData).then(o_verificationCode => {
+            this.setState({
+                ...this.state,
+                s_bookingCode: o_verificationCode.data,
+                b_hasSubmittedForm: true,
+                b_hasConfirmedBooking: true
+            });
+        })
+       /*  fetch("/api/bookings",
             {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json', 
+                    'Accept': 'application/json',
                 },
                 body: JSON.stringify({
                     "matchId": o_matchData.id.toString(),
@@ -84,7 +80,7 @@ class BookingPage extends React.Component {
                     "postcode": o_formData.s_postcode,
                     "street": o_formData.s_street,
                     "houseNumber": o_formData.s_houseNr,
-                    "phoneNumber" : o_formData.s_telNr,
+                    "phoneNumber": o_formData.s_telNr,
                     "eMail": o_formData.s_email
                 })
             })
@@ -94,12 +90,12 @@ class BookingPage extends React.Component {
                     s_bookingCode: result.data.verificationCode
                 });
             });
-
-        this.setState({
+ */
+/*         this.setState({
             ...this.state,
             b_hasSubmittedForm: true,
             b_hasConfirmedBooking: true
-        })
+        }) */
 
     }
 
@@ -120,7 +116,7 @@ class BookingPage extends React.Component {
                 <BookingTabs b_isFormSubmitted={b_hasSubmittedForm} b_isBookingConfirmed={b_hasConfirmedBooking} />
                 {this.state.b_hasStartedBooking &&
                     <Box pad="small" direction="column" align="center" width="auto">
-                        <MatchdayOverview s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} i_freeSpaces={o_matchData.freeSpaces}/>
+                        <MatchdayOverview s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} i_freeSpaces={o_matchData.freeSpaces} />
                         <ContactForm onSubmit={this.submitForm.bind(this)} o_formData={o_formData} />
                     </Box>
                 }
@@ -134,6 +130,7 @@ class BookingPage extends React.Component {
                 }
                 {(b_hasConfirmedBooking && b_hasSubmittedForm) &&
                     <BookingCompletedPage s_bookingCode={s_bookingCode} />
+
                 }
             </>
         );

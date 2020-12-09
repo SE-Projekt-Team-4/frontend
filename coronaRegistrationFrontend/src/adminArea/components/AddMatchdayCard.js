@@ -39,7 +39,7 @@ class AddMatchdayCard extends React.Component {
                 <CardBody justify="center" >
                     <Button icon={<AddCircle size="xlarge" color="status-ok"/>} onClick={this.toggleAddMatchday}/>
                     {this.state.b_hasOpenedAddMatchday &&
-                    <MatchdayManagementForm s_title="Spieltag Anlegen" f_closeLayer={this.toggleAddMatchday.bind(this)}/>}
+                    <MatchdayManagementForm s_title="Spieltag Anlegen" f_passMatchdayDataToParent={this.props.f_updateMatchdays} f_closeLayer={this.toggleAddMatchday.bind(this)}/>}
                 </CardBody>
             </Card>
         )

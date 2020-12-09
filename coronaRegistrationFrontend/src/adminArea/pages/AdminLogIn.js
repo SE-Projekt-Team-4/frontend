@@ -1,6 +1,7 @@
 import React from "react"
-import { Box, TextInput, FormField, Button, Heading, Text } from "grommet"
-import AnchorAppBar from "../../reuseComponents/AnchorAppBar"
+import { Box, TextInput, FormField, Button, Heading, Text } from "grommet";
+import AnchorAppBar from "../../reuseComponents/AnchorAppBar";
+import { getLogin } from "../../util/ApiRequests";
 
 class AdminLogIn extends React.Component {
 
@@ -23,31 +24,17 @@ class AdminLogIn extends React.Component {
     }
 
     loginAdminUser() {
-        const s_authToken = "Basic " + new Buffer(this.state.s_username + ":" + this.state.s_password).toString("base64");
-        fetch("api/isAdmin",
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "Authorization": s_authToken
-                }
-            })
-            .then(result => result.json())
-            .then((result) => {
-                //TODO add error handling
-                //set state must be called in a seperate function due to its asynchronous nature i.e. state will only be updated once the surrounding function has finished executing. 
-                //as we don't want to set the token before setting state which would cause unwanted auth bugs
-                if (result.data === "Credentials are correct!") {
-                    sessionStorage.setItem("s_authToken", s_authToken);
-                    window.location.replace("/admin");
-                } else {
-                    this.setState({
-                        ...this.state,
-                        b_hasEnteredWrongCredentials: true
-                    })
-                }
-            });
+        getLogin(this.state.s_username, this.state.s_password).then(o_response => {
+            if (o_response.result.data === "Success") {
+                sessionStorage.setItem("s_authToken", o_response.s_authToken);
+                window.location.replace("/admin");
+            } else {
+                this.setState({
+                    ...this.state,
+                    b_hasEnteredWrongCredentials: true
+                })
+            }
+        })
     }
 
     render() {

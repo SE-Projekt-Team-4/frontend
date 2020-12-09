@@ -27,13 +27,14 @@ class MatchdayCard extends React.Component {
         const { b_isAdmin, s_opponent, s_dateTime, i_freeSpaces, b_isCancelled, i_matchId } = this.props;
         const { s_placesLeftColour } = this.state; 
         const s_formattedDate = new Date(s_dateTime);
+        const b_isInPast = s_formattedDate - Date.now() <= 0;
         const s_time = "um " + s_formattedDate.toTimeString().substring(0, 5); 
         const s_date = s_formattedDate.getDate() + "." + (s_formattedDate.getMonth()+1) + "." + s_formattedDate.getFullYear(); 
 
         return (
             <Card height="small" width="medium">
                 <CardHeader pad="medium" justify="center">
-                    <Heading level="4" margin="none" textAlign="center">FG 08 Mutterstadt gg. {s_opponent}</Heading>
+                    <Heading truncate level="4" margin="none" textAlign="center">FG 08 Mutterstadt gg. {s_opponent}</Heading>
                 </CardHeader>
                 <CardBody pad="medium" justify="center" align="center">
                     <Text textAlign="center">{s_date + " " + s_time}</Text>
@@ -47,7 +48,7 @@ class MatchdayCard extends React.Component {
                     {b_isAdmin ?
                         <Button label="Spieltag Verwalten" href={"/admin/editMatch/" + i_matchId} />
                         :
-                        <Button disabled={i_freeSpaces === 0 || b_isCancelled} label="Platz Buchen" href={"/booking/" + i_matchId} />
+                        <Button disabled={(i_freeSpaces === 0 || b_isCancelled || b_isInPast)} label="Platz Buchen" href={"/booking/" + i_matchId} />
                     }
                 </CardFooter>
             </Card>

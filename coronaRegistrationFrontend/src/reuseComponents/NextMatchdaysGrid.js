@@ -2,36 +2,17 @@ import React from "react";
 import { Box, Grid, Heading, Button } from "grommet";
 import MatchdayCard from "./MatchdayCard";
 import AddMatchdayCard from "../adminArea/components/AddMatchdayCard";
+import { getAllMatches } from "../util/ApiRequests";
 
 class NextMatchdaysGrid extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            a_matchData: [],
             error: null,
             isShowingAllMatches: false,
         };
-
         this.showAllMatches = this.showAllMatches.bind(this);
-    }
-
-    //https://coronaprojekt.cfapps.eu10.hana.ondemand.com/api/matches
-    componentDidMount() {
-        fetch("api/matches",
-            {
-                method: "GET",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            })
-            .then(res => res.json())
-            .then((result) => {
-                this.setState({
-                    a_matchData: result.data
-                });
-            });
     }
 
     showAllMatches() {
@@ -42,8 +23,8 @@ class NextMatchdaysGrid extends React.Component {
     }
 
     render() {
-        const { a_matchData, isShowingAllMatches } = this.state;
-        const { b_isAdmin } = this.props;
+        const { isShowingAllMatches } = this.state;
+        const { b_isAdmin, a_matchData, f_updateMatches } = this.props;
         const numberOfMatchCards = isShowingAllMatches ? a_matchData.length : 4
         const a_slicedMatchData = a_matchData.slice(0, numberOfMatchCards);
         return (
@@ -53,7 +34,7 @@ class NextMatchdaysGrid extends React.Component {
                 </Box>
                 <Grid gap="medium" justify="center" align="center" columns="medium" rows="small" pad="medium">
                     {b_isAdmin &&
-                        <AddMatchdayCard />
+                        <AddMatchdayCard f_updateMatchdays={f_updateMatches}/>
                     }
                     {a_slicedMatchData.map((o_match) => {
                         return (

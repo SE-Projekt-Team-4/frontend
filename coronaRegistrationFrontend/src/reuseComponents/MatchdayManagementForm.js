@@ -2,6 +2,7 @@ import React from "react";
 import { Layer, Box, Heading, Button, Form, FormField, TextInput, MaskedInput, Calendar, DropButton, Text, RadioButtonGroup } from "grommet";
 import { Close, Schedule, FormNext } from "grommet-icons";
 import FormButtons from "./FormButtons";
+import { getAllMatches, postNewMatch } from "../util/ApiRequests";
 
 const o_timeMask = [
     {
@@ -45,10 +46,10 @@ class MatchdayManagementForm extends React.Component {
             s_opponent: this.props.s_opponent,
             s_dateTime: this.props.s_dateTime,
             s_formattedDateTime: "",
-            s_date : this.props.s_date,
-            s_time : this.props.s_time,
+            s_date: this.props.s_date,
+            s_time: this.props.s_time,
             i_maxSpaces: this.props.i_maxSpaces,
-            b_isCancelled: this.props.b_isCancelled,
+            b_isCancelled: this.props.b_isCancelled === undefined ? false : this.props.b_isCancelled,
             b_isDateTimePickerOpen: false
         };
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -56,7 +57,7 @@ class MatchdayManagementForm extends React.Component {
         this.formatDateTime = this.formatDateTime.bind(this);
         this.handleDatePick = this.handleDatePick.bind(this);
         this.submitNewMatchday = this.submitNewMatchday.bind(this);
-        this.submitDateTime = this.submitDateTime.bind(this); 
+        this.submitDateTime = this.submitDateTime.bind(this);
         this.toggleDateTimePicker = this.toggleDateTimePicker.bind(this);
         this.baseState = this.state;
     }
@@ -73,7 +74,7 @@ class MatchdayManagementForm extends React.Component {
         } else {
             this.setState({
                 ...this.state,
-                s_formattedDateTime: s_formattedCurrentDate + " um " + s_formattedCurrentTime, 
+                s_formattedDateTime: s_formattedCurrentDate + " um " + s_formattedCurrentTime,
                 s_date: s_currentDateISO
             })
         }
@@ -97,39 +98,33 @@ class MatchdayManagementForm extends React.Component {
         const { s_date, s_time } = this.state;
         const o_date = new Date(s_date);
         const s_hours = s_time.substring(0, 2);
-        const s_minutes = s_time.substring(s_time.length-2); 
+        const s_minutes = s_time.substring(s_time.length - 2);
 
-        o_date.setHours(parseInt(s_hours), parseInt(s_minutes)); 
+        o_date.setHours(parseInt(s_hours), parseInt(s_minutes));
         const s_formattedDate = o_date.getDate() + "." + (o_date.getMonth() + 1) + "." + o_date.getFullYear();
         this.setState({
             ...this.state,
-            s_formattedDateTime: s_formattedDate + " um " + s_time, 
+            s_formattedDateTime: s_formattedDate + " um " + s_time,
             s_dateTime: o_date.toISOString(),
             b_isDateTimePickerOpen: false
         })
     }
 
     submitNewMatchday() {
-        //TODO Fix 403 error and trim entries
-        //TODO Convert date and time to dateTime
-        fetch("/api/matches",
-            {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json', 
-                    "Authorization": sessionStorage.getItem("s_authToken")
-                },
-                body: JSON.stringify({
-                    "opponent": this.state.s_opponent,
-                    "date": this.state.s_dateTime,
-                    "maxSpaces": this.state.i_maxSpaces,
-                    "isCancelled": this.state.b_isCancelled
-                })
-            })
-            .then(result => result.json());
+        const { s_opponent, s_dateTime, i_maxSpaces, b_isCancelled } = this.state;
+        //TODO trim entries
+        postNewMatch({
+            s_opponent: s_opponent,
+            s_dateTime: s_dateTime,
+            i_maxSpaces: i_maxSpaces,
+            b_isCancelled: b_isCancelled
+        }).then(result => {
+            console.log(result);
+        })
+        this.props.f_closeLayer();
+        this.props.f_passMatchdayDataToParent(
 
-        this.props.f_closeLayer(); 
+        );
     }
 
     handleDatePick(date) {
@@ -141,12 +136,12 @@ class MatchdayManagementForm extends React.Component {
 
     toggleDateTimePicker() {
         const { b_isDateTimePickerOpen } = this.state;
-        if(b_isDateTimePickerOpen) {
+        if (b_isDateTimePickerOpen) {
             this.setState({
                 ...this.state,
                 b_isDateTimePickerOpen: false
             });
-        } else if(!b_isDateTimePickerOpen){
+        } else if (!b_isDateTimePickerOpen) {
             this.setState({
                 ...this.state,
                 b_isDateTimePickerOpen: true
@@ -167,7 +162,7 @@ class MatchdayManagementForm extends React.Component {
     }
 
     render() {
-        const { s_title, f_closeLayer } = this.props;
+        const { s_title, f_closeLayer, } = this.props;
         const { s_opponent, s_dateTime, i_maxSpaces, b_isCancelled, b_isDateTimePickerOpen, s_formattedDateTime, s_time, s_date } = this.state;
         return (
             <Layer position="center" onClickOutside={f_closeLayer}>
@@ -189,7 +184,7 @@ class MatchdayManagementForm extends React.Component {
                                     }
                                     <MaskedInput name="s_time" dropHeight="small" value={s_time} mask={o_timeMask} onChange={this.handleInputChange} />
                                     <Box direction="row-responsive" justify="end" pad="xsmall">
-                                        <Button primary reverse label="Bestätigen" icon={<FormNext />} fill="vertical" gap="xxsmall" disabled={s_formattedCurrentTime.length < 3} onClick={this.submitDateTime}/>
+                                        <Button primary reverse label="Bestätigen" icon={<FormNext />} fill="vertical" gap="xxsmall" disabled={s_formattedCurrentTime.length < 3} onClick={this.submitDateTime} />
                                     </Box>
                                 </Box>
                             }>
@@ -203,7 +198,7 @@ class MatchdayManagementForm extends React.Component {
                             <MaskedInput name="i_maxSpaces" mask={o_maxSpacesMask} value={i_maxSpaces} onChange={this.handleInputChange} />
                         </FormField>
                         <FormField label="Status" name="b_isCancelled">
-                            <RadioButtonGroup name="b_isCancelled" value={b_isCancelled ? b_isCancelled : false} onChange={this.handleInputChange} options={[
+                            <RadioButtonGroup name="b_isCancelled" value={b_isCancelled} onChange={this.handleInputChange} options={[
                                 { label: "Findet statt", value: false },
                                 { label: "Fällt aus", value: true }
                             ]}

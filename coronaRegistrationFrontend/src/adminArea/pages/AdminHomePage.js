@@ -4,46 +4,65 @@ import AnchorAppBar from "../../reuseComponents/AnchorAppBar"
 import UserDataTable from "../components/UserDataTable"
 import NextMatchdaysGrid from "../../reuseComponents/NextMatchdaysGrid"
 import UserCheckIn from "../components/UserCheckIn"
-import { Redirect } from "react-router-dom"
+import { Redirect } from "react-router-dom";
+import { getNextMatch, getAllMatches, getBookings } from "../../util/ApiRequests";
 
 class AdminHomePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isCheckInVisible: false,
-            a_visitorData: []
+            a_bookingData: [],
+            o_nextMatchData: {},
+            i_registeredVisitors: 0,
+            a_matchData: []
         }
-        this.setCheckinVisible = this.setCheckinVisible.bind(this)
+        this.setCheckinVisible = this.setCheckinVisible.bind(this);
+        this.closeCheckin = this.closeCheckin.bind(this);
+        this.getMatches = this.getMatches.bind(this); 
     }
 
     componentDidMount() {
-        fetch("api/visitors",
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "Authorization": sessionStorage.getItem("s_authToken")
-                }
+        getBookings().then(a_bookings => {
+            this.setState({
+                ...this.state,
+                a_bookingData: a_bookings.data
             })
-            .then(res => res.json())
-            .then((result) => {
-                this.setState({
-                    a_visitorData: result.data
-                });
+        });
+
+        getNextMatch().then(o_match => {
+            if (o_match.error && o_match.error.status === 404) {
+                return;
+            }
+            this.setState({
+                ...this.state,
+                o_nextMatchData: o_match.data,
+                i_registeredVisitors: o_match.data.maxSpaces - o_match.data.freeSpaces
             });
+        });
+        this.getMatches(); 
+    }
+
+    getMatches() {
+        getAllMatches().then(a_matches => {
+            this.setState({
+                ...this.state,
+                a_matchData: a_matches.data
+            });
+        })
     }
 
     setCheckinVisible() {
         this.setState({
-            isCheckInVisible: true
+            ...this.state,
+            b_isCheckinVisible: true
         });
     }
 
-    closeCheckIn() {
+    closeCheckin() {
         this.setState({
-            isCheckInVisible: false
-        })
+            ...this.state,
+            b_isCheckinVisible: false
+        });
     }
 
     clearAuthToken() {
@@ -51,22 +70,30 @@ class AdminHomePage extends React.Component {
     }
 
     render() {
-        const { isCheckInVisible, a_visitorData } = this.state;
+        const { b_isCheckinVisible, a_bookingData, o_nextMatchData, i_registeredVisitors, a_matchData } = this.state;
+        const i_timeToNextMatchInMS = new Date(o_nextMatchData.date) - Date.now();
+        let o_timeToNextMatchISO = "";
+        if (!isNaN(i_timeToNextMatchInMS)) {
+            o_timeToNextMatchISO = new Date(i_timeToNextMatchInMS).toISOString();
+        }
         return (
             <>
                 {sessionStorage.getItem("s_authToken") ? <> <AnchorAppBar b_isAdmin s_title="Mitarbeiterbereich" f_clearAuthToken={this.clearAuthToken.bind(this)} />
-                    <Box direction="column" align="center" justify="center" pad="small" background="url(./footballbackground.jpg)">
-                        <Heading level="2" textAlign="center" color="light-1">Nächstes Spiel :</Heading>
-                        <Heading level="3" textAlign="center" color="light-1">Spvgg Lorbach gg. TSG Poppenhusen</Heading>
-                        <Text> Zeit bis zum Anstoß </Text>
-                        <Clock type="digital" run="backward" />
-                        <Text> x Besucher Registriert </Text>
-                        <Button primary label="Besucher einchecken" onClick={this.setCheckinVisible}></Button>
+                    <Box direction="column" align="center" justify="center" gap="medium" pad="small" background="url(./footballbackground.jpg)">
+                        <Heading level="2" textAlign="center" margin="none" color="light-1">Nächstes Spiel:</Heading>
+                        <Heading level="3" textAlign="center" margin="none" color="light-1">FG 08 Mutterstadt gg. {o_nextMatchData.opponent || "Ausstehend"}</Heading>
+                        {(i_timeToNextMatchInMS <= 7200000 /*2 stunden in ms*/ && o_timeToNextMatchISO !== "") ?
+                            <Box gap="small" align="center" justify="center">
+                                <Text color="light-1"> Zeit bis zum Anstoß: </Text>
+                                <Clock color="light-1" type="digital" run="backward" time={o_timeToNextMatchISO} size="large" />
+                                <Text color="light-1">{i_registeredVisitors} Buchungen </Text>
+                                <Button primary label="Besucher registrieren" onClick={this.setCheckinVisible}></Button>
+                            </Box> : <Text color="light-1">Die Funktion "Besucher registrieren" wird erst ab 2 Stunden vor Anstoß freigeschaltet</Text>}
                     </Box>
-                    {isCheckInVisible && <UserCheckIn f_closeLayer={this.closeCheckIn.bind(this)} />}
-                    <NextMatchdaysGrid b_isAdmin />
+                    {b_isCheckinVisible && <UserCheckIn f_closeLayer={this.closeCheckin} />}
+                    <NextMatchdaysGrid b_isAdmin a_matchData={a_matchData} f_updateMatches={this.getMatches}/>
                     <Box pad="medium">
-                        <UserDataTable a_visitorData={a_visitorData} />
+                        <UserDataTable a_visitorData={a_bookingData} />
                     </Box></> : <Redirect to="/login" />}
             </>
         )

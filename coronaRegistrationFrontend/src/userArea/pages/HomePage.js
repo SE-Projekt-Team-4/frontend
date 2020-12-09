@@ -4,16 +4,29 @@ import NextMatchdaysGrid from "../../reuseComponents/NextMatchdaysGrid";
 import AnchorAppBar from "../../reuseComponents/AnchorAppBar";
 import { Download } from "grommet-icons";
 import { Link } from "react-router-dom";
+import { getAllMatches } from "../../util/ApiRequests";
 
 class HomePage extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {}; 
+        this.state = {
+            a_matchData: []
+        };
     }
 
-    
-    render() {  
+    componentDidMount() {
+        getAllMatches().then(a_matches => {
+            this.setState({
+                a_matchData: a_matches.data
+            });
+        })
+    }
+
+
+    render() {
+        const { a_matchData } = this.state;
+        console.log(a_matchData)
         return (
             <>
                 <AnchorAppBar s_title="Homepage" />
@@ -24,7 +37,9 @@ class HomePage extends React.Component {
                         <Button primary label="Unser Hygenekonzept Herunterladen" icon={<Download />} />
                     </Link>
                 </Box>
-                <NextMatchdaysGrid b_isAdmin={false} />
+                {a_matchData &&
+                    <NextMatchdaysGrid b_isAdmin={false} a_matchData={a_matchData} />
+                }
             </>
         )
     }
