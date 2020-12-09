@@ -1,8 +1,6 @@
 import React from "react"
-import ReactDOM from "react-dom"
 import { Box, TextInput, FormField, Button, Heading, Text } from "grommet"
 import AnchorAppBar from "../../reuseComponents/AnchorAppBar"
-import { Redirect } from "react-router-dom";
 
 class AdminLogIn extends React.Component {
 
@@ -10,7 +8,8 @@ class AdminLogIn extends React.Component {
         super(props);
         this.state = {
             s_username: "",
-            s_password: ""
+            s_password: "", 
+            b_hasEnteredWrongCredentials: false
         }
         this.loginAdminUser = this.loginAdminUser.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -42,6 +41,11 @@ class AdminLogIn extends React.Component {
                 if (result.data === "Credentials are correct!") {
                     sessionStorage.setItem("s_authToken", s_authToken);
                     window.location.replace("/admin");
+                } else {
+                    this.setState({
+                        ...this.state,
+                        b_hasEnteredWrongCredentials: true
+                    })
                 }
             });
     }
@@ -52,6 +56,10 @@ class AdminLogIn extends React.Component {
                 <AnchorAppBar s_title="Mitarbeiterbereich" />
                 <Box align="center" pad="small">
                     <Heading level="3">Login</Heading>
+                    {this.state.b_hasEnteredWrongCredentials &&
+                    <Box round background={{"color": "status-error", "opacity": "weak"}} pad="small" border>
+                        <Text color="status-error">Es wurde ein falscher Benutzername oder ein falsches Passwort eingegeben!</Text>
+                        </Box>}
                     <FormField required label="Benutzername" >
                         <TextInput name="s_username" onChange={this.handleInputChange} />
                     </FormField>
@@ -59,7 +67,6 @@ class AdminLogIn extends React.Component {
                         <TextInput name="s_password" type="password" onChange={this.handleInputChange} />
                     </FormField>
                     <Button primary label="Einloggen" onClick={this.loginAdminUser} />
-                    {/* {sessionStorage.getItem("s_authToken") && <Redirect from="/login" to="/admin"/>} */}
                 </Box>
             </>
         )

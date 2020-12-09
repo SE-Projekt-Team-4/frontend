@@ -117,7 +117,8 @@ class MatchdayManagementForm extends React.Component {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json', 
+                    "Authorization": sessionStorage.getItem("s_authToken")
                 },
                 body: JSON.stringify({
                     "opponent": this.state.s_opponent,
@@ -127,6 +128,8 @@ class MatchdayManagementForm extends React.Component {
                 })
             })
             .then(result => result.json());
+
+        this.props.f_closeLayer(); 
     }
 
     handleDatePick(date) {

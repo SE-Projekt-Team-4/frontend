@@ -13,7 +13,7 @@ class NextMatchdaysGrid extends React.Component {
             isShowingAllMatches: false,
         };
 
-        this.showAllMatches = this.showAllMatches.bind(this); 
+        this.showAllMatches = this.showAllMatches.bind(this);
     }
 
     //https://coronaprojekt.cfapps.eu10.hana.ondemand.com/api/matches
@@ -31,14 +31,7 @@ class NextMatchdaysGrid extends React.Component {
                 this.setState({
                     a_matchData: result.data
                 });
-            },
-                (error) => {
-                    this.setState({
-                        ...this.state,
-                        error
-                    })
-                }
-            )
+            });
     }
 
     showAllMatches() {
@@ -49,7 +42,7 @@ class NextMatchdaysGrid extends React.Component {
     }
 
     render() {
-        const { a_matchData, error, isShowingAllMatches } = this.state;
+        const { a_matchData, isShowingAllMatches } = this.state;
         const { b_isAdmin } = this.props;
         const numberOfMatchCards = isShowingAllMatches ? a_matchData.length : 4
         const a_slicedMatchData = a_matchData.slice(0, numberOfMatchCards);
@@ -69,10 +62,8 @@ class NextMatchdaysGrid extends React.Component {
                     })}
                 </Grid>
                 <Box pad="medium" direction="column" align="center">
-                    {!isShowingAllMatches &&
-                    <Button secondary active label="Alle Spieltage Ansehen" onClick={this.showAllMatches}></Button>
-                }
-            </Box>
+                    {!isShowingAllMatches && <Button secondary active label="Alle Spieltage Ansehen" onClick={this.showAllMatches}></Button>}
+                </Box>
             </>
         )
     }
