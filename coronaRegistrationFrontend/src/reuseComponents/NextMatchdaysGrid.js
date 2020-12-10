@@ -2,7 +2,6 @@ import React from "react";
 import { Box, Grid, Heading, Button } from "grommet";
 import MatchdayCard from "./MatchdayCard";
 import AddMatchdayCard from "../adminArea/components/AddMatchdayCard";
-import { getAllMatches } from "../util/ApiRequests";
 
 class NextMatchdaysGrid extends React.Component {
 

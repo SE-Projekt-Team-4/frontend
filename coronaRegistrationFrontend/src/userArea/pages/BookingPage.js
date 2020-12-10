@@ -65,38 +65,6 @@ class BookingPage extends React.Component {
                 b_hasConfirmedBooking: true
             });
         })
-       /*  fetch("/api/bookings",
-            {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({
-                    "matchId": o_matchData.id.toString(),
-                    "fName": o_formData.s_firstName,
-                    "lName": o_formData.s_surname,
-                    "city": o_formData.s_city,
-                    "postcode": o_formData.s_postcode,
-                    "street": o_formData.s_street,
-                    "houseNumber": o_formData.s_houseNr,
-                    "phoneNumber": o_formData.s_telNr,
-                    "eMail": o_formData.s_email
-                })
-            })
-            .then(result => result.json())
-            .then((result) => {
-                this.setState({
-                    s_bookingCode: result.data.verificationCode
-                });
-            });
- */
-/*         this.setState({
-            ...this.state,
-            b_hasSubmittedForm: true,
-            b_hasConfirmedBooking: true
-        }) */
-
     }
 
     editVisitorInformation() {

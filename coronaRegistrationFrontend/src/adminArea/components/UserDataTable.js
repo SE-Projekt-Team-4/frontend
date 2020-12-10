@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, DataTable, Box } from "grommet";
-import { ExportToCsv } from 'export-to-csv';
-import { Download } from 'grommet-icons';
+import { ExportToCsv } from "export-to-csv";
+import { Download } from "grommet-icons";
 
 class UserDataTable extends React.Component {
 
@@ -14,12 +14,12 @@ class UserDataTable extends React.Component {
     exportToCsv() {
         const { a_visitorData } = this.props;
         const options = { 
-            fieldSeparator: ';',
+            fieldSeparator: ";",
             quoteStrings: '"',
-            decimalSeparator: '.',
+            decimalSeparator: ".",
             showLabels: true, 
             showTitle: true,
-            title: 'Visitor Data',
+            title: "Visitor Data",
             useTextFile: false,
             useBom: true,
             useKeysAsHeaders: true,

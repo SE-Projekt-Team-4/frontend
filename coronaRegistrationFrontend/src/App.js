@@ -1,11 +1,11 @@
-import React from "react"
-import HomePage from "./userArea/pages/HomePage"
-import AdminHomePage from "./adminArea/pages/AdminHomePage"
-import { Grommet } from "grommet"
-import { Route, Switch } from 'react-router-dom'
-import BookingPage from "./userArea/pages/BookingPage"
-import MatchdayManager from "./adminArea/pages/MatchdayManager"
-import AdminLogIn from "./adminArea/pages/AdminLogIn"
+import React from "react";
+import HomePage from "./userArea/pages/HomePage";
+import AdminHomePage from "./adminArea/pages/AdminHomePage";
+import { Grommet } from "grommet";
+import { Route, Switch } from "react-router-dom";
+import BookingPage from "./userArea/pages/BookingPage";
+import MatchdayManager from "./adminArea/pages/MatchdayManager";
+import AdminLogIn from "./adminArea/pages/AdminLogIn";
 
 /**
  * Define the global theme for the app

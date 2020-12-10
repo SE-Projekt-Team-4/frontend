@@ -1,9 +1,9 @@
-import React from "react"
-import { Box, Heading, Button, Clock, Text, Image } from "grommet"
-import AnchorAppBar from "../../reuseComponents/AnchorAppBar"
-import UserDataTable from "../components/UserDataTable"
-import NextMatchdaysGrid from "../../reuseComponents/NextMatchdaysGrid"
-import UserCheckIn from "../components/UserCheckIn"
+import React from "react";
+import { Box, Heading, Button, Clock, Text, Image } from "grommet";
+import AnchorAppBar from "../../reuseComponents/AnchorAppBar";
+import UserDataTable from "../components/UserDataTable";
+import NextMatchdaysGrid from "../../reuseComponents/NextMatchdaysGrid";
+import UserCheckIn from "../components/UserCheckIn";
 import { Redirect } from "react-router-dom";
 import { getNextMatch, getAllMatches, getBookings } from "../../util/ApiRequests";
 
