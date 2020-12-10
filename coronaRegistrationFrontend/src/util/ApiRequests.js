@@ -130,6 +130,41 @@ export async function postNewMatch(matchData) {
     return result;
 }
 
+export async function putExistingMatch(matchData, matchId) {
+    const response = await fetch("/api/matches/" + matchId,
+        {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": sessionStorage.getItem("s_authToken")
+            },
+            body: JSON.stringify({
+                "opponent": matchData.s_opponent,
+                "date": matchData.s_dateTime,
+                "maxSpaces": matchData.i_maxSpaces,
+                "isCancelled": matchData.b_isCancelled
+            })
+        });
+    const result = await response.json();
+    return result;
+}
+
+export async function getBookingsByMatchId(id) {
+    const response = await fetch("/api/matches/" + id + "/visitors",
+        {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": sessionStorage.getItem("s_authToken")
+            }
+        });
+    const result = await response.json();
+    return result;
+}
+
+
 
 
 

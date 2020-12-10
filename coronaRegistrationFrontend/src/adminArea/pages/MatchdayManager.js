@@ -5,6 +5,7 @@ import MatchdayOverview from "../../reuseComponents/MatchdayOverview"
 import UserDataTable from "../components/UserDataTable"
 import MatchdayManagementForm from "../../reuseComponents/MatchdayManagementForm"
 import { Redirect } from "react-router-dom"
+import { getMatchById, getBookingsByMatchId } from "../../util/ApiRequests"
 
 class MatchdayManager extends React.Component {
 
@@ -16,40 +17,29 @@ class MatchdayManager extends React.Component {
             o_matchData: {},
             a_visitorData: []
         }
+        this.getMatchData = this.getMatchData.bind(this); 
     }
 
     componentDidMount() {
-        const s_apiUrl = "/api/matches/" + this.props.match.params.id;
-        fetch(s_apiUrl,
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"
-                }
-            }).then(res => res.json())
-            .then((result) => {
-                this.setState({
-                    ...this.state,
-                    o_matchData: result.data,
-                });
+        this.getMatchData();
+
+        getBookingsByMatchId(this.props.match.params.id).then(a_bookings => {
+            this.setState({
+                ...this.state,
+                a_visitorData: a_bookings.data
             });
-        fetch(s_apiUrl + "/visitors",
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "Authorization": sessionStorage.getItem("s_authToken")
-                }
-            })
-            .then(res => res.json())
-            .then((result) => {
-                this.setState({
-                    a_visitorData: result.data
-                });
-            });
+        });
     }
+
+    getMatchData() {
+        getMatchById(this.props.match.params.id).then(o_match => {
+            this.setState({
+                ...this.state,
+                o_matchData: o_match.data
+            });
+        });
+    }
+
 
     toggleEditMatchday() {
         const { b_hasOpenedEditMatchday } = this.state;
@@ -77,12 +67,12 @@ class MatchdayManager extends React.Component {
         const s_date = s_formattedDate.getDate() + "." + (s_formattedDate.getMonth() + 1) + "." + s_formattedDate.getFullYear();
         return (
             <>
-                {sessionStorage.getItem("s_authToken") ? <><AnchorAppBar s_title="Spieltag Verwalten" b_isNotHome b_isAdmin f_clearAuthToken={this.clearAuthToken.bind(this)} />
+                {sessionStorage.getItem("s_authToken") ? <><AnchorAppBar b_isNotHome b_isAdmin s_title="Spieltag Verwalten" f_clearAuthToken={this.clearAuthToken.bind(this)} />
                     <Box pad="medium" direction="column" width="75%">
                         <MatchdayOverview b_isAdmin={b_isAdmin} s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} i_maxSpaces={o_matchData.maxSpaces} i_freeSpaces={o_matchData.freeSpaces} f_openEditMatchday={this.toggleEditMatchday.bind(this)} />
                     </Box>
                     {b_hasOpenedEditMatchday &&
-                        <MatchdayManagementForm s_title="Spieltag Editieren" s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} s_date={s_date} s_time={s_time} i_maxSpaces={o_matchData.maxSpaces} b_isCancelled={o_matchData.isCancelled} f_closeLayer={this.toggleEditMatchday.bind(this)} />}
+                        <MatchdayManagementForm b_isEditingExistingMatchday i_matchId={this.props.match.params.id} f_passMatchdayDataToParent={this.getMatchData} s_title="Spieltag Editieren" s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} s_date={s_date} s_time={s_time} i_maxSpaces={o_matchData.maxSpaces} b_isCancelled={o_matchData.isCancelled} f_closeLayer={this.toggleEditMatchday.bind(this)} />}
                     <Heading level="3" textAlign="start" color="black" margin="medium" > Besucherliste</Heading>
 
                     <Box pad="medium" direction="column" width="100%">

@@ -1,8 +1,8 @@
 import React from "react";
 import { Layer, Box, Heading, Button, Form, FormField, TextInput, MaskedInput, Calendar, DropButton, Text, RadioButtonGroup } from "grommet";
-import { Close, Schedule, FormNext } from "grommet-icons";
+import { Close, Schedule, FormNext, Clock } from "grommet-icons";
 import FormButtons from "./FormButtons";
-import { getAllMatches, postNewMatch } from "../util/ApiRequests";
+import { postNewMatch, putExistingMatch } from "../util/ApiRequests";
 
 const o_timeMask = [
     {
@@ -33,9 +33,7 @@ const o_formValidationMessages = {
 }
 const o_today = new Date();
 const o_currentDate = new Date(o_today.toISOString());
-const s_currentDateISO = o_currentDate.toISOString();
 const s_futureDateISO = new Date(o_today.setFullYear(o_today.getFullYear() + 1)).toISOString();
-const s_formattedCurrentDate = o_currentDate.getDate() + "." + (o_currentDate.getMonth() + 1) + "." + o_currentDate.getFullYear();
 const s_formattedCurrentTime = o_currentDate.toTimeString().substring(0, 5);
 
 
@@ -59,6 +57,7 @@ class MatchdayManagementForm extends React.Component {
         this.submitNewMatchday = this.submitNewMatchday.bind(this);
         this.submitDateTime = this.submitDateTime.bind(this);
         this.toggleDateTimePicker = this.toggleDateTimePicker.bind(this);
+        this.setInitialDateTimeState = this.setInitialDateTimeState.bind(this);
         this.baseState = this.state;
     }
 
@@ -72,12 +71,12 @@ class MatchdayManagementForm extends React.Component {
         if (this.state.s_dateTime) {
             this.formatDateTime(this.state.s_dateTime);
         } else {
-            this.setState({
-                ...this.state,
-                s_formattedDateTime: s_formattedCurrentDate + " um " + s_formattedCurrentTime,
-                s_date: s_currentDateISO
-            })
+            this.submitDateTime();
         }
+    }
+
+    setInitialDateTimeState() {
+
     }
 
     handleInputChange(event) {
@@ -96,35 +95,55 @@ class MatchdayManagementForm extends React.Component {
 
     submitDateTime() {
         const { s_date, s_time } = this.state;
-        const o_date = new Date(s_date);
-        const s_hours = s_time.substring(0, 2);
-        const s_minutes = s_time.substring(s_time.length - 2);
-
+        let s_hours;
+        let s_minutes;
+        let o_date;
+        if (!s_time) {
+            s_hours = s_formattedCurrentTime.substring(0, 2);
+            s_minutes = s_formattedCurrentTime.substring(s_formattedCurrentTime.length - 2);
+        } else {
+            s_hours = s_time.substring(0, 2);
+            s_minutes = s_time.substring(s_time.length - 2);
+        }
+        if (!s_date) {
+            o_date = new Date();
+        } else {
+            o_date = new Date(s_date);
+        }
         o_date.setHours(parseInt(s_hours), parseInt(s_minutes));
         const s_formattedDate = o_date.getDate() + "." + (o_date.getMonth() + 1) + "." + o_date.getFullYear();
+        const s_formattedTime = s_hours + ":" + s_minutes;
         this.setState({
             ...this.state,
-            s_formattedDateTime: s_formattedDate + " um " + s_time,
+            s_formattedDateTime: s_formattedDate + " um " + s_formattedTime,
             s_dateTime: o_date.toISOString(),
+            s_date: o_date.toISOString(),
+            s_time: s_formattedTime,
             b_isDateTimePickerOpen: false
         })
     }
 
     submitNewMatchday() {
         const { s_opponent, s_dateTime, i_maxSpaces, b_isCancelled } = this.state;
+        const { i_matchId, f_passMatchdayDataToParent, f_closeLayer, b_isEditingExistingMatchday } = this.props;
         //TODO trim entries
-        postNewMatch({
-            s_opponent: s_opponent,
-            s_dateTime: s_dateTime,
-            i_maxSpaces: i_maxSpaces,
-            b_isCancelled: b_isCancelled
-        }).then(result => {
-            console.log(result);
-        })
-        this.props.f_closeLayer();
-        this.props.f_passMatchdayDataToParent(
-
-        );
+        if (b_isEditingExistingMatchday) {
+            putExistingMatch({
+                s_opponent: s_opponent,
+                s_dateTime: s_dateTime,
+                i_maxSpaces: i_maxSpaces,
+                b_isCancelled: b_isCancelled
+            }, i_matchId);
+        } else {
+            postNewMatch({
+                s_opponent: s_opponent,
+                s_dateTime: s_dateTime,
+                i_maxSpaces: i_maxSpaces,
+                b_isCancelled: b_isCancelled
+            });
+        }
+        f_closeLayer();
+        f_passMatchdayDataToParent();
     }
 
     handleDatePick(date) {
@@ -162,7 +181,7 @@ class MatchdayManagementForm extends React.Component {
     }
 
     render() {
-        const { s_title, f_closeLayer, } = this.props;
+        const { s_title, f_closeLayer, b_isEditingExistingMatchday } = this.props;
         const { s_opponent, s_dateTime, i_maxSpaces, b_isCancelled, b_isDateTimePickerOpen, s_formattedDateTime, s_time, s_date } = this.state;
         return (
             <Layer position="center" onClickOutside={f_closeLayer}>
@@ -178,11 +197,8 @@ class MatchdayManagementForm extends React.Component {
                         <FormField name="s_dateTime" label="Datum und Uhrzeit">
                             <DropButton open={b_isDateTimePickerOpen} onClose={this.toggleDateTimePicker} onOpen={this.toggleDateTimePicker} overflow="scroll" dropContent={
                                 <Box pad="small">
-                                    {s_dateTime ?
-                                        <Calendar name="s_date" date={s_date} onSelect={this.handleDatePick} firstDayOfWeek={1} showAdjacentDays={false} />
-                                        : <Calendar name="s_date" date={s_currentDateISO} bounds={[s_currentDateISO, s_futureDateISO]} onSelect={this.handleDatePick} firstDayOfWeek={1} showAdjacentDays={false} />
-                                    }
-                                    <MaskedInput name="s_time" dropHeight="small" value={s_time} mask={o_timeMask} onChange={this.handleInputChange} />
+                                    <Calendar name="s_date" date={s_date} bounds={!b_isEditingExistingMatchday && [s_dateTime, s_futureDateISO]} onSelect={this.handleDatePick} firstDayOfWeek={1} showAdjacentDays={false} />
+                                    <MaskedInput name="s_time" icon={<Clock />} dropHeight="small" value={s_time} mask={o_timeMask} onChange={this.handleInputChange} />
                                     <Box direction="row-responsive" justify="end" pad="xsmall">
                                         <Button primary reverse label="Bestätigen" icon={<FormNext />} fill="vertical" gap="xxsmall" disabled={s_formattedCurrentTime.length < 3} onClick={this.submitDateTime} />
                                     </Box>
