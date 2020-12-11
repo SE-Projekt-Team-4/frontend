@@ -2,19 +2,34 @@ import React from "react";
 import { Box, Heading, Button, Text } from "grommet";
 import { Edit } from "grommet-icons";
 import StadiumMap from "./StadiumMap";
+import { formatDateTime } from "../util/Helpers";
 
 class MatchdayOverview extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            s_date: "",
+            s_time: ""
+        };
+    }
+
+    componentDidUpdate(prevProps) {
+        if(prevProps.s_dateTime !== this.props.s_dateTime) {
+            const o_dateTime = formatDateTime(this.props.s_dateTime);
+            this.setState({
+                s_date: o_dateTime.s_formattedDate,
+                s_time: o_dateTime.s_time
+            })
+        }
     }
 
     render() {
-        const { s_opponent, s_dateTime, i_maxSpaces, b_isAdmin, f_openEditMatchday, i_freeSpaces } = this.props;
-        const s_formattedDate = new Date(s_dateTime);
+        const { s_opponent, i_maxSpaces, b_isAdmin, f_openEditMatchday, i_freeSpaces } = this.props;
+        const { s_date, s_time } = this.state;
+        /* const s_formattedDate = new Date(s_dateTime);
         const s_time = "um " + s_formattedDate.toTimeString().substring(0, 5);
-        const s_date = s_formattedDate.getDate() + "." + (s_formattedDate.getMonth() + 1) + "." + s_formattedDate.getFullYear();
+        const s_date = s_formattedDate.getDate() + "." + (s_formattedDate.getMonth() + 1) + "." + s_formattedDate.getFullYear(); */
         return (
             <Box align="center" justify="between" pad="small" direction="row-responsive" border={{ "color": "brand", "size": "small", "style": "solid" }}>
                 <Box direction="column" gap="xsmall">

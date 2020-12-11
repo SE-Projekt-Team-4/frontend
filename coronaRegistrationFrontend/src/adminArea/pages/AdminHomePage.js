@@ -86,7 +86,7 @@ class AdminHomePage extends React.Component {
                     <Box direction="column" align="center" justify="center" gap="medium" pad="small" background="url(./footballbackground.jpg)">
                         <Image src="./teamlogo.png" fill={false} />
                         <Heading level="2" textAlign="center" margin="none" color="light-1">Nächstes Spiel:</Heading>
-                        <Heading level="3" textAlign="center" margin="none" color="light-1">FG 08 Mutterstadt gg. {(o_nextMatchData.opponent && !o_nextMatchData.isCancelled) || "Ausstehend"}</Heading>
+                        <Heading level="3" textAlign="center" margin="none" color="light-1">FG 08 Mutterstadt gg. {(o_nextMatchData.opponent && !o_nextMatchData.isCancelled) ? o_nextMatchData.opponent : "Ausstehend"}</Heading>
                         {(i_timeToNextMatchInMS <= 7200000 /*2 stunden in ms*/ && o_timeToNextMatchISO !== "" && !o_nextMatchData.isCancelled) ?
                             <Box gap="small" align="center" justify="center">
                                 <Text color="light-1"> Zeit bis zum Anstoß: </Text>

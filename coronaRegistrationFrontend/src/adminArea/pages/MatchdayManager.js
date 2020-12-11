@@ -22,7 +22,6 @@ class MatchdayManager extends React.Component {
 
     componentDidMount() {
         this.getMatchData();
-
         getBookingsByMatchId(this.props.match.params.id).then(a_bookings => {
             this.setState({
                 ...this.state,
@@ -39,7 +38,6 @@ class MatchdayManager extends React.Component {
             });
         });
     }
-
 
     toggleEditMatchday() {
         const { b_hasOpenedEditMatchday } = this.state;
@@ -72,7 +70,7 @@ class MatchdayManager extends React.Component {
                         <MatchdayOverview b_isAdmin={b_isAdmin} s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} i_maxSpaces={o_matchData.maxSpaces} i_freeSpaces={o_matchData.freeSpaces} f_openEditMatchday={this.toggleEditMatchday.bind(this)} />
                     </Box>
                     {b_hasOpenedEditMatchday &&
-                        <MatchdayManagementForm b_isEditingExistingMatchday i_matchId={this.props.match.params.id} f_passMatchdayDataToParent={this.getMatchData} s_title="Spieltag Editieren" s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} s_date={s_date} s_time={s_time} i_maxSpaces={o_matchData.maxSpaces} b_isCancelled={o_matchData.isCancelled} f_closeLayer={this.toggleEditMatchday.bind(this)} />}
+                        <MatchdayManagementForm b_isEditingExistingMatchday i_matchId={this.props.match.params.id} f_passMatchdayDataToParent={this.getMatchData} s_title="Spieltag Editieren" s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} i_maxSpaces={o_matchData.maxSpaces} b_isCancelled={o_matchData.isCancelled} f_closeLayer={this.toggleEditMatchday.bind(this)} />}
                     <Heading level="3" textAlign="start" color="black" margin="medium" > Besucherliste</Heading>
 
                     <Box pad="medium" direction="column" width="100%">

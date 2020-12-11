@@ -26,7 +26,6 @@ class HomePage extends React.Component {
 
     render() {
         const { a_matchData } = this.state;
-        console.log(a_matchData)
         return (
             <>
                 <AnchorAppBar s_title="Homepage" />

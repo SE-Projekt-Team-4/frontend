@@ -3,6 +3,7 @@ import { Layer, Box, Heading, Button, Form, FormField, TextInput, MaskedInput, C
 import { Close, Schedule, FormNext, Clock } from "grommet-icons";
 import FormButtons from "./FormButtons";
 import { postNewMatch, putExistingMatch } from "../util/ApiRequests";
+import { formatDateTime, trimFormData } from "../util/Helpers";
 
 const o_timeMask = [
     {
@@ -52,12 +53,11 @@ class MatchdayManagementForm extends React.Component {
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.resetValues = this.resetValues.bind(this);
-        this.formatDateTime = this.formatDateTime.bind(this);
+        this.formatDateTimeInput = this.formatDateTimeInput.bind(this);
         this.handleDatePick = this.handleDatePick.bind(this);
         this.submitNewMatchday = this.submitNewMatchday.bind(this);
         this.submitDateTime = this.submitDateTime.bind(this);
         this.toggleDateTimePicker = this.toggleDateTimePicker.bind(this);
-        this.setInitialDateTimeState = this.setInitialDateTimeState.bind(this);
         this.baseState = this.state;
     }
 
@@ -69,14 +69,10 @@ class MatchdayManagementForm extends React.Component {
 
     componentDidMount() {
         if (this.state.s_dateTime) {
-            this.formatDateTime(this.state.s_dateTime);
+            this.formatDateTimeInput(this.state.s_dateTime);
         } else {
             this.submitDateTime();
         }
-    }
-
-    setInitialDateTimeState() {
-
     }
 
     handleInputChange(event) {
@@ -110,9 +106,10 @@ class MatchdayManagementForm extends React.Component {
         } else {
             o_date = new Date(s_date);
         }
-        o_date.setHours(parseInt(s_hours), parseInt(s_minutes));
         const s_formattedDate = o_date.getDate() + "." + (o_date.getMonth() + 1) + "." + o_date.getFullYear();
         const s_formattedTime = s_hours + ":" + s_minutes;
+        o_date.setHours(parseInt(s_hours), parseInt(s_minutes));
+        
         this.setState({
             ...this.state,
             s_formattedDateTime: s_formattedDate + " um " + s_formattedTime,
@@ -126,21 +123,17 @@ class MatchdayManagementForm extends React.Component {
     submitNewMatchday() {
         const { s_opponent, s_dateTime, i_maxSpaces, b_isCancelled } = this.state;
         const { i_matchId, f_passMatchdayDataToParent, f_closeLayer, b_isEditingExistingMatchday } = this.props;
-        //TODO trim entries
+        const o_matchData = trimFormData({
+            s_opponent: s_opponent,
+            s_dateTime: s_dateTime,
+            i_maxSpaces: i_maxSpaces, 
+            b_isCancelled: b_isCancelled
+        });
+
         if (b_isEditingExistingMatchday) {
-            putExistingMatch({
-                s_opponent: s_opponent,
-                s_dateTime: s_dateTime,
-                i_maxSpaces: i_maxSpaces,
-                b_isCancelled: b_isCancelled
-            }, i_matchId);
+            putExistingMatch(o_matchData, i_matchId);
         } else {
-            postNewMatch({
-                s_opponent: s_opponent,
-                s_dateTime: s_dateTime,
-                i_maxSpaces: i_maxSpaces,
-                b_isCancelled: b_isCancelled
-            });
+            postNewMatch(o_matchData);
         }
         f_closeLayer();
         f_passMatchdayDataToParent();
@@ -168,15 +161,14 @@ class MatchdayManagementForm extends React.Component {
         }
     }
 
-    formatDateTime(date) {
-        const o_date = new Date(date);
-        const s_formattedDate = o_date.getDate() + "." + (o_date.getMonth() + 1) + "." + o_date.getFullYear();
-        const s_time = o_date.toTimeString().substring(0, 5);
-
+    formatDateTimeInput(date) {
+        const o_date = formatDateTime(date); 
         this.setState({
             ...this.state,
-            s_formattedDateTime: s_formattedDate + " um " + s_time,
-            b_isDateTimePickerOpen: false
+            s_formattedDateTime: o_date.s_formattedDate + o_date.s_time,
+            b_isDateTimePickerOpen: false, 
+            s_date: date, 
+            s_time: o_date.s_time.substring(4)
         })
     }
 

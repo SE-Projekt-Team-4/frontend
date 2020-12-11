@@ -7,6 +7,7 @@ import MatchdayOverview from "../../reuseComponents/MatchdayOverview";
 import BookingConfirmationPage from "./BookingConfirmationPage";
 import BookingCompletedPage from "./BookingCompletedPage";
 import { getMatchById, postBooking } from "../../util/ApiRequests";
+import { trimFormData } from "../../util/Helpers";
 
 class BookingPage extends React.Component {
 
@@ -47,10 +48,9 @@ class BookingPage extends React.Component {
     }
 
     trimFormData(formData) {
-        const trimmedFormData = Object.keys(formData).map(key => formData[key] = formData[key].trim());
         this.setState({
             ...this.state,
-            o_formData: trimmedFormData
+            o_formData: trimFormData(formData)
         })
     }
 
@@ -60,7 +60,7 @@ class BookingPage extends React.Component {
         postBooking(o_matchData.id, o_formData).then(o_verificationCode => {
             this.setState({
                 ...this.state,
-                s_bookingCode: o_verificationCode.data,
+                s_bookingCode: o_verificationCode.data.o_verificationCode,
                 b_hasSubmittedForm: true,
                 b_hasConfirmedBooking: true
             });

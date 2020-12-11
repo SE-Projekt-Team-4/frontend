@@ -4,6 +4,7 @@ import { MailOption } from "grommet-icons";
 import countryList from "react-select-country-list";
 import { postcodeValidator, postcodeValidatorExistsForCountry } from "postcode-validator";
 import FormButtons from "../../reuseComponents/FormButtons"; 
+import { checkRegex } from "../../util/Helpers";
 
 const o_telNrMask = [
   { fixed: "+" },
@@ -63,13 +64,14 @@ class ContactForm extends React.Component {
   }
 
   checkRegexValidity(regexp, value) {
-    if (value) {
+    return checkRegex(regexp, value); 
+    /* if (value) {
       value = value.trim();
       const o_Regex = new RegExp(regexp)
       if (!o_Regex.test(value)) {
         return o_formValidationMessages.invalid;
       }
-    }
+    } */
   }
 
   validatePostcode(postcode) {
