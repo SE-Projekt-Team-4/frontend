@@ -60,7 +60,7 @@ class BookingPage extends React.Component {
         postBooking(o_matchData.id, o_formData).then(o_verificationCode => {
             this.setState({
                 ...this.state,
-                s_bookingCode: o_verificationCode.data.o_verificationCode,
+                s_bookingCode: o_verificationCode.data.verificationCode,
                 b_hasSubmittedForm: true,
                 b_hasConfirmedBooking: true
             });

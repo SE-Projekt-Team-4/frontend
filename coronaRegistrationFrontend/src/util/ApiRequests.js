@@ -60,7 +60,7 @@ export async function postBooking(matchDataId, formData) {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
-            }, 
+            },
             body: JSON.stringify({
                 "matchId": matchDataId.toString(),
                 "fName": formData.s_firstName,
@@ -89,7 +89,7 @@ export async function getLogin(username, password) {
             }
         });
     const result = await response.json();
-    return {result, s_authToken};
+    return { result, s_authToken };
 }
 
 export async function getRedeemBooking(verificationCode) {
@@ -145,6 +145,20 @@ export async function putExistingMatch(matchData, matchId) {
                 "maxSpaces": matchData.i_maxSpaces,
                 "isCancelled": matchData.b_isCancelled
             })
+        });
+    const result = await response.json();
+    return result;
+}
+
+export async function deleteExistingMatch(matchId) {
+    const response = await fetch("/api/matches/" + matchId,
+        {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": sessionStorage.getItem("s_authToken")
+            }
         });
     const result = await response.json();
     return result;

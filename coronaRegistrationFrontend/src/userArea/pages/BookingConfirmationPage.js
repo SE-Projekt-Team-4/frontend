@@ -12,7 +12,18 @@ class BookingConfirmationPage extends React.Component {
                 <Heading level="2">Buchungsübersicht</Heading>
                 <MatchdayOverview s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} i_maxSpaces={o_matchData.maxSpaces}/>
                 <Heading level="3">Ihre Eingabedaten</Heading>
-                <VisitorInformationSummary o_visitorData={o_visitorData} onEditVisitorInformation={onEditVisitorInformation} />
+                <VisitorInformationSummary 
+                    b_canEditVisitorInformation
+                    s_firstName={o_visitorData.s_firstName} 
+                    s_surname={o_visitorData.s_surname} 
+                    s_street={o_visitorData.s_street} 
+                    s_houseNr={o_visitorData.s_houseNr} 
+                    s_postcode={o_visitorData.s_postcode} 
+                    s_city={o_visitorData.s_city} 
+                    s_country={o_visitorData.s_country} 
+                    s_email={o_visitorData.s_email} 
+                    s_telNr={o_visitorData.s_telNr} 
+                    onEditVisitorInformation={onEditVisitorInformation} />
                 <Box direction="row-responsive" justify="end" pad={{"top": "medium"}}>
                     <Button primary reverse type="submit" label="Buchung Bestätigen" icon={<FormNext />} onClick={onConfirmBooking} gap="xxsmall"/>
                 </Box>
