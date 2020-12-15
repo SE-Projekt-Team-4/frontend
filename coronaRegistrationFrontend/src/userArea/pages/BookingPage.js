@@ -17,6 +17,7 @@ class BookingPage extends React.Component {
             b_hasStartedBooking: true,
             b_hasSubmittedForm: false,
             b_hasConfirmedBooking: false,
+            b_isFullyBooked: false,
             o_formData: {},
             o_matchData: {},
             s_bookingCode: ""
@@ -29,7 +30,7 @@ class BookingPage extends React.Component {
                 ...this.state,
                 o_matchData: o_match.data
             });
-            if(o_match.data.freeSpaces === 0 || o_match.data.isCancelled) {
+            if (o_match.data.freeSpaces === 0 || o_match.data.isCancelled) {
                 window.location.replace("/");
             }
         })
@@ -58,12 +59,21 @@ class BookingPage extends React.Component {
         const { o_formData, o_matchData } = this.state;
         this.trimFormData(o_formData);
         postBooking(o_matchData.id, o_formData).then(o_verificationCode => {
-            this.setState({
-                ...this.state,
-                s_bookingCode: o_verificationCode.data.verificationCode,
-                b_hasSubmittedForm: true,
-                b_hasConfirmedBooking: true
-            });
+            if (o_verificationCode.error && o_verificationCode.error.status === 422) {
+                this.setState({
+                    ...this.state,
+                    b_isFullyBooked: true,
+                    b_hasSubmittedForm: true,
+                    b_hasConfirmedBooking: true
+                })
+            } else {
+                this.setState({
+                    ...this.state,
+                    s_bookingCode: o_verificationCode.data.verificationCode,
+                    b_hasSubmittedForm: true,
+                    b_hasConfirmedBooking: true
+                });
+            }
         })
     }
 
@@ -77,7 +87,7 @@ class BookingPage extends React.Component {
     }
 
     render() {
-        const { o_matchData, o_formData, b_hasConfirmedBooking, b_hasSubmittedForm, s_bookingCode } = this.state;
+        const { o_matchData, o_formData, b_hasConfirmedBooking, b_hasSubmittedForm, s_bookingCode, b_isFullyBooked } = this.state;
         return (
             <>
                 <AnchorAppBar s_title="Terminbuchung" b_isNotHome />
@@ -97,7 +107,7 @@ class BookingPage extends React.Component {
                     />
                 }
                 {(b_hasConfirmedBooking && b_hasSubmittedForm) &&
-                    <BookingCompletedPage s_bookingCode={s_bookingCode} />
+                    <BookingCompletedPage s_bookingCode={s_bookingCode} b_isFullyBooked={b_isFullyBooked} />
 
                 }
             </>

@@ -43,10 +43,8 @@ class MatchdayManager extends React.Component {
     }
 
     deleteMatchday() {
-        deleteExistingMatch(this.props.match.params.id).then(o_match => {
-            //handle response 
-            console.log(o_match); 
-        })
+        deleteExistingMatch(this.props.match.params.id); 
+        window.location.replace("/admin"); 
     }
 
     toggleEditMatchday() {

@@ -28,7 +28,7 @@ class MatchdayOverview extends React.Component {
         const { s_opponent, i_maxSpaces, b_isAdmin, f_openEditMatchday, f_deleteMatchday, i_freeSpaces } = this.props;
         const { s_date, s_time } = this.state;
         return (
-            <Box align="center" justify="between" pad="small" direction="row-responsive" border={{ "color": "brand", "size": "small", "style": "solid" }}>
+            <Box align="center" justify="between" gap="large" pad="small" direction="row-responsive" border={{ "color": "brand", "size": "small", "style": "solid" }}>
                 <Box direction="column" gap="xsmall">
                     <Heading level="4" margin="none">Heim gg. {s_opponent}</Heading>
                     <Text size="medium">{s_date + " " + s_time}</Text>

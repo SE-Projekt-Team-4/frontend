@@ -80,7 +80,7 @@ class UserCheckIn extends React.Component {
                         </Box>
                         <Box align="center">
                             <Box wrap align="center" justify="center" border={{ "color": "status-error", "size": "medium", "style": "dashed" }}>
-                                <QrReader style={{ width: "15rem" }} delay={500} resolution={250} onScan={this.scanQRCode} />
+                                <QrReader style={{ width: "15rem", objectFit: "fill"}} delay={200} resolution={250} onScan={this.scanQRCode} />
                             </Box>
                             <Heading level="2" margin="none">oder</Heading>
                             <FormField name="s_verificationCode" label="Buchungscode Eingeben:" value={s_verificationCode}>
