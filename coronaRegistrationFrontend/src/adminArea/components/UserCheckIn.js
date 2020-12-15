@@ -13,21 +13,22 @@ class UserCheckIn extends React.Component {
             b_isOpen: true,
             s_verificationCode: "",
             b_isValidBookingCode: false,
-            b_hasCheckedIn: false, 
+            b_hasCheckedIn: false,
             o_visitorData: {
-                s_firstName: "", 
-                s_surname: "", 
-                s_street: "", 
-                s_houseNr: "", 
-                s_postcode: "", 
-                s_city: "", 
-                s_country: "", 
-                s_email: "", 
+                s_firstName: "",
+                s_surname: "",
+                s_street: "",
+                s_houseNr: "",
+                s_postcode: "",
+                s_city: "",
+                s_country: "",
+                s_email: "",
                 s_telNr: ""
             }
         }
         this.redeemBooking = this.redeemBooking.bind(this);
         this.scanQRCode = this.scanQRCode.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this); 
     }
 
     redeemBooking() {
@@ -35,21 +36,23 @@ class UserCheckIn extends React.Component {
             if (o_redeemResponse.error && (o_redeemResponse.error.status === 404 || o_redeemResponse.error.status === 422)) {
                 this.setState({
                     ...this.state,
-                    b_isValidBookingCode: false
+                    b_isValidBookingCode: false, 
+                    b_hasCheckedIn: true
                 });
             } else if (o_redeemResponse.data) {
                 this.setState({
                     ...this.state,
                     b_isValidBookingCode: true,
+                    b_hasCheckedIn: true,
                     o_visitorData: {
-                        s_firstName: o_redeemResponse.data.visitor.fName, 
-                        s_surname: o_redeemResponse.data.visitor.lName, 
-                        s_street: o_redeemResponse.data.visitor.street, 
-                        s_houseNr: o_redeemResponse.data.visitor.houseNumber, 
-                        s_postcode: o_redeemResponse.data.visitor.postcode, 
-                        s_city: o_redeemResponse.data.visitor.city, 
+                        s_firstName: o_redeemResponse.data.visitor.fName,
+                        s_surname: o_redeemResponse.data.visitor.lName,
+                        s_street: o_redeemResponse.data.visitor.street,
+                        s_houseNr: o_redeemResponse.data.visitor.houseNumber,
+                        s_postcode: o_redeemResponse.data.visitor.postcode,
+                        s_city: o_redeemResponse.data.visitor.city,
                         s_email: o_redeemResponse.data.visitor.eMail,
-                        s_telNr: o_redeemResponse.data.visitor.phoneNumber 
+                        s_telNr: o_redeemResponse.data.visitor.phoneNumber
                     }
                 });
             }
@@ -59,11 +62,18 @@ class UserCheckIn extends React.Component {
         if (result) {
             this.setState({
                 ...this.state,
-                s_verificationCode: result,
-                b_hasCheckedIn: true
+                s_verificationCode: result
             })
             this.redeemBooking();
         }
+    }
+
+    handleInputChange(event) {
+        this.setState({
+            ...this.state,
+            [event.target.name]: event.target.value
+        });
+
     }
 
     render() {
@@ -80,21 +90,23 @@ class UserCheckIn extends React.Component {
                         </Box>
                         <Box align="center">
                             <Box wrap align="center" justify="center" border={{ "color": "status-error", "size": "medium", "style": "dashed" }}>
-                                <QrReader style={{ width: "15rem", objectFit: "fill"}} delay={200} resolution={250} onScan={this.scanQRCode} />
+                                <QrReader style={{ width: "15rem", objectFit: "none" }} delay={500} resolution={250} onScan={this.scanQRCode} />
                             </Box>
                             <Heading level="2" margin="none">oder</Heading>
-                            <FormField name="s_verificationCode" label="Buchungscode Eingeben:" value={s_verificationCode}>
-                                <TextInput placeholder="123456789" value={s_verificationCode} />
+                            <FormField label="Buchungscode Eingeben:">
+                                <TextInput name="s_verificationCode" placeholder="123456789" value={s_verificationCode} onChange={this.handleInputChange}/>
                             </FormField>
                             <Button primary label="Einchecken" onClick={this.redeemBooking} />
                         </Box>
                     </Box>
                     {b_hasCheckedIn &&
-                        <Box direction="row-responsive" pad="small" width="60%" animation="slideRight">
+                        <Box align="center" gap="medium" animation="slideRight" pad="small">
                             {b_isValidBookingCode ?
-                                <Box direction="column">
-                                    <Heading level="4" marign="none">Gültige Buchung</Heading>
-                                    <Checkmark size="medium" color="status-ok" />
+                                <Box animation="slideRight">
+                                    <Box direction="row-responsive" gap="small" justify="center" align="center">
+                                        <Heading level="3" margin="none">Gültige Buchung</Heading>
+                                        <Checkmark size="medium" color="status-ok" />
+                                    </Box>
                                     <VisitorInformationSummary
                                         s_firstName={o_visitorData.s_firstName}
                                         s_surname={o_visitorData.s_surname}
@@ -107,13 +119,19 @@ class UserCheckIn extends React.Component {
                                         s_telNr={o_visitorData.s_telNr} />
                                 </Box> :
                                 <>
-                                    <Box direction="column" gap="small">
-                                        <Heading level="4" margin="none">Ungültige Buchung</Heading>
-                                        <Text size="small">Dieser Buchungscode ist entweder ungültig oder er wurde bereits verwendet</Text>
+                                    <Box gap="medium" animation="slideRight" pad="small">
+                                        <Box direction="row-responsive" gap="small" justify="center" align="center">
+                                            <Heading level="3" margin="none">Ungültige Buchung</Heading>
+                                            <Alert size="medium" color="status-error" />
+                                        </Box>
+                                        <Box align="center">
+                                            <Text size="small">Dieser Buchungscode ist entweder ungültig oder er wurde bereits verwendet</Text>
+                                        </Box>
                                     </Box>
-                                    <Alert size="medium" color="status-error" />
+
                                 </>
                             }
+                            <Text size="small">Sie können nun den nächsten Besucher registrieren</Text>
                         </Box>
                     }
                 </Box>
