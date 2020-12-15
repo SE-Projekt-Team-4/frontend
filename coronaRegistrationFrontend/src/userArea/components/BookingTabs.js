@@ -5,12 +5,6 @@ import RichTabTitle from "./RichTabTitle";
 
 class BookingTabs extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {};
-
-    }
-
     render() {
         return (
             <Box gap="medium" pad="medium">
