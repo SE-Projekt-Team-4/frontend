@@ -27,7 +27,7 @@ export async function getNextMatch() {
 
 export async function getBookings() {
     //später api/bookings mit isRedeemed
-    const response = await fetch("/api/visitors",
+    const response = await fetch("/api/bookings/",
         {
             method: "GET",
             headers: {
@@ -165,7 +165,7 @@ export async function deleteExistingMatch(matchId) {
 }
 
 export async function getBookingsByMatchId(id) {
-    const response = await fetch("/api/matches/" + id + "/visitors",
+    const response = await fetch("/api/matches/" + id + "/bookings",
         {
             method: "GET",
             headers: {
