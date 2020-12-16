@@ -1,10 +1,10 @@
 import React from "react";
 import { Form, FormField, MaskedInput, TextInput, Heading, Box, Select } from "grommet";
 import { MailOption } from "grommet-icons";
-import countryList from "react-select-country-list";
 import { postcodeValidator, postcodeValidatorExistsForCountry } from "postcode-validator";
-import FormButtons from "../../reuseComponents/FormButtons"; 
+import FormButtons from "../../reuseComponents/FormButtons";
 import { checkRegex } from "../../util/Helpers";
+import { getData } from "country-list";
 
 /**
  * Only allows numbers with a maximum lenghth of 15 characters. As an exception a + may be added before the phonenumber
@@ -80,9 +80,18 @@ class ContactForm extends React.Component {
   }
 
   componentDidMount() {
+    const a_countryData = getData();
+    const a_populatedSuggestions = [];
+    for (let i = 0; i < a_countryData.length; i++) {
+      const o_countryEntry = {
+        "value": a_countryData[i].code,
+        "label": a_countryData[i].name
+      }
+      a_populatedSuggestions.push(o_countryEntry);
+    }
     this.setState({
-      ...this.state, 
-      a_suggestions: countryList().getData()
+      ...this.state,
+      a_suggestions: a_populatedSuggestions
     })
   }
 
@@ -101,7 +110,7 @@ class ContactForm extends React.Component {
    * @param {String} value contains the value to be checked
    */
   checkRegexValidity(regexp, value) {
-    return checkRegex(regexp, value); 
+    return checkRegex(regexp, value);
   }
 
   /**
@@ -111,7 +120,7 @@ class ContactForm extends React.Component {
   validatePostcode(postcode) {
     const { s_country } = this.state;
     if (postcode && s_country) {
-      const s_countryCode = s_country.value; 
+      const s_countryCode = s_country.value;
       if (s_country && postcodeValidatorExistsForCountry(s_countryCode)) {
         if (!postcodeValidator(postcode, s_countryCode)) {
           return o_formValidationMessages.invalid;
@@ -129,7 +138,7 @@ class ContactForm extends React.Component {
       this.setState({
         ...this.state,
         s_country: event.option
-      }); 
+      });
       this.validatePostcode(this.state.s_postcode)
     } else {
       this.setState({
@@ -179,7 +188,7 @@ class ContactForm extends React.Component {
         <FormField required label="Telefonnummer (inkl. Vorwahl)" name="s_telNr" validate={(event) => this.checkRegexValidity(o_validationRegExps.s_telNr, event)}>
           <MaskedInput name="s_telNr" value={s_telNr} mask={o_telNrMask} onChange={this.handleInputChange} />
         </FormField>
-        <FormButtons/>
+        <FormButtons />
       </Form>
     );
   }
