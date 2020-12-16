@@ -150,7 +150,9 @@ class MatchdayManagementForm extends React.Component {
     }
 
     /**
-     * Submits a newly created matchday using the data from the from
+     * Submits a newly created matchday using the data from the form. 
+     * If the number of maximum spaces entered is less than the amount of bookings which have been submitted for the match, then the user is notified
+     * and needs to press the submit form button again
      */
     submitNewMatchday() {
         const { s_opponent, s_dateTime, i_maxSpaces, b_isCancelled } = this.state;
