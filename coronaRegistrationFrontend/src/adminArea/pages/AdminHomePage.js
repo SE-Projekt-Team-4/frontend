@@ -6,8 +6,15 @@ import NextMatchdaysGrid from "../../reuseComponents/NextMatchdaysGrid";
 import UserCheckIn from "../components/UserCheckIn";
 import { Redirect } from "react-router-dom";
 import { getNextMatch, getAllMatches, getBookings } from "../../util/ApiRequests";
-
+/**
+ * @class AdminHomePage
+ * @version 5.2.0
+ */
 class AdminHomePage extends React.Component {
+    /**
+     * 
+     * @param {*} props 
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -20,7 +27,9 @@ class AdminHomePage extends React.Component {
         this.closeCheckin = this.closeCheckin.bind(this);
         this.getMatches = this.getMatches.bind(this);
     }
-
+    /**
+     * Fills a_bookingdata and triggers the functions for getting the next match and all matches
+     */
     componentDidMount() {
         getBookings().then(a_bookings => {
             this.setState({
@@ -32,6 +41,9 @@ class AdminHomePage extends React.Component {
         this.getMatches();
     }
 
+    /**
+     * Fetches data for all matches from api
+     */
     getMatches() {
         getAllMatches().then(a_matches => {
             this.setState({
@@ -41,7 +53,9 @@ class AdminHomePage extends React.Component {
         });
         this.getNextMatch();
     }
-
+    /**
+     * Fetches data for the nex match from api
+     */
     getNextMatch() {
         getNextMatch().then(o_match => {
             if (o_match.error && o_match.error.status === 404) {
@@ -54,14 +68,18 @@ class AdminHomePage extends React.Component {
             });
         });
     }
-
+    /**
+    * shows the checkin Layer including the scan function
+    */
     setCheckinVisible() {
         this.setState({
             ...this.state,
             b_isCheckinVisible: true
         });
     }
-
+    /**
+    * hides the checkin Layer including the scan function
+    */
     closeCheckin() {
         this.setState({
             ...this.state,
@@ -69,10 +87,16 @@ class AdminHomePage extends React.Component {
         });
     }
 
+    /**
+     * clears the authentification token from the session storage
+     */
     clearAuthToken() {
         sessionStorage.clear();
     }
 
+    /**
+     * renders the admin home page
+     */
     render() {
         const { b_isCheckinVisible, a_bookingData, o_nextMatchData, i_registeredVisitors, a_matchData } = this.state;
         const i_timeToNextMatchInMS = new Date(o_nextMatchData.date) - Date.now();
@@ -98,7 +122,7 @@ class AdminHomePage extends React.Component {
                     {b_isCheckinVisible && <UserCheckIn f_closeLayer={this.closeCheckin} />}
                     <NextMatchdaysGrid b_isAdmin a_matchData={a_matchData} f_updateMatches={this.getMatches} />
                     <Box pad="medium">
-                        <UserDataTable a_visitorData={a_bookingData} b_isAdminPage/>
+                        <UserDataTable a_visitorData={a_bookingData} b_isAdminPage />
                     </Box></> : <Redirect to="/login" />}
             </>
         )
