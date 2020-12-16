@@ -1,5 +1,14 @@
 //ALL REUSE HELPER FUNCTIONS
+/**
+ * @module Helpers
+ */
 
+
+/**
+ * Checks value using regexp
+ * @param {String} regexp Contains value constraints
+ * @param {String} value contains value to be checked
+ */
 export function checkRegex(regexp, value) {
     if (value) {
         value = value.trim();

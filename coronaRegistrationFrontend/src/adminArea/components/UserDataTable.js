@@ -4,8 +4,7 @@ import { ExportToCsv } from "export-to-csv";
 import { Download, Trash } from "grommet-icons";
 import { formatDateTime } from "../../util/Helpers";
 /**
- * @module UserDataTable
- * @version 4.2.1
+ * @class UserDataTable
  */
 class UserDataTable extends React.Component {
     /**

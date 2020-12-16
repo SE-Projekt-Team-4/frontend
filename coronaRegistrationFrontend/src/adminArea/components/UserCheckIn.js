@@ -2,12 +2,11 @@ import React from "react";
 import { Box, Button, FormField, Heading, TextInput, Layer, Text } from "grommet";
 import { Checkmark, Alert } from "grommet-icons";
 import VisitorInformationSummary from "../../reuseComponents/VisitorInformationSummary";
-import { getRedeemBooking } from "../../util/ApiRequests";
+import { redeemBooking } from "../../util/ApiRequests";
 import QrReader from "react-qr-scanner";
 
 /**
  * @class UserCheckIn
- * @version 6.2.2
 */
 class UserCheckIn extends React.Component {
 
@@ -43,7 +42,7 @@ class UserCheckIn extends React.Component {
      * Redeems the booking for a customer, pushing the update to the backend
      */
     redeemBooking() {
-        getRedeemBooking(this.state.s_verificationCode).then(o_redeemResponse => {
+        redeemBooking(this.state.s_verificationCode).then(o_redeemResponse => {
             if (o_redeemResponse.error && (o_redeemResponse.error.errorCode === "REDEEMNOMATCH" || o_redeemResponse.error.errorCode === "ALREADYREDEEMED")) {
                 this.setState({
                     ...this.state,

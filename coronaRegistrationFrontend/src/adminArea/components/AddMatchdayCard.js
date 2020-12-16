@@ -5,8 +5,7 @@ import MatchdayManagementForm from "../../reuseComponents/MatchdayManagementForm
 
 
 /**
- * @module AddMatchdayCard
- * @version 3.1.1
+ * @class AddMatchdayCard
  */
 class AddMatchdayCard extends React.Component {
 

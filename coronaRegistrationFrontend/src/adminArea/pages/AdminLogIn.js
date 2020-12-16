@@ -4,7 +4,6 @@ import AnchorAppBar from "../../reuseComponents/AnchorAppBar";
 import { getLogin } from "../../util/ApiRequests";
 /**
  * @class AdminLogIn
- * @version 3.2.2
  */
 class AdminLogIn extends React.Component {
 
