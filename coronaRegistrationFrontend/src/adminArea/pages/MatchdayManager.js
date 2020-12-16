@@ -114,7 +114,7 @@ class MatchdayManager extends React.Component {
                     {b_hasDeletedMatchday &&
                         <DeleteMatchdayLayer f_onCloseLayer={this.toggleDeleteMatchday.bind(this)} f_onDeleteMatchday={this.deleteMatchday}/>
                     }
-                    <Heading level="3" textAlign="start" color="black" margin="medium" > Besucherliste</Heading>
+                    <Heading level="3" textAlign="start" color="black" margin={{"left": "medium", "top": "none", "bottom": "none"}} >Besucherliste</Heading>
 
                     <Box pad="medium" direction="column" width="100%">
                         <UserDataTable a_visitorData={a_visitorData} b_isAdminPage={false}/>
