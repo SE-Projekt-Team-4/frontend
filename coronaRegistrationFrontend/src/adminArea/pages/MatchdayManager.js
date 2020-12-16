@@ -9,7 +9,6 @@ import { getMatchById, getBookingsByMatchId, deleteExistingMatch } from "../../u
 import DeleteMatchdayLayer from "../components/DeleteMatchdayLayer"
 /**
  * @class MatchdayManager
- * @version 4.4.1
  */
 class MatchdayManager extends React.Component {
 /**

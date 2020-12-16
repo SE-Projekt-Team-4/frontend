@@ -4,7 +4,6 @@ import { Home, Logout } from "grommet-icons";
 
 /**
  * @class AnchorAppBar
- * @version 2.1.0
  */
 class AnchorAppBar extends React.Component {
 

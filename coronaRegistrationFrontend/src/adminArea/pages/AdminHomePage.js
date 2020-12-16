@@ -8,7 +8,6 @@ import { Redirect } from "react-router-dom";
 import { getNextMatch, getAllMatches, getBookings, deleteOldBookings } from "../../util/ApiRequests";
 /**
  * @class AdminHomePage
- * @version 5.2.0
  */
 class AdminHomePage extends React.Component {
     /**

@@ -1,8 +1,7 @@
 import React from "react"
 import { Heading, Box, Layer, Text, Button } from "grommet"
 /**
- * @module DeleteMatchdayLayer
- * @version 2.0.1
+ * @class DeleteMatchdayLayer
  */
 class DeleteMatchdayLayer extends React.Component {
     /**

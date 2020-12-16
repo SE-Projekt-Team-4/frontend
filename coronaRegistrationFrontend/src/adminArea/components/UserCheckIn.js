@@ -7,7 +7,6 @@ import QrReader from "react-qr-scanner";
 
 /**
  * @class UserCheckIn
- * @version 6.2.2
 */
 class UserCheckIn extends React.Component {
 
