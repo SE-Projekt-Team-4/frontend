@@ -236,7 +236,7 @@ class MatchdayManagementForm extends React.Component {
                         <FormField name="s_dateTime" label="Datum und Uhrzeit">
                             <DropButton open={b_isDateTimePickerOpen} onClose={this.toggleDateTimePicker} onOpen={this.toggleDateTimePicker} overflow="scroll" dropContent={
                                 <Box pad="small">
-                                    <Calendar name="s_date" date={s_date} bounds={!b_isEditingExistingMatchday && [s_dateTime, s_futureDateISO]} onSelect={this.handleDatePick} firstDayOfWeek={1} showAdjacentDays={false} />
+                                    <Calendar name="s_date" date={s_date} bounds={!b_isEditingExistingMatchday ? [s_dateTime, s_futureDateISO] : undefined} onSelect={this.handleDatePick} firstDayOfWeek={1} showAdjacentDays={false} />
                                     <MaskedInput name="s_time" icon={<Clock />} dropHeight="small" value={s_time} mask={o_timeMask} onChange={this.handleInputChange} />
                                     <Box direction="row-responsive" justify="end" pad="xsmall">
                                         <Button primary reverse label="Bestätigen" icon={<FormNext />} fill="vertical" gap="xxsmall" disabled={s_formattedCurrentTime.length < 3} onClick={this.submitDateTime} />

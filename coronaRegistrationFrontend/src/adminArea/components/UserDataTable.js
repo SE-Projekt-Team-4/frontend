@@ -2,6 +2,7 @@ import React from "react";
 import { Button, DataTable, Box } from "grommet";
 import { ExportToCsv } from "export-to-csv";
 import { Download, Trash } from "grommet-icons";
+import { formatDateTime } from "../../util/Helpers";
 /**
  * @module UserDataTable
  * @version 4.2.1
@@ -21,7 +22,6 @@ class UserDataTable extends React.Component {
     componentDidUpdate(prevProps) {
         if (prevProps.a_visitorData !== this.props.a_visitorData) {
             this.setState({
-                ...this.state,
                 a_visitorDataRestructured: this.restructureArray()
             })
 
@@ -35,29 +35,26 @@ class UserDataTable extends React.Component {
      * @returns {Array[][]} Returns the newly created array
      */
     restructureArray() {
+        const { a_visitorData, b_isAdminHomepage } = this.props; 
 
-        const { a_visitorData } = this.props;
-
-        var a_visitorDataRestructured = [{}];
-
-        a_visitorDataRestructured.length = a_visitorData.length
-        /*for (var i = 0; i < a_visitorDataRestructured.length; i++) { 
-            a_visitorDataRestructured[i] = new Array(10); 
-        } */
-        var h = 0;
+        var a_visitorDataRestructured = [];
 
         for (var i = 0; i < a_visitorData.length; i++) {
-            a_visitorDataRestructured[i].id = a_visitorData[i].id
-            //a_visitorDataRestructured[i].date = a_visitorData[i].match.date
-            a_visitorDataRestructured[i].fName = a_visitorData[i].visitor.fName
-            /*a_visitorDataRestructured[i][3] = a_visitorData[i].visitor.lName
-            a_visitorDataRestructured[i][4] = a_visitorData[i].visitor.city
-            a_visitorDataRestructured[i][5] = a_visitorData[i].visitor.postcode
-            a_visitorDataRestructured[i][6] = a_visitorData[i].visitor.street
-            a_visitorDataRestructured[i][7] = a_visitorData[i].visitor.houseNumber
-            a_visitorDataRestructured[i][8] = a_visitorData[i].visitor.eMail
-            a_visitorDataRestructured[i][9] = a_visitorData[i].visitor.phoneNumber*/
-
+            const o_visitor = {
+                "id": a_visitorData[i].id, 
+                "fName": a_visitorData[i].visitor.fName, 
+                "lName": a_visitorData[i].visitor.lName,
+                "city": a_visitorData[i].visitor.city,
+                "postcode": a_visitorData[i].visitor.postcode,
+                "street": a_visitorData[i].visitor.street,
+                "houseNumber": a_visitorData[i].visitor.houseNumber, 
+                "eMail": a_visitorData[i].visitor.eMail, 
+                "phoneNumber": a_visitorData[i].visitor.phoneNumber
+            }
+            if(b_isAdminHomepage) {
+                o_visitor.date = a_visitorData[i].match.date;
+            }
+            a_visitorDataRestructured.push(o_visitor); 
         }
         return a_visitorDataRestructured
 
@@ -66,41 +63,45 @@ class UserDataTable extends React.Component {
     *  Creates a .csv file from the restructured visitor Data array
     */
     exportToCsv() {
-
-
+        const { b_isAdminHomepage, a_visitorData } = this.props; 
+        let s_title = "Buchungsdaten"
+        if(!b_isAdminHomepage) {
+            const o_formattedDate = formatDateTime(a_visitorData[0].match.date)
+            s_title = "Spieltag FG 08 Mutterstadt gg. " + a_visitorData[0].match.opponent + " am " + o_formattedDate.s_formattedDate + o_formattedDate.s_time; 
+        }
         const options = {
             fieldSeparator: ";",
-            quoteStrings: '"',
+            filename: s_title,
+            quoteStrings: "'", 
             decimalSeparator: ".",
             showLabels: true,
             showTitle: true,
-            title: "Visitor Data",
+            title: s_title,
             useTextFile: false,
             useBom: true,
             useKeysAsHeaders: true,
         };
 
         const csvExporter = new ExportToCsv(options);
-        csvExporter.generateCsv(this.restructureArray());
+        csvExporter.generateCsv(this.state.a_visitorDataRestructured);
     }
 
     /**
      * Renders the DataTable from the restructured booking data. Also gives an option to delete old user data or download a csv file from the data
      */
     render() {
-        const { a_visitorData, b_isAdminPage } = this.props;
+        const {b_isAdminHomepage, f_deleteOldData} = this.props;
         return (
             <Box>
-                {!b_isAdminPage ?
+                {!b_isAdminHomepage ?
                     <Box align="end">
                         <Button icon={<Download />} label="Download CSV" onClick={this.exportToCsv} />
                     </Box>
                     :
                     <Box align="end">
-                        <Button icon={<Trash />} label="Delete Old Data" onClick={this.exportToCsv} />
+                        <Button icon={<Trash />} label="Alte Buchungen löschen" onClick={f_deleteOldData} />
                     </Box>
                 }
-
 
                 <DataTable size="large"
                     columns={[
@@ -117,41 +118,41 @@ class UserDataTable extends React.Component {
                             search: true,
                             size: "small"
                         },
-                        /*{
-                            property: "3",
+                        {
+                            property: "lName",
                             header: "Nachname",
                             search: true,
                             size: "small"
                         },
                         {
-                            property: "4",
+                            property: "city",
                             header: "Stadt",
                             size: "small"
                         },
                         {
-                            property: "5",
+                            property: "postcode",
                             header: "PLZ",
                             size: "xsmall"
                         },
                         {
-                            property: "6",
+                            property: "street",
                             header: "Straße"
                         },
                         {
-                            property: "7",
+                            property: "houseNumber",
                             header: "Hausnr.",
                             size: "xsmall"
                         },
                         {
-                            property: "8",
+                            property: "eMail",
                             header: "E-Mail Adresse",
                             search: true
                         },
                         {
-                            property: "9",
+                            property: "phoneNumber",
                             header: "Telefonnummer",
                             search: true
-                        },*/
+                        },
                     ]}
                     data={this.state.a_visitorDataRestructured}
                 />

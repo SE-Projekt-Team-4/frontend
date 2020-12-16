@@ -44,7 +44,7 @@ class UserCheckIn extends React.Component {
      */
     redeemBooking() {
         getRedeemBooking(this.state.s_verificationCode).then(o_redeemResponse => {
-            if (o_redeemResponse.error && (o_redeemResponse.error.status === 404 || o_redeemResponse.error.status === 422)) {
+            if (o_redeemResponse.error && (o_redeemResponse.error.errorCode === "REDEEMNOMATCH" || o_redeemResponse.error.errorCode === "ALREADYREDEEMED")) {
                 this.setState({
                     ...this.state,
                     b_isValidBookingCode: false, 
