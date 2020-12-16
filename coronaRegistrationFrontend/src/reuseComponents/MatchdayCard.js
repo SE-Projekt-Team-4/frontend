@@ -3,8 +3,7 @@ import { Card, CardBody, CardHeader, CardFooter, Button, Heading, Text } from "g
 import { formatDateTime } from "../util/Helpers";
 
 /**
- * @class
- * @version
+ * @class MatchdayCard
  */
 class MatchdayCard extends React.Component {
 
