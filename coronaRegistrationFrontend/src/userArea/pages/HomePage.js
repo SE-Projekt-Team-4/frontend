@@ -6,8 +6,15 @@ import { Download } from "grommet-icons";
 import { Link } from "react-router-dom";
 import { getAllMatches } from "../../util/ApiRequests";
 
+/**
+ * @class HomePage
+ */
 class HomePage extends React.Component {
 
+    /**
+     * 
+     * @param {*} props 
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -15,6 +22,9 @@ class HomePage extends React.Component {
         };
     }
 
+    /**
+     * Fetches allMatches to show on the home page
+     */
     componentDidMount() {
         getAllMatches().then(a_matches => {
             this.setState({
@@ -24,6 +34,9 @@ class HomePage extends React.Component {
     }
 
 
+    /**
+     * Renders the home page for customers
+     */
     render() {
         const { a_matchData } = this.state;
         return (

@@ -4,7 +4,13 @@ import React from "react";
 import MatchdayOverview from "../../reuseComponents/MatchdayOverview";
 import VisitorInformationSummary from "../../reuseComponents/VisitorInformationSummary";
 
+/**
+ * @class BookingConfirmationPage
+ */
 class BookingConfirmationPage extends React.Component {
+    /**
+     * Renders the confirmation page in the booking process. shows data entered in the form for the user to check and confirm
+     */
     render() {
         const { o_matchData, o_visitorData, onEditVisitorInformation, onConfirmBooking } = this.props; 
         return (

@@ -9,6 +9,7 @@
     "export-to-csv": "^0.2.1",
     "grommet": "^2.15.2",
     "grommet-icons": "^4.5.0",
+    "jsdoc": "^3.6.6",
     "leaflet": "^1.7.1",
     "postcode-validator": "^3.1.1",
     "qrcode.react": "^1.0.0",

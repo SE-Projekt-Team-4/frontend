@@ -1,13 +1,22 @@
 import React from "react"; 
 import { Box, Text } from "grommet"; 
-
+/**
+ * @class RichTabTitle
+ */
 class RichTabTitle extends React.Component {
 
+  /**
+   * 
+   * @param {*} props 
+   */
     constructor(props) {
         super(props); 
         this.state = {}; 
     }
 
+    /**
+     * Renders the title of the booking tabs
+     */
     render() {
         return (
             <Box direction="row-responsive" align="center" gap="xsmall" margin="xsmall">
