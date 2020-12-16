@@ -3,8 +3,8 @@ import { Form, FormField, MaskedInput, TextInput, Heading, Box, Select } from "g
 import { MailOption } from "grommet-icons";
 import { postcodeValidator, postcodeValidatorExistsForCountry } from "postcode-validator";
 import FormButtons from "../../reuseComponents/FormButtons";
-import { checkRegex } from "../../util/Helpers";
-import { getData } from "country-list";
+import countryList from "react-select-country-list";
+import { checkRegex } from "../../util/Helpers"; 
 
 /**
  * Only allows numbers with a maximum lenghth of 15 characters. As an exception a + may be added before the phonenumber
@@ -69,7 +69,7 @@ class ContactForm extends React.Component {
       s_email: this.props.o_formData.s_email,
       s_telNr: this.props.o_formData.s_telNr,
       b_submittedForm: false,
-      a_suggestions: []
+      a_suggestions: countryList().getData()
     };
 
     this.resetValues = this.resetValues.bind(this);
@@ -77,22 +77,6 @@ class ContactForm extends React.Component {
     this.validatePostcode = this.validatePostcode.bind(this);
     this.checkRegexValidity = this.checkRegexValidity.bind(this);
     this.baseState = this.state;
-  }
-
-  componentDidMount() {
-    const a_countryData = getData();
-    const a_populatedSuggestions = [];
-    for (let i = 0; i < a_countryData.length; i++) {
-      const o_countryEntry = {
-        "value": a_countryData[i].code,
-        "label": a_countryData[i].name
-      }
-      a_populatedSuggestions.push(o_countryEntry);
-    }
-    this.setState({
-      ...this.state,
-      a_suggestions: a_populatedSuggestions
-    })
   }
 
   /**
