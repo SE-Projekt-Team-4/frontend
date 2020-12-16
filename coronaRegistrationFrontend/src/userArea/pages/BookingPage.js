@@ -59,7 +59,7 @@ class BookingPage extends React.Component {
         const { o_formData, o_matchData } = this.state;
         this.trimFormData(o_formData);
         postBooking(o_matchData.id, o_formData).then(o_verificationCode => {
-            if (o_verificationCode.error && o_verificationCode.error.status === 422) {
+            if (o_verificationCode.error && o_verificationCode.error.errorCode === "BOOKNOSPACE") {
                 this.setState({
                     ...this.state,
                     b_isFullyBooked: true,

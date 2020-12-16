@@ -5,7 +5,7 @@ import UserDataTable from "../components/UserDataTable";
 import NextMatchdaysGrid from "../../reuseComponents/NextMatchdaysGrid";
 import UserCheckIn from "../components/UserCheckIn";
 import { Redirect } from "react-router-dom";
-import { getNextMatch, getAllMatches, getBookings } from "../../util/ApiRequests";
+import { getNextMatch, getAllMatches, getBookings, deleteOldBookings } from "../../util/ApiRequests";
 /**
  * @class AdminHomePage
  * @version 5.2.0
@@ -26,6 +26,7 @@ class AdminHomePage extends React.Component {
         this.setCheckinVisible = this.setCheckinVisible.bind(this);
         this.closeCheckin = this.closeCheckin.bind(this);
         this.getMatches = this.getMatches.bind(this);
+        this.deleteOldBookings = this.deleteOldBookings.bind(this);
     }
     /**
      * Fills a_bookingdata and triggers the functions for getting the next match and all matches
@@ -58,7 +59,7 @@ class AdminHomePage extends React.Component {
      */
     getNextMatch() {
         getNextMatch().then(o_match => {
-            if (o_match.error && o_match.error.status === 404) {
+            if (o_match.error && o_match.error.errorCode === "NOMATCH") {
                 return;
             }
             this.setState({
@@ -68,6 +69,23 @@ class AdminHomePage extends React.Component {
             });
         });
     }
+
+    deleteOldBookings() {
+        deleteOldBookings().then(o_deletedBookings => {
+            if (o_deletedBookings.data) {
+                let a_currentBookings = this.state.a_bookingData;
+                const a_deletedBookings = o_deletedBookings.data;
+                for (let i = 0; i < a_deletedBookings.length; i++) {
+                    a_currentBookings = a_currentBookings.filter(booking => booking.id !== a_deletedBookings[i].id); 
+                }
+                this.setState({
+                    ...this.state,
+                    a_bookingData: a_currentBookings
+                })
+            }
+        })
+    }
+
     /**
     * shows the checkin Layer including the scan function
     */
@@ -122,7 +140,7 @@ class AdminHomePage extends React.Component {
                     {b_isCheckinVisible && <UserCheckIn f_closeLayer={this.closeCheckin} />}
                     <NextMatchdaysGrid b_isAdmin a_matchData={a_matchData} f_updateMatches={this.getMatches} />
                     <Box pad="medium">
-                        <UserDataTable a_visitorData={a_bookingData} b_isAdminPage />
+                        <UserDataTable a_visitorData={a_bookingData} b_isAdminHomepage f_deleteOldData={this.deleteOldBookings} />
                     </Box></> : <Redirect to="/login" />}
             </>
         )

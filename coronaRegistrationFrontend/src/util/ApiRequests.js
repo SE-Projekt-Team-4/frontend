@@ -178,6 +178,20 @@ export async function getBookingsByMatchId(id) {
     return result;
 }
 
+export async function deleteOldBookings() {
+    const response = await fetch("api/bookings/overdue",
+        {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": sessionStorage.getItem("s_authToken")
+            }
+        });
+        const result = await response.json(); 
+        return result; 
+}
+
 
 
 
