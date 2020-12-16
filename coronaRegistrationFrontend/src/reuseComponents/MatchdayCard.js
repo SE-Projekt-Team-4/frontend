@@ -26,13 +26,13 @@ class MatchdayCard extends React.Component {
      * sets the color of the remaining places for a matchday colors red when there are no places left, colors orange when there is less then 20 places left
      */
     componentDidMount() {
-        const { i_freeSpaces } = this.props;
-        if (i_freeSpaces === 0) {
+        const { n_freeSpaces } = this.props;
+        if (n_freeSpaces === 0) {
             this.setState({
                 ...this.state,
                 s_placesLeftColour: "status-critical"
             })
-        } else if (i_freeSpaces <= 20) {
+        } else if (n_freeSpaces <= 20) {
             this.setState({
                 ...this.state,
                 s_placesLeftColour: "status-warning"
@@ -59,7 +59,7 @@ class MatchdayCard extends React.Component {
      * Renders a matchdaycard as an overview to a matchday
      */
     render() {
-        const { b_isAdmin, s_opponent, i_freeSpaces, b_isCancelled, i_matchId } = this.props;
+        const { b_isAdmin, s_opponent, n_freeSpaces, b_isCancelled, n_matchId } = this.props;
         const { s_placesLeftColour, s_time, s_date, b_isInPast } = this.state;
         return (
             <Card height="small" width="medium">
@@ -68,7 +68,7 @@ class MatchdayCard extends React.Component {
                 </CardHeader>
                 <CardBody pad="medium" justify="center" align="center">
                     <Text textAlign="center">{s_date + " " + s_time}</Text>
-                    <Text textAlign="center" color={s_placesLeftColour}>{i_freeSpaces} Plätze Frei</Text>
+                    <Text textAlign="center" color={s_placesLeftColour}>{n_freeSpaces} Plätze Frei</Text>
                     {b_isCancelled ?
                         <Text textAlign="center" color="status-error">Status: Fällt aus</Text>
                         : <Text textAlign="center" color="status-ok">Status: Findet Statt!</Text>
@@ -76,9 +76,9 @@ class MatchdayCard extends React.Component {
                 </CardBody>
                 <CardFooter justify="end" pad="medium">
                     {b_isAdmin ?
-                        <Button label="Spieltag Verwalten" href={"/admin/editMatch/" + i_matchId} />
+                        <Button label="Spieltag Verwalten" href={"/admin/editMatch/" + n_matchId} />
                         :
-                        <Button disabled={(i_freeSpaces === 0 || b_isCancelled || b_isInPast)} label="Platz Buchen" href={"/booking/" + i_matchId} />
+                        <Button disabled={(n_freeSpaces === 0 || b_isCancelled || b_isInPast)} label="Platz Buchen" href={"/booking/" + n_matchId} />
                     }
                 </CardFooter>
             </Card>

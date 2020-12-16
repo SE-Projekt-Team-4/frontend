@@ -35,15 +35,15 @@ class MatchdayOverview extends React.Component {
      * Renders the matchday overwiew that show the next matchday and gives the option to check in customers
      */
     render() {
-        const { s_opponent, i_maxSpaces, b_isAdmin, f_openEditMatchday, f_deleteMatchday, i_freeSpaces } = this.props;
+        const { s_opponent, n_maxSpaces, b_isAdmin, f_openEditMatchday, f_deleteMatchday, n_freeSpaces } = this.props;
         const { s_date, s_time } = this.state;
         return (
             <Box align="center" justify="between" gap="large" pad="small" direction="row-responsive" border={{ "color": "brand", "size": "small", "style": "solid" }}>
                 <Box direction="column" gap="xsmall">
                     <Heading level="4" margin="none">Heim gg. {s_opponent}</Heading>
                     <Text size="medium">{s_date + " " + s_time}</Text>
-                    {b_isAdmin ? <Text size="medium">{i_freeSpaces} von {i_maxSpaces} Plätze Frei</Text>
-                        : <Text size="medium">{i_freeSpaces} Plätze Frei</Text>}
+                    {b_isAdmin ? <Text size="medium">{n_freeSpaces} von {n_maxSpaces} Plätze Frei</Text>
+                        : <Text size="medium">{n_freeSpaces} Plätze Frei</Text>}
                     <Heading level="4" margin="none">Stadionadresse</Heading>
                     <Text size="medium">Sportpark Mutterstadt</Text>
                     <Text size="medium">Waldstraße 49</Text>

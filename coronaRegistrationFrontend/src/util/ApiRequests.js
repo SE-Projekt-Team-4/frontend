@@ -43,7 +43,7 @@ export async function getNextMatch() {
  */
 export async function getBookings() {
     //später api/bookings mit isRedeemed
-    const response = await fetch("/api/bookings/",
+    const response = await fetch("/api/bookings",
         {
             method: "GET",
             headers: {
@@ -165,7 +165,7 @@ export async function postNewMatch(matchData) {
             body: JSON.stringify({
                 "opponent": matchData.s_opponent,
                 "date": matchData.s_dateTime,
-                "maxSpaces": matchData.i_maxSpaces,
+                "maxSpaces": matchData.n_maxSpaces,
                 "isCancelled": matchData.b_isCancelled
             })
         });
@@ -191,7 +191,7 @@ export async function putExistingMatch(matchData, matchId) {
             body: JSON.stringify({
                 "opponent": matchData.s_opponent,
                 "date": matchData.s_dateTime,
-                "maxSpaces": matchData.i_maxSpaces,
+                "maxSpaces": matchData.n_maxSpaces,
                 "isCancelled": matchData.b_isCancelled
             })
         });

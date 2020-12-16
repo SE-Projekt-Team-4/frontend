@@ -19,24 +19,20 @@ class AdminHomePage extends React.Component {
         this.state = {
             a_bookingData: [],
             o_nextMatchData: {},
-            i_registeredVisitors: 0,
+            n_registeredVisitors: 0,
             a_matchData: []
         }
         this.setCheckinVisible = this.setCheckinVisible.bind(this);
         this.closeCheckin = this.closeCheckin.bind(this);
         this.getMatches = this.getMatches.bind(this);
+        this.getBookings = this.getBookings.bind(this);
         this.deleteOldBookings = this.deleteOldBookings.bind(this);
     }
     /**
      * Fills a_bookingdata and triggers the functions for getting the next match and all matches
      */
     componentDidMount() {
-        getBookings().then(a_bookings => {
-            this.setState({
-                ...this.state,
-                a_bookingData: a_bookings.data
-            })
-        });
+        this.getBookings();
         this.getNextMatch();
         this.getMatches();
     }
@@ -64,25 +60,33 @@ class AdminHomePage extends React.Component {
             this.setState({
                 ...this.state,
                 o_nextMatchData: o_match.data,
-                i_registeredVisitors: o_match.data.maxSpaces - o_match.data.freeSpaces
+                n_registeredVisitors: o_match.data.maxSpaces - o_match.data.freeSpaces
             });
         });
     }
 
-    deleteOldBookings() {
-        deleteOldBookings().then(o_deletedBookings => {
-            if (o_deletedBookings.data) {
-                let a_currentBookings = this.state.a_bookingData;
-                const a_deletedBookings = o_deletedBookings.data;
-                for (let i = 0; i < a_deletedBookings.length; i++) {
-                    a_currentBookings = a_currentBookings.filter(booking => booking.id !== a_deletedBookings[i].id); 
-                }
+    /**
+     * Fetches all bookings 
+     */
+    getBookings() {
+        getBookings().then(a_bookings => {
+            if (a_bookings.data) {
                 this.setState({
                     ...this.state,
-                    a_bookingData: a_currentBookings
+                    a_bookingData: a_bookings.data
                 })
             }
-        })
+        });
+    }
+
+    /**
+     * Deletes all bookings older than 4 weeks
+     */
+
+    deleteOldBookings() {
+        deleteOldBookings().then(o_deletedBookings => {
+            this.getBookings();
+        });
     }
 
     /**
@@ -115,11 +119,11 @@ class AdminHomePage extends React.Component {
      * renders the admin home page
      */
     render() {
-        const { b_isCheckinVisible, a_bookingData, o_nextMatchData, i_registeredVisitors, a_matchData } = this.state;
-        const i_timeToNextMatchInMS = new Date(o_nextMatchData.date) - Date.now();
+        const { b_isCheckinVisible, a_bookingData, o_nextMatchData, n_registeredVisitors, a_matchData } = this.state;
+        const n_timeToNextMatchInMS = new Date(o_nextMatchData.date) - Date.now();
         let o_timeToNextMatchISO = "";
-        if (!isNaN(i_timeToNextMatchInMS)) {
-            o_timeToNextMatchISO = new Date(i_timeToNextMatchInMS).toISOString();
+        if (!isNaN(n_timeToNextMatchInMS)) {
+            o_timeToNextMatchISO = new Date(n_timeToNextMatchInMS).toISOString();
         }
         return (
             <>
@@ -128,11 +132,11 @@ class AdminHomePage extends React.Component {
                         <Image src="./teamlogo.png" fill={false} />
                         <Heading level="2" textAlign="center" margin="none" color="light-1">Nächstes Spiel:</Heading>
                         <Heading level="3" textAlign="center" margin="none" color="light-1">FG 08 Mutterstadt gg. {(o_nextMatchData.opponent && !o_nextMatchData.isCancelled) ? o_nextMatchData.opponent : "Ausstehend"}</Heading>
-                        {(i_timeToNextMatchInMS <= 7200000 /*2 stunden in ms*/ && o_timeToNextMatchISO !== "" && !o_nextMatchData.isCancelled) ?
+                        {(n_timeToNextMatchInMS <= 7200000 /*2 stunden in ms*/ && o_timeToNextMatchISO !== "" && !o_nextMatchData.isCancelled) ?
                             <Box gap="small" align="center" justify="center">
                                 <Text color="light-1"> Zeit bis zum Anstoß: </Text>
                                 <Clock color="light-1" type="digital" run="backward" time={o_timeToNextMatchISO} size="large" />
-                                <Text color="light-1">{i_registeredVisitors} Buchungen </Text>
+                                <Text color="light-1">{n_registeredVisitors} Buchungen </Text>
                                 <Button primary label="Besucher registrieren" onClick={this.setCheckinVisible}></Button>
                             </Box> : <Text color="light-1">Die Funktion "Besucher registrieren" wird erst ab 2 Stunden vor Anstoß freigeschaltet</Text>}
                     </Box>
