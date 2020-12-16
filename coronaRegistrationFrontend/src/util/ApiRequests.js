@@ -224,7 +224,7 @@ export async function deleteExistingMatch(matchId) {
  * @returns {Object} returns a booking object containing all bookings for a matchday
  */
 export async function getBookingsByMatchId(id) {
-    const response = await fetch("/api/matches/" + id + "/bookings",
+    const response = await fetch("/api/matches/" + id + "/redeemedBookings",
         {
             method: "GET",
             headers: {
