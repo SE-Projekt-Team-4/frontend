@@ -109,7 +109,7 @@ export async function postBooking(matchDataId, formData) {
  * Gets login information for authentification
  * @param {String} username contains entered username
  * @param {String} password contains entered password
- * @returns {Object, String} returns an authentification token and the api response
+ * @returns {Object} returns an authentification token and the api response
  */
 export async function getLogin(username, password) {
     const s_authToken = "Basic " + new Buffer(username + ":" + password).toString("base64");
