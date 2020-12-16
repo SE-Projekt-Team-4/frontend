@@ -107,10 +107,10 @@ class MatchdayManager extends React.Component {
             <>
                 {sessionStorage.getItem("s_authToken") ? <><AnchorAppBar b_isNotHome b_isAdmin s_title="Spieltag Verwalten" f_clearAuthToken={this.clearAuthToken.bind(this)} />
                     <Box pad="medium" direction="column" width="75%">
-                        <MatchdayOverview b_isAdmin={b_isAdmin} s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} i_maxSpaces={o_matchData.maxSpaces} i_freeSpaces={o_matchData.freeSpaces} f_openEditMatchday={this.toggleEditMatchday.bind(this)} f_deleteMatchday={this.toggleDeleteMatchday.bind(this)} />
+                        <MatchdayOverview b_isAdmin={b_isAdmin} s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} n_maxSpaces={o_matchData.maxSpaces} n_freeSpaces={o_matchData.freeSpaces} f_openEditMatchday={this.toggleEditMatchday.bind(this)} f_deleteMatchday={this.toggleDeleteMatchday.bind(this)} />
                     </Box>
                     {b_hasOpenedEditMatchday &&
-                        <MatchdayManagementForm b_isEditingExistingMatchday i_matchId={this.props.match.params.id} f_passMatchdayDataToParent={this.getMatchData} s_title="Spieltag Editieren" s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} i_maxSpaces={o_matchData.maxSpaces} b_isCancelled={o_matchData.isCancelled} f_closeLayer={this.toggleEditMatchday.bind(this)} />}
+                        <MatchdayManagementForm b_isEditingExistingMatchday n_matchId={this.props.match.params.id} f_passMatchdayDataToParent={this.getMatchData} s_title="Spieltag Editieren" s_opponent={o_matchData.opponent} s_dateTime={o_matchData.date} n_maxSpaces={o_matchData.maxSpaces} b_isCancelled={o_matchData.isCancelled} f_closeLayer={this.toggleEditMatchday.bind(this)} />}
                     {b_hasDeletedMatchday &&
                         <DeleteMatchdayLayer f_onCloseLayer={this.toggleDeleteMatchday.bind(this)} f_onDeleteMatchday={this.deleteMatchday}/>
                     }

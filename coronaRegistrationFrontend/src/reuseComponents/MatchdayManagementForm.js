@@ -61,7 +61,7 @@ class MatchdayManagementForm extends React.Component {
             s_formattedDateTime: "",
             s_date: this.props.s_date,
             s_time: this.props.s_time,
-            i_maxSpaces: this.props.i_maxSpaces,
+            n_maxSpaces: this.props.n_maxSpaces,
             b_isCancelled: this.props.b_isCancelled === undefined ? false : this.props.b_isCancelled,
             b_isSpacesLessThanBookings: false,
             b_isDateTimePickerOpen: false
@@ -155,21 +155,21 @@ class MatchdayManagementForm extends React.Component {
      * and needs to press the submit form button again
      */
     submitNewMatchday() {
-        const { s_opponent, s_dateTime, i_maxSpaces, b_isCancelled } = this.state;
-        const { i_matchId, f_passMatchdayDataToParent, f_closeLayer, b_isEditingExistingMatchday } = this.props;
+        const { s_opponent, s_dateTime, n_maxSpaces, b_isCancelled } = this.state;
+        const { n_matchId, f_passMatchdayDataToParent, f_closeLayer, b_isEditingExistingMatchday } = this.props;
         const o_matchData = trimFormData({
             s_opponent: s_opponent,
             s_dateTime: s_dateTime,
-            i_maxSpaces: i_maxSpaces, 
+            n_maxSpaces: n_maxSpaces, 
             b_isCancelled: b_isCancelled
         });
 
         if (b_isEditingExistingMatchday) {
-            putExistingMatch(o_matchData, i_matchId).then(response => {
+            putExistingMatch(o_matchData, n_matchId).then(response => {
                 if(response.error && response.error.errorCode === "SPACESLTBOOKINGS") {
                     this.setState({
                         ...this.state, 
-                        i_maxSpaces: response.error.additionalData.numBookings,
+                        n_maxSpaces: response.error.additionalData.numBookings,
                         b_isSpacesLessThanBookings: true
                     });
                 } else {
@@ -234,7 +234,7 @@ class MatchdayManagementForm extends React.Component {
      */
     render() {
         const { s_title, f_closeLayer, b_isEditingExistingMatchday } = this.props;
-        const { s_opponent, s_dateTime, i_maxSpaces, b_isCancelled, b_isDateTimePickerOpen, s_formattedDateTime, s_time, s_date, b_isSpacesLessThanBookings } = this.state;
+        const { s_opponent, s_dateTime, n_maxSpaces, b_isCancelled, b_isDateTimePickerOpen, s_formattedDateTime, s_time, s_date, b_isSpacesLessThanBookings } = this.state;
         return (
             <Layer position="center" onClickOutside={f_closeLayer}>
                 <Box direction="row-responsive" align="center" justify="between" pad={{ "right": "medium", "top": "small", "left": "medium" }}>
@@ -262,8 +262,8 @@ class MatchdayManagementForm extends React.Component {
                                 </Box>
                             </DropButton>
                         </FormField>
-                        <FormField required label="Verfügbare Plätze" name="i_maxSpaces">
-                            <MaskedInput name="i_maxSpaces" mask={o_maxSpacesMask} value={i_maxSpaces} onChange={this.handleInputChange}/>
+                        <FormField required label="Verfügbare Plätze" name="n_maxSpaces">
+                            <MaskedInput name="n_maxSpaces" mask={o_maxSpacesMask} value={n_maxSpaces} onChange={this.handleInputChange}/>
                         </FormField>
                         {b_isSpacesLessThanBookings && <Text size="medium" color="status-error">Die Anzahl der verfügbaren Plätze wurde aufgrund der größeren Buchungsmenge automatisch angepasst</Text>}
                         <FormField label="Status" name="b_isCancelled">
