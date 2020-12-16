@@ -69,7 +69,7 @@ class ContactForm extends React.Component {
       s_email: this.props.o_formData.s_email,
       s_telNr: this.props.o_formData.s_telNr,
       b_submittedForm: false,
-      a_suggestions: countryList().getData()
+      a_suggestions: []
     };
 
     this.resetValues = this.resetValues.bind(this);
@@ -77,6 +77,13 @@ class ContactForm extends React.Component {
     this.validatePostcode = this.validatePostcode.bind(this);
     this.checkRegexValidity = this.checkRegexValidity.bind(this);
     this.baseState = this.state;
+  }
+
+  componentDidMount() {
+    this.setState({
+      ...this.state, 
+      a_suggestions: countryList().getData()
+    })
   }
 
   /**
