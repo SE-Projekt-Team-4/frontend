@@ -6,6 +6,9 @@ import { postcodeValidator, postcodeValidatorExistsForCountry } from "postcode-v
 import FormButtons from "../../reuseComponents/FormButtons"; 
 import { checkRegex } from "../../util/Helpers";
 
+/**
+ * Only allows numbers with a maximum lenghth of 15 characters. As an exception a + may be added before the phonenumber
+ */
 const o_telNrMask = [
   { fixed: "+" },
   {
@@ -18,11 +21,23 @@ const o_telNrMask = [
   },
 ];
 
+/**
+ * defines the messages for an invalid or a required input
+ */
 const o_formValidationMessages = {
   invalid: "Ungültig",
   required: "Erforderlich"
 }
 
+/**
+ * only allows valid entries
+ * s_name: numbers or special characters are not allowed 
+ * s_city: 
+ * s_houseNr: 
+ * s_notEmptyString:
+ * s_email: 
+ * s_telNr: 
+ */
 const o_validationRegExps = {
   s_name: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð'-]+$/,
   s_city: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/,
@@ -32,7 +47,14 @@ const o_validationRegExps = {
   s_telNr: /^[+0-9]{8,15}$/
 }
 
+/**
+ * @class ContactForm
+ */
 class ContactForm extends React.Component {
+  /**
+   * 
+   * @param {*} props 
+   */
   constructor(props) {
     super(props);
 
@@ -57,16 +79,28 @@ class ContactForm extends React.Component {
     this.baseState = this.state;
   }
 
+  /**
+   * resets the values entered in the form
+   */
   resetValues() {
     this.setState({
       ...this.baseState
     })
   }
 
+  /**
+   * Checks the validity of the value entered using the regex entered
+   * @param {Object} regexp contains the restraints of the value
+   * @param {String} value contains the value to be checked
+   */
   checkRegexValidity(regexp, value) {
     return checkRegex(regexp, value); 
   }
 
+  /**
+   * Validates the postcode
+   * @param {String} postcode 
+   */
   validatePostcode(postcode) {
     const { s_country } = this.state;
     if (postcode && s_country) {
@@ -79,6 +113,10 @@ class ContactForm extends React.Component {
     }
   }
 
+  /**
+     * Updates the corresponding variables when changing an input
+     * @param {Object} event contains meta data for the input change
+     */
   handleInputChange(event) {
     if (event.target.name === "s_country") {
       this.setState({
@@ -94,6 +132,9 @@ class ContactForm extends React.Component {
     }
   }
 
+  /**
+   * Renders the contact form used to enter data when using the booking functions
+   */
   render() {
     const { s_firstName, s_surname, s_street, s_houseNr, s_city, s_postcode, s_email, s_telNr, s_country, a_suggestions } = this.state;
     return (

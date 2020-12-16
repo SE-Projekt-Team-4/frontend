@@ -9,8 +9,15 @@ import BookingCompletedPage from "./BookingCompletedPage";
 import { getMatchById, postBooking } from "../../util/ApiRequests";
 import { trimFormData } from "../../util/Helpers";
 
+/**
+ * @class BookingPage
+ */
 class BookingPage extends React.Component {
 
+    /**
+     * 
+     * @param {*} props 
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -24,6 +31,9 @@ class BookingPage extends React.Component {
         };
     }
 
+    /**
+     * Fetches the match data for the booking process
+     */
     componentDidMount() {
         getMatchById(this.props.match.params.id).then(o_match => {
             this.setState({
@@ -37,6 +47,10 @@ class BookingPage extends React.Component {
         })
     }
 
+    /**
+     * submits the values from the form to the backend
+     * @param {Object} event 
+     */
     submitForm(event) {
         this.setState({
             ...this.state,
@@ -48,9 +62,10 @@ class BookingPage extends React.Component {
             }
         });
     }
+
     /**
-     * 
-     * @param {*} formData 
+     * Trims the values contained in formData
+     * @param {Object} formData 
      */
     trimFormData(formData) {
         this.setState({
@@ -59,6 +74,9 @@ class BookingPage extends React.Component {
         })
     }
 
+    /**
+     * Confirms the booking and sets the form to submitted
+     */
     confirmBooking() {
         const { o_formData, o_matchData } = this.state;
         this.trimFormData(o_formData);
@@ -81,6 +99,9 @@ class BookingPage extends React.Component {
         })
     }
 
+    /**
+     * cancelled the confirmation and allows the user to go back to editing
+     */
     editVisitorInformation() {
         this.setState({
             ...this.state,
@@ -90,6 +111,9 @@ class BookingPage extends React.Component {
         });
     }
 
+    /**
+     * Renders the booking page that allows users to register themselves to a match
+     */
     render() {
         const { o_matchData, o_formData, b_hasConfirmedBooking, b_hasSubmittedForm, s_bookingCode, b_isFullyBooked } = this.state;
         return (

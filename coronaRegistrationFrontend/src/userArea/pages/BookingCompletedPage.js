@@ -3,8 +3,13 @@ import { Box, Button, Heading, Paragraph } from "grommet";
 import { Alert, Checkmark, Home } from "grommet-icons";
 import QRCode from "qrcode.react";
 
-
+/**
+ * @class BookingCompletedPage
+ */
 class BookingCompletedPage extends React.Component {
+    /**
+     * Renders the page for a completed booking. Shows booking code
+     */
     render() {
         const { s_bookingCode, b_isFullyBooked } = this.props;
         return (

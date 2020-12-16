@@ -3,8 +3,14 @@ import { Box, Tab, Tabs } from "grommet";
 import { Contact, List, Checkmark } from "grommet-icons";
 import RichTabTitle from "./RichTabTitle"; 
 
+/**
+ * @class BookingTabs
+ */
 class BookingTabs extends React.Component {
 
+    /**
+     * Renders the different tabs in the booking process (booking,confirm,completed)
+     */
     render() {
         return (
             <Box gap="medium" pad="medium">
