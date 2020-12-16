@@ -7,14 +7,28 @@ import { Download, Trash } from "grommet-icons";
  * @version 4.2.1
  */
 class UserDataTable extends React.Component {
-/**
- * 
- * @param {*} props 
- */
-    constructor (props) {
+    /**
+     * 
+     * @param {*} props 
+     */
+    constructor(props) {
         super(props);
-        this.exportToCsv= this.exportToCsv.bind(this);
+        this.state = { a_visitorDataRestructured: [{}] }
+        this.exportToCsv = this.exportToCsv.bind(this);
+        this.restructureArray = this.restructureArray.bind(this);
     }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.a_visitorData !== this.props.a_visitorData) {
+            this.setState({
+                ...this.state,
+                a_visitorDataRestructured: this.restructureArray()
+            })
+
+        }
+
+    }
+
 
     /**
      * Creates a new array based on the visitor Data taken from the api. The new array combines data from the matches, the bookings and the visitor data
@@ -24,26 +38,27 @@ class UserDataTable extends React.Component {
 
         const { a_visitorData } = this.props;
 
-        var a_visitorDataRestructured = new Array(a_visitorData.length); 
+        var a_visitorDataRestructured = [{}];
 
-        for (var i = 0; i < a_visitorDataRestructured.length; i++) { 
+        a_visitorDataRestructured.length = a_visitorData.length
+        /*for (var i = 0; i < a_visitorDataRestructured.length; i++) { 
             a_visitorDataRestructured[i] = new Array(10); 
-        } 
-        var h = 0; 
-            
-        for (var i = 0; i < a_visitorDataRestructured.length; i++) { 
-            a_visitorDataRestructured[i][0] = a_visitorData[i].id
-            a_visitorDataRestructured[i][1] = a_visitorData[i].match.date
-            a_visitorDataRestructured[i][2] = a_visitorData[i].visitor.fName
-            a_visitorDataRestructured[i][3] = a_visitorData[i].visitor.lName
+        } */
+        var h = 0;
+
+        for (var i = 0; i < a_visitorData.length; i++) {
+            a_visitorDataRestructured[i].id = a_visitorData[i].id
+            //a_visitorDataRestructured[i].date = a_visitorData[i].match.date
+            a_visitorDataRestructured[i].fName = a_visitorData[i].visitor.fName
+            /*a_visitorDataRestructured[i][3] = a_visitorData[i].visitor.lName
             a_visitorDataRestructured[i][4] = a_visitorData[i].visitor.city
             a_visitorDataRestructured[i][5] = a_visitorData[i].visitor.postcode
             a_visitorDataRestructured[i][6] = a_visitorData[i].visitor.street
             a_visitorDataRestructured[i][7] = a_visitorData[i].visitor.houseNumber
             a_visitorDataRestructured[i][8] = a_visitorData[i].visitor.eMail
-            a_visitorDataRestructured[i][9] = a_visitorData[i].visitor.phoneNumber
-            
-        } 
+            a_visitorDataRestructured[i][9] = a_visitorData[i].visitor.phoneNumber*/
+
+        }
         return a_visitorDataRestructured
 
     }
@@ -53,18 +68,18 @@ class UserDataTable extends React.Component {
     exportToCsv() {
 
 
-        const options = { 
+        const options = {
             fieldSeparator: ";",
             quoteStrings: '"',
             decimalSeparator: ".",
-            showLabels: true, 
+            showLabels: true,
             showTitle: true,
             title: "Visitor Data",
             useTextFile: false,
             useBom: true,
             useKeysAsHeaders: true,
-          };
-          
+        };
+
         const csvExporter = new ExportToCsv(options);
         csvExporter.generateCsv(this.restructureArray());
     }
@@ -77,32 +92,32 @@ class UserDataTable extends React.Component {
         return (
             <Box>
                 {!b_isAdminPage ?
-                 <Box align = "end">
-                <Button icon={<Download />} label="Download CSV" onClick={this.exportToCsv} />
-                </Box>
-                :
-                <Box align = "end">
-                <Button icon={<Trash />} label="Delete Old Data" onClick={this.exportToCsv} /> 
-                </Box>
+                    <Box align="end">
+                        <Button icon={<Download />} label="Download CSV" onClick={this.exportToCsv} />
+                    </Box>
+                    :
+                    <Box align="end">
+                        <Button icon={<Trash />} label="Delete Old Data" onClick={this.exportToCsv} />
+                    </Box>
                 }
 
 
-                <DataTable size="large" 
+                <DataTable size="large"
                     columns={[
                         {
-                            property: "0",
+                            property: "id",
                             header: "ID",
                             search: true,
                             size: "xsmall",
                             primary: true
                         },
                         {
-                            property: "2",
+                            property: "fName",
                             header: "Vorname",
                             search: true,
                             size: "small"
                         },
-                        {
+                        /*{
                             property: "3",
                             header: "Nachname",
                             search: true,
@@ -136,13 +151,13 @@ class UserDataTable extends React.Component {
                             property: "9",
                             header: "Telefonnummer",
                             search: true
-                        },
+                        },*/
                     ]}
-                    data={this.restructureArray()}
+                    data={this.state.a_visitorDataRestructured}
                 />
             </Box>
         );
-        
+
     }
 }
 
