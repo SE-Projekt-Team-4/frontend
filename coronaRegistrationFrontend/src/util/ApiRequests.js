@@ -1,4 +1,12 @@
 //ALL API CALLS
+/**
+ * @module ApiRequests
+ */
+
+/**
+ * fetches data from api - gets all matches
+ * @returns {Object}
+ */
 export async function getAllMatches() {
     const response = await fetch("/api/matches",
         {
@@ -12,6 +20,10 @@ export async function getAllMatches() {
     return result;
 }
 
+/**
+ * fetches data from api - gets all matches
+ * @returns {Object} returns all match data
+ */
 export async function getNextMatch() {
     const response = await fetch("/api/nextMatch",
         {
@@ -25,6 +37,10 @@ export async function getNextMatch() {
     return result;
 }
 
+/**
+ * fetches data from api - gets all bookings
+ * @returns {Object} returns all booking data
+ */
 export async function getBookings() {
     //später api/bookings mit isRedeemed
     const response = await fetch("/api/bookings/",
@@ -40,6 +56,11 @@ export async function getBookings() {
     return result;
 }
 
+/**
+ * fetches data from api - gets one specific match
+ * @param {String} id contains match id to be fetched
+ * @returns {Object} returns data from the specific match
+ */
 export async function getMatchById(id) {
     const response = await fetch("/api/matches/" + id,
         {
@@ -53,6 +74,13 @@ export async function getMatchById(id) {
     return result;
 }
 
+
+/**
+ * posts data to api - posts booking data for a match
+ * @param {String} matchDataId contains match id
+ * @param {Object} formData contains data to be posted
+ * @returns {Object} returns the booking with an id added to it as a confirmation
+ */
 export async function postBooking(matchDataId, formData) {
     const response = await fetch("/api/bookings",
         {
@@ -77,6 +105,12 @@ export async function postBooking(matchDataId, formData) {
     return result;
 }
 
+/**
+ * Gets login information for authentification
+ * @param {String} username contains entered username
+ * @param {String} password contains entered password
+ * @returns {Object, String} returns an authentification token and the api response
+ */
 export async function getLogin(username, password) {
     const s_authToken = "Basic " + new Buffer(username + ":" + password).toString("base64");
     const response = await fetch("/api/isAdmin",
@@ -92,7 +126,12 @@ export async function getLogin(username, password) {
     return { result, s_authToken };
 }
 
-export async function getRedeemBooking(verificationCode) {
+/**
+ * Redeems a booking
+ * @param {String} verificationCode
+ * @returns {Object} returns the booking with an id added to it as a confirmation
+ */
+export async function redeemBooking(verificationCode) {
     const response = await fetch("/api/bookings/redeem",
         {
             method: "POST",
@@ -102,7 +141,6 @@ export async function getRedeemBooking(verificationCode) {
                 "Authorization": sessionStorage.getItem("s_authToken")
             },
             body: JSON.stringify({
-                //zum testen 000000003C2A <-- aus dem beispielbuchungen
                 "verificationCode": verificationCode,
             })
         });
@@ -110,6 +148,11 @@ export async function getRedeemBooking(verificationCode) {
     return result;
 }
 
+/**
+ * posts a new match to the api to be added in the backend
+ * @param {Object} matchData contains the match to be added
+ * @returns {Object} returns the match as a confirmation
+ */
 export async function postNewMatch(matchData) {
     const response = await fetch("/api/matches",
         {
@@ -130,6 +173,12 @@ export async function postNewMatch(matchData) {
     return result;
 }
 
+/**
+ * Updates a match in the database via the api (PUT)
+ * @param {Object} matchData contains the chainged match data
+ * @param {Number} matchId contains the match id of the match that should be changed
+ * @returns {Object} returns the matchdata as a confirmation
+ */
 export async function putExistingMatch(matchData, matchId) {
     const response = await fetch("/api/matches/" + matchId,
         {
@@ -150,6 +199,11 @@ export async function putExistingMatch(matchData, matchId) {
     return result;
 }
 
+/**
+ * Deletes an existing match
+ * @param {Number} matchId contains the id of the match that should be deleted
+ * @returns {Object} returns the deleted object
+ */
 export async function deleteExistingMatch(matchId) {
     const response = await fetch("/api/matches/" + matchId,
         {
@@ -164,6 +218,11 @@ export async function deleteExistingMatch(matchId) {
     return result;
 }
 
+/**
+ * fetches all bookings for a specific match
+ * @param {Number} id contains the match id
+ * @returns {Object} returns a booking object containing all bookings for a matchday
+ */
 export async function getBookingsByMatchId(id) {
     const response = await fetch("/api/matches/" + id + "/bookings",
         {
@@ -178,6 +237,10 @@ export async function getBookingsByMatchId(id) {
     return result;
 }
 
+/**
+ * Deletes any booking that is older then 28 days
+ * @returns {Array} returns all deleted bookings 
+ */
 export async function deleteOldBookings() {
     const response = await fetch("api/bookings/overdue",
         {
