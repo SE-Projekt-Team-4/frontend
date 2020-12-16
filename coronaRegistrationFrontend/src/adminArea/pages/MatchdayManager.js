@@ -97,7 +97,7 @@ class MatchdayManager extends React.Component {
                     <Heading level="3" textAlign="start" color="black" margin="medium" > Besucherliste</Heading>
 
                     <Box pad="medium" direction="column" width="100%">
-                        <UserDataTable a_visitorData={a_visitorData} />
+                        <UserDataTable a_visitorData={a_visitorData} b_isAdminPage={false}/>
                     </Box> </> : <Redirect to="/login" />
                 }
             </>

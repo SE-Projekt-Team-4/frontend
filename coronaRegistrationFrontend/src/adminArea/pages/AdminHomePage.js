@@ -98,7 +98,7 @@ class AdminHomePage extends React.Component {
                     {b_isCheckinVisible && <UserCheckIn f_closeLayer={this.closeCheckin} />}
                     <NextMatchdaysGrid b_isAdmin a_matchData={a_matchData} f_updateMatches={this.getMatches} />
                     <Box pad="medium">
-                        <UserDataTable a_visitorData={a_bookingData} />
+                        <UserDataTable a_visitorData={a_bookingData} b_isAdminPage/>
                     </Box></> : <Redirect to="/login" />}
             </>
         )
