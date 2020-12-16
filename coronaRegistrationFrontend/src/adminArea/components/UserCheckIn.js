@@ -78,8 +78,8 @@ class UserCheckIn extends React.Component {
             this.setState({
                 ...this.state,
                 s_verificationCode: result
-            })
-            this.redeemBooking();
+            }); 
+            this.redeemBooking(); 
         }
     }
 
@@ -112,7 +112,7 @@ class UserCheckIn extends React.Component {
                         </Box>
                         <Box align="center">
                             <Box wrap align="center" justify="center" border={{ "color": "status-error", "size": "medium", "style": "dashed" }}>
-                                <QrReader style={{ width: "15rem", objectFit: "none" }} delay={500} resolution={250} onScan={this.scanQRCode} />
+                                <QrReader style={{ width: "15rem", objectFit: "none" }} delay={3000} resolution={250} onScan={this.scanQRCode} />
                             </Box>
                             <Heading level="2" margin="none">oder</Heading>
                             <FormField label="Buchungscode Eingeben:">
