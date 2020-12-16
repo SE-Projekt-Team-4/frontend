@@ -2,17 +2,24 @@ import React from "react";
 import { Button, DataTable, Box } from "grommet";
 import { ExportToCsv } from "export-to-csv";
 import { Download, Trash } from "grommet-icons";
-
+/**
+ * @module UserDataTable
+ * @version 4.2.1
+ */
 class UserDataTable extends React.Component {
-
+/**
+ * 
+ * @param {*} props 
+ */
     constructor (props) {
         super(props);
         this.exportToCsv= this.exportToCsv.bind(this);
     }
 
-    // Diese Funktion baut ein Anzeigbares Array - Es könnte auch noch der jewilige gebuchte Spieltag mit augegeben werden (abgespeichert in a_visitorDataRestructured[x][1])
-    // Die csv Ausgabe ist noch nicht so schön - das useKeysAsHeaders müsste denke ich auf false und die keys müssten manuell eingestellt werden - mache ich dann aber morgen
-    // muss jetzt wirklich schlafen gehen :) - mache dann auch morgen früh noch die jsdocs fertig - sonst können wir auch gerne morgen so ab 9 telefonieren 
+    /**
+     * Creates a new array based on the visitor Data taken from the api. The new array combines data from the matches, the bookings and the visitor data
+     * @returns {Array[][]} Returns the newly created array
+     */
     restructureArray() {
 
         const { a_visitorData } = this.props;
@@ -40,7 +47,9 @@ class UserDataTable extends React.Component {
         return a_visitorDataRestructured
 
     }
-
+    /**
+    *  Creates a .csv file from the restructured visitor Data array
+    */
     exportToCsv() {
 
 
@@ -60,7 +69,9 @@ class UserDataTable extends React.Component {
         csvExporter.generateCsv(this.restructureArray());
     }
 
-    //bei Delete Data muss noch der entsprechende Befehl eingefügt werden / der Exportbefehl ist aber zur prüfung des Arrays noch ganz nützlich
+    /**
+     * Renders the DataTable from the restructured booking data. Also gives an option to delete old user data or download a csv file from the data
+     */
     render() {
         const { a_visitorData, b_isAdminPage } = this.props;
         return (

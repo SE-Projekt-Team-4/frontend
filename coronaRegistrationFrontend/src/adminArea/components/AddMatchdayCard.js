@@ -4,9 +4,18 @@ import { AddCircle } from "grommet-icons";
 import MatchdayManagementForm from "../../reuseComponents/MatchdayManagementForm";
 
 
-
+/**
+ * @module AddMatchdayCard
+ * @version 3.1.1
+ */
 class AddMatchdayCard extends React.Component {
 
+    /**
+     * 
+     * @param {*} props
+     * @param {boolean} b_hasOpenedAddMatchday Defines wheather the AddMatchdayOptions should be opened 
+     * @returns {void}
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -15,6 +24,10 @@ class AddMatchdayCard extends React.Component {
         this.toggleAddMatchday = this.toggleAddMatchday.bind(this); 
     }
 
+    /**
+     * This Function opens or closes the Add Matchday options it is called when clicked on the add Matchday card
+     * @returns {void}
+     */
     toggleAddMatchday() {
         const { b_hasOpenedAddMatchday } = this.state;
         if(b_hasOpenedAddMatchday) {
@@ -29,7 +42,9 @@ class AddMatchdayCard extends React.Component {
             });
         }
     }
-
+    /**
+    *  Renders the Add Matchday Card on the Admin Page
+    */
     render() {
         return (
             <Card height="small" width="medium" pad="medium" justify="center" align="center">

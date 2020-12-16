@@ -5,8 +5,17 @@ import VisitorInformationSummary from "../../reuseComponents/VisitorInformationS
 import { getRedeemBooking } from "../../util/ApiRequests";
 import QrReader from "react-qr-scanner";
 
+/**
+ * @module UserCheckIn
+ * @version 6.2.2
+*/
 class UserCheckIn extends React.Component {
 
+    /**
+     * 
+     * @param {*} props 
+     *    
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -30,7 +39,9 @@ class UserCheckIn extends React.Component {
         this.scanQRCode = this.scanQRCode.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this); 
     }
-
+    /**
+     * Redeems the booking for a customer, pushing the update to the backend
+     */
     redeemBooking() {
         getRedeemBooking(this.state.s_verificationCode).then(o_redeemResponse => {
             if (o_redeemResponse.error && (o_redeemResponse.error.status === 404 || o_redeemResponse.error.status === 422)) {
@@ -58,6 +69,10 @@ class UserCheckIn extends React.Component {
             }
         })
     }
+    /**
+     * Scans the QR code from a booking
+     * @param {String} result Returns the Verification code saved in the QR code form as a String
+     */
     scanQRCode(result) {
         if (result) {
             this.setState({
@@ -68,6 +83,10 @@ class UserCheckIn extends React.Component {
         }
     }
 
+    /**
+     * 
+     * @param {*} event 
+     */
     handleInputChange(event) {
         this.setState({
             ...this.state,
@@ -76,6 +95,9 @@ class UserCheckIn extends React.Component {
 
     }
 
+    /**
+     * Renders the UserCheckin Option. The details are shown when clicked on Check in
+     */
     render() {
         const { f_closeLayer } = this.props;
         const { s_verificationCode, b_isValidBookingCode, b_hasCheckedIn, o_visitorData } = this.state;
