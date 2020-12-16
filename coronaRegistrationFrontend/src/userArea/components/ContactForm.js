@@ -95,13 +95,6 @@ class ContactForm extends React.Component {
    */
   checkRegexValidity(regexp, value) {
     return checkRegex(regexp, value); 
-    /* if (value) {
-      value = value.trim();
-      const o_Regex = new RegExp(regexp)
-      if (!o_Regex.test(value)) {
-        return o_formValidationMessages.invalid;
-      }
-    } */
   }
 
   /**

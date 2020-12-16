@@ -40,7 +40,8 @@ class BookingPage extends React.Component {
                 ...this.state,
                 o_matchData: o_match.data
             });
-            if (o_match.data.freeSpaces === 0 || o_match.data.isCancelled) {
+            const b_isInPast = new Date(o_match.data.date) - Date.now() <= 0
+            if (o_match.data.freeSpaces === 0 || o_match.data.isCancelled || b_isInPast ) {
                 window.location.replace("/");
             }
         })
