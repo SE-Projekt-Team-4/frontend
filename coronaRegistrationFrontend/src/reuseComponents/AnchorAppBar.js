@@ -2,14 +2,24 @@ import React from "react"
 import { Box, Heading, Button } from "grommet";
 import { Home, Logout } from "grommet-icons";
 
-
+/**
+ * @class AnchorAppBar
+ * @version 2.1.0
+ */
 class AnchorAppBar extends React.Component {
 
+  /**
+   * 
+   * @param {*} props 
+   */
   constructor(props) {
     super(props);
     this.state = {};
   }
 
+  /**
+   * Renders the anchor bar on top of a page
+   */
   render() {
     const { s_title, b_isNotHome, b_isAdmin } = this.props
     let hrefLink = "/"

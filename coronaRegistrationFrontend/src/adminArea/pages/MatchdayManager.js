@@ -7,9 +7,15 @@ import MatchdayManagementForm from "../../reuseComponents/MatchdayManagementForm
 import { Redirect } from "react-router-dom"
 import { getMatchById, getBookingsByMatchId, deleteExistingMatch } from "../../util/ApiRequests"
 import DeleteMatchdayLayer from "../components/DeleteMatchdayLayer"
-
+/**
+ * @class MatchdayManager
+ * @version 4.4.1
+ */
 class MatchdayManager extends React.Component {
-
+/**
+ * 
+ * @param {*} props 
+ */
     constructor(props) {
         super(props);
         this.state = {
@@ -22,7 +28,9 @@ class MatchdayManager extends React.Component {
         this.getMatchData = this.getMatchData.bind(this);
         this.deleteMatchday = this.deleteMatchday.bind(this); 
     }
-
+/**
+ * Fetches booking data for the matchday
+ */
     componentDidMount() {
         this.getMatchData();
         getBookingsByMatchId(this.props.match.params.id).then(a_bookings => {
@@ -32,7 +40,9 @@ class MatchdayManager extends React.Component {
             });
         });
     }
-
+/**
+ * Fetches match data for the matchday
+ */
     getMatchData() {
         getMatchById(this.props.match.params.id).then(o_match => {
             this.setState({
@@ -41,12 +51,16 @@ class MatchdayManager extends React.Component {
             });
         });
     }
-
+/**
+ * deletes the selected matchday
+ */
     deleteMatchday() {
         deleteExistingMatch(this.props.match.params.id); 
         window.location.replace("/admin"); 
     }
-
+/**
+ * opens/closes the editing window for the selected matchday
+ */
     toggleEditMatchday() {
         const { b_hasOpenedEditMatchday } = this.state;
         if (b_hasOpenedEditMatchday) {
@@ -61,7 +75,9 @@ class MatchdayManager extends React.Component {
             });
         }
     }
-
+/**
+ * opens/closes the delete window for the selected matchday
+ */
     toggleDeleteMatchday() {
         const { b_hasDeletedMatchday } = this.state;
         if (b_hasDeletedMatchday) {
@@ -76,11 +92,15 @@ class MatchdayManager extends React.Component {
             });
         }
     }
-
+/**
+ * clears the authentification token from the session storage
+ */
     clearAuthToken() {
         sessionStorage.clear();
     }
-
+/**
+ * Renders the matchday management page for a selected matchday
+ */
     render() {
         const { b_isAdmin, o_matchData, a_visitorData, b_hasOpenedEditMatchday, b_hasDeletedMatchday } = this.state;
         return (

@@ -1,8 +1,15 @@
 import React from "react";
 import { Button, Box } from "grommet";
 import { FormNext } from "grommet-icons";
-
+/**
+ * @class
+ * @version
+ */
 class FormButtons extends React.Component {
+
+    /**
+     * Renders a button used for the booking and editmatchday forms
+     */
     render() {
         return (
             <Box direction="row-responsive" gap="small" margin={{ top: "medium" }}>

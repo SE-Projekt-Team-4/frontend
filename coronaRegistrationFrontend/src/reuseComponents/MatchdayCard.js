@@ -2,8 +2,16 @@ import React from "react";
 import { Card, CardBody, CardHeader, CardFooter, Button, Heading, Text } from "grommet";
 import { formatDateTime } from "../util/Helpers";
 
+/**
+ * @class
+ * @version
+ */
 class MatchdayCard extends React.Component {
 
+    /**
+     * 
+     * @param {*} props 
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -15,6 +23,9 @@ class MatchdayCard extends React.Component {
         this.setDateTime = this.setDateTime.bind(this);
     }
 
+    /**
+     * sets the color of the remaining places for a matchday colors red when there are no places left, colors orange when there is less then 20 places left
+     */
     componentDidMount() {
         const { i_freeSpaces } = this.props;
         if (i_freeSpaces === 0) {
@@ -31,6 +42,9 @@ class MatchdayCard extends React.Component {
         this.setDateTime();
     }
 
+    /**
+     * sets and formats the date and time of the matchday
+     */
     setDateTime() {
         const { s_dateTime } = this.props; 
         const o_date = formatDateTime(s_dateTime);
@@ -42,6 +56,9 @@ class MatchdayCard extends React.Component {
         })
     }
 
+    /**
+     * Renders a matchdaycard as an overview to a matchday
+     */
     render() {
         const { b_isAdmin, s_opponent, i_freeSpaces, b_isCancelled, i_matchId } = this.props;
         const { s_placesLeftColour, s_time, s_date, b_isInPast } = this.state;

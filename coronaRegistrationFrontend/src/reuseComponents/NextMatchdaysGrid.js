@@ -3,8 +3,15 @@ import { Box, Grid, Heading, Button } from "grommet";
 import MatchdayCard from "./MatchdayCard";
 import AddMatchdayCard from "../adminArea/components/AddMatchdayCard";
 
+/**
+ * @class NextMatchdaysGrid
+ */
 class NextMatchdaysGrid extends React.Component {
 
+    /**
+     * 
+     * @param {*} props 
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -14,6 +21,9 @@ class NextMatchdaysGrid extends React.Component {
         this.showAllMatches = this.showAllMatches.bind(this);
     }
 
+    /**
+     * Enables the option to show all matches intead of a maximum of four
+     */
     showAllMatches() {
         this.setState({
             ...this.state,
@@ -21,6 +31,9 @@ class NextMatchdaysGrid extends React.Component {
         })
     }
 
+    /**
+     * Renders an overview of the next matchdays showing information about free places and weather the match takes place
+     */
     render() {
         const { isShowingAllMatches } = this.state;
         const { b_isAdmin, a_matchData, f_updateMatches } = this.props;

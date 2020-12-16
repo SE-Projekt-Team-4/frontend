@@ -9,12 +9,21 @@ export function checkRegex(regexp, value) {
         }
     }
 }
-
+/**
+ * 
+ * @param {Object} formData 
+ * @returns {Object} 
+ */
 export function trimFormData(formData) {
     Object.keys(formData).map(key => formData[key] = typeof formData[key] == "string" ? formData[key].trim() : formData[key]);
     return formData; 
 }
-
+/**
+ * 
+ * @param {*} dateISO 
+ * @returns {Object} s_time Returns a string saying "um (Time in 24h fromat)"
+ *                    s_formattedDate Returns Date in DD.MM.YYYY format
+ */
 export function formatDateTime(dateISO) {
     const o_dateObj = new Date(dateISO);
     const s_time = " um " + o_dateObj.toTimeString().substring(0, 5);

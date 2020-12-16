@@ -4,7 +4,9 @@ import { Close, Schedule, FormNext, Clock } from "grommet-icons";
 import FormButtons from "./FormButtons";
 import { postNewMatch, putExistingMatch } from "../util/ApiRequests";
 import { formatDateTime, trimFormData } from "../util/Helpers";
-
+/**
+ * this regexp fixes the inputs for the matchday time to (00:00-23:59)
+ */
 const o_timeMask = [
     {
         length: [1, 2],
@@ -21,6 +23,9 @@ const o_timeMask = [
     }
 ];
 
+/**
+ * this regexp only allows numbers to be inserted into the maximum places
+ */
 const o_maxSpacesMask = [
     {
         regexp: /^[0-9]*$/,
@@ -28,6 +33,9 @@ const o_maxSpacesMask = [
     }
 ]
 
+/**
+ * defines the messages for an invalid or a required input
+ */
 const o_formValidationMessages = {
     invalid: "Ungültig",
     required: "Erforderlich"
@@ -37,8 +45,14 @@ const o_currentDate = new Date(o_today.toISOString());
 const s_futureDateISO = new Date(o_today.setFullYear(o_today.getFullYear() + 1)).toISOString();
 const s_formattedCurrentTime = o_currentDate.toTimeString().substring(0, 5);
 
-
+/**
+ * @class MatchdayManagementForm
+ */
 class MatchdayManagementForm extends React.Component {
+    /**
+     * 
+     * @param {*} props 
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -61,12 +75,18 @@ class MatchdayManagementForm extends React.Component {
         this.baseState = this.state;
     }
 
+    /**
+     * Resets the inputs in the matchday form
+     */
     resetValues() {
         this.setState({
             ...this.baseState
         })
     }
 
+    /**
+     * Formats and sets the date and time for the matchday
+     */
     componentDidMount() {
         if (this.state.s_dateTime) {
             this.formatDateTimeInput(this.state.s_dateTime);
@@ -75,6 +95,10 @@ class MatchdayManagementForm extends React.Component {
         }
     }
 
+    /**
+     * Updates the corresponding variables when changing an input
+     * @param {Object} event contains meta data for the input change
+     */
     handleInputChange(event) {
         if (event.target.name === "b_isCancelled") {
             this.setState({
@@ -88,6 +112,10 @@ class MatchdayManagementForm extends React.Component {
             });
         }
     }
+
+    /**
+     * Converts the Date and time input back to ISOString and submits it to the matchday data
+     */
 
     submitDateTime() {
         const { s_date, s_time } = this.state;
@@ -120,6 +148,9 @@ class MatchdayManagementForm extends React.Component {
         })
     }
 
+    /**
+     * Submits a newly created matchday using the data from the from
+     */
     submitNewMatchday() {
         const { s_opponent, s_dateTime, i_maxSpaces, b_isCancelled } = this.state;
         const { i_matchId, f_passMatchdayDataToParent, f_closeLayer, b_isEditingExistingMatchday } = this.props;
@@ -139,12 +170,21 @@ class MatchdayManagementForm extends React.Component {
         f_passMatchdayDataToParent();
     }
 
+
+    /**
+     * Updates the corresponding variables when changing the date using the DateTimePicker
+     * @param {String} date contains the date that was entered
+     */
     handleDatePick(date) {
         this.setState({
             ...this.state,
             s_date: date
         });
     }
+
+    /**
+     * Opens/Closes the date and time picking option
+     */
 
     toggleDateTimePicker() {
         const { b_isDateTimePickerOpen } = this.state;
@@ -161,6 +201,10 @@ class MatchdayManagementForm extends React.Component {
         }
     }
 
+    /**
+     * Formats the DateAndTime input
+     * @param {String} date contains the date that was entered
+     */
     formatDateTimeInput(date) {
         const o_date = formatDateTime(date); 
         this.setState({
@@ -172,6 +216,9 @@ class MatchdayManagementForm extends React.Component {
         })
     }
 
+    /**
+     * Renders the MatchdayManagementForm that is used to create a new or change an existing matchday
+     */
     render() {
         const { s_title, f_closeLayer, b_isEditingExistingMatchday } = this.props;
         const { s_opponent, s_dateTime, i_maxSpaces, b_isCancelled, b_isDateTimePickerOpen, s_formattedDateTime, s_time, s_date } = this.state;

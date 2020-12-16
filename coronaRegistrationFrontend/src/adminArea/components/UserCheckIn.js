@@ -6,7 +6,7 @@ import { getRedeemBooking } from "../../util/ApiRequests";
 import QrReader from "react-qr-scanner";
 
 /**
- * @module UserCheckIn
+ * @class UserCheckIn
  * @version 6.2.2
 */
 class UserCheckIn extends React.Component {
@@ -84,8 +84,8 @@ class UserCheckIn extends React.Component {
     }
 
     /**
-     * 
-     * @param {*} event 
+     * Updates the corresponding variables when changing an input
+     * @param {*} event contains meta data from the change
      */
     handleInputChange(event) {
         this.setState({

@@ -47,7 +47,10 @@ class BookingPage extends React.Component {
             }
         });
     }
-
+    /**
+     * 
+     * @param {*} formData 
+     */
     trimFormData(formData) {
         this.setState({
             ...this.state,

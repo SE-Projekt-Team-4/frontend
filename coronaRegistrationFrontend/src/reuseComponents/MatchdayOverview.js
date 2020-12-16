@@ -4,6 +4,9 @@ import { Edit, Trash } from "grommet-icons";
 import StadiumMap from "./StadiumMap";
 import { formatDateTime } from "../util/Helpers";
 
+/**
+ * @class MatchdayOverview
+ */
 class MatchdayOverview extends React.Component {
 
     constructor(props) {
@@ -14,6 +17,10 @@ class MatchdayOverview extends React.Component {
         };
     }
 
+    /**
+     * Updates the date and time shown in the overwiew
+     * @param {Object} prevProps cotains props from before the last update
+     */
     componentDidUpdate(prevProps) {
         if(prevProps.s_dateTime !== this.props.s_dateTime) {
             const o_dateTime = formatDateTime(this.props.s_dateTime);
@@ -24,6 +31,9 @@ class MatchdayOverview extends React.Component {
         }
     }
 
+    /**
+     * Renders the matchday overwiew that show the next matchday and gives the option to check in customers
+     */
     render() {
         const { s_opponent, i_maxSpaces, b_isAdmin, f_openEditMatchday, f_deleteMatchday, i_freeSpaces } = this.props;
         const { s_date, s_time } = this.state;

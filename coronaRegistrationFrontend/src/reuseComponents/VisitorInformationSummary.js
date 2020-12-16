@@ -2,8 +2,14 @@ import { Heading, Box, Text, Button } from "grommet";
 import { Edit } from "grommet-icons";
 import React from "react";
 
+/**
+ * @class VisitorInformationSummary
+ */
 class VisitorInformationSummary extends React.Component {
 
+    /**
+     * Renders a summary of the data a customer has entered for the booking process
+     */
     render() {
         const { b_canEditVisitorInformation, onEditVisitorInformation, s_firstName, s_surname, s_street, s_houseNr, s_postcode, s_city, s_country, s_email, s_telNr } = this.props;
         return (
