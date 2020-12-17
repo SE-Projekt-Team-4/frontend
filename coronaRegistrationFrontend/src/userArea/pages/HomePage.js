@@ -46,7 +46,7 @@ class HomePage extends React.Component {
                     <Heading level="2" textAlign="center" color="light-1">Wilkommen bei der Terminbuchung der FG 08 Mutterstadt</Heading>
                     <Image src="./teamlogo.png" fill={false} />
                     <Link to="./Hygienekonzept.pdf" target="_blank" download>
-                        <Button primary label="Unser Hygenekonzept Herunterladen" icon={<Download />} />
+                        <Button primary label="Unser Hygienekonzept Herunterladen" icon={<Download />} />
                     </Link>
                 </Box>
                 {a_matchData &&
