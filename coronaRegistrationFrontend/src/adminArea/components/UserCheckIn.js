@@ -69,15 +69,21 @@ class UserCheckIn extends React.Component {
         })
     }
     /**
-     * Scans the QR code from a booking
+     * Scans the QR code from a booking. If a user accidentally scans the same qr code twice (one directly after the other)
+     * then the booking will not be redeemed, to avoid QR codes accidentally being invalid if the code is held up to the camera for more than 2 seconds 
+     * which would scan it twice
      * @param {String} result Returns the Verification code saved in the QR code form as a String
      */
     scanQRCode(result) {
         if (result) {
+            if(result === this.state.s_verificationCode) {
+                return; 
+            }
             this.setState({
                 ...this.state,
                 s_verificationCode: result
             }); 
+          
             this.redeemBooking(); 
         }
     }
@@ -111,7 +117,7 @@ class UserCheckIn extends React.Component {
                         </Box>
                         <Box align="center">
                             <Box wrap align="center" justify="center" border={{ "color": "status-error", "size": "medium", "style": "dashed" }}>
-                                <QrReader style={{ width: "15rem", objectFit: "none" }} delay={3000} resolution={250} onScan={this.scanQRCode} />
+                                <QrReader style={{ width: "15rem", objectFit: "none" }} delay={2000} resolution={250} onScan={this.scanQRCode} />
                             </Box>
                             <Heading level="2" margin="none">oder</Heading>
                             <FormField label="Buchungscode Eingeben:">
