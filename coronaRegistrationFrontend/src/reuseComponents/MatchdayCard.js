@@ -78,8 +78,10 @@ class MatchdayCard extends React.Component {
                     {b_isAdmin ?
                         <Button label="Spieltag Verwalten" href={"/admin/editMatch/" + n_matchId} />
                         :
-                        <Button disabled={(n_freeSpaces === 0 || b_isCancelled || b_isInPast)} label="Platz Buchen" href={"/booking/" + n_matchId} />
-                    }
+                        (n_freeSpaces === 0 || b_isCancelled || b_isInPast) ?
+                            <Button disabled label="Platz Buchen"/> : 
+                            <Button active={(n_freeSpaces === 0 || b_isCancelled || b_isInPast)} disabled={(n_freeSpaces === 0 || b_isCancelled || b_isInPast)} label="Platz Buchen" href={"/booking/" + n_matchId} />
+                        }
                 </CardFooter>
             </Card>
         );

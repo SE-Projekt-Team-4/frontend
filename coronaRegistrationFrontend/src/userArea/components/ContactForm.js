@@ -65,7 +65,13 @@ class ContactForm extends React.Component {
       s_houseNr: this.props.o_formData.s_houseNr,
       s_city: this.props.o_formData.s_city,
       s_postcode: this.props.o_formData.s_postcode,
-      s_country: this.props.o_formData.s_country,
+      s_country: this.props.o_formData.s_country === undefined ? 
+      {
+        value: "DE", label: "Germany"
+      } : {
+        value: countryList().getValue(this.props.o_formData.s_country), 
+        label: this.props.o_formData.s_country
+      },
       s_email: this.props.o_formData.s_email,
       s_telNr: this.props.o_formData.s_telNr,
       b_submittedForm: false,
